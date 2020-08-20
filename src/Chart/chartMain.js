@@ -1,16 +1,17 @@
 import React, {Component} from 'react'
 import ChartDisplay from './chartDisplay'
 import ChartControls from './chartControls'
+import Aux from '../../hoc/Aux/Aux'
 
 class ChartMain extends Component {
     
-    
+
     render() {
         return (
-            <div>
+            <Aux>
                 <ChartDisplay />
                 <ChartControls />
-            </div>
+            </Aux>
         )
     }
 }
