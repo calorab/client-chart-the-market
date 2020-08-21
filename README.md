@@ -1,3 +1,29 @@
+
+<!-- 
+    Here I'm putting a basic plan-of-action and notes for my next steps, issues, etc, to be added as I go.
+
+    Start:
+    
+    8.20 Created app and bones of app - including chartMain where state will be, charts Display/Data/Controls are children. First iteration is basic with no Auth.
+        to do:
+            Move ChartData to be in ChartMain
+            Create the Welcome page
+            Add reactRouter and implement
+            Download and Create a basic Formik form
+            Basic CSS for shape and test colors
+            Create space for API DATA and implement placeholder for graph
+            ...API...
+            create toolbar with stats/info to show use of Context 
+
+
+ -->
+
+
+
+<!-- -------------------------------------------------------------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------------------------------------------------------------- -->
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
