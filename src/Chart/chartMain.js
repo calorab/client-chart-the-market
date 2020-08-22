@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
+
 import ChartDisplay from './chartDisplay'
 import ChartControls from './chartControls'
+import ChartData from './chartData'
 import Aux from '../../hoc/Aux/Aux'
 
 class ChartMain extends Component {
@@ -10,6 +12,7 @@ class ChartMain extends Component {
         return (
             <Aux>
                 <ChartDisplay />
+                <ChartData />
                 <ChartControls />
             </Aux>
         )

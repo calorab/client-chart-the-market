@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import ChartData from './chartData'
+
 import Aux from '../../hoc/Aux/Aux'
 
 class ChartDisplay extends Component {
@@ -8,7 +8,6 @@ class ChartDisplay extends Component {
         return(
             <Aux>
                 {/* ChartWindow component needed for the graph? */}
-                <ChartData />
             </Aux>
         )
     }
