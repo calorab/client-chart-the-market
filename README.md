@@ -26,6 +26,29 @@
             [] Create space for API DATA and implement placeholder for graph
             [] ...API...
             [] create toolbar with stats/info to show use of Context 
+    8.24 Went through react router on thinkful and implemented the basics on the app for. Added 404 page to the list
+        to do:
+            [X] Move ChartData to be in ChartMain
+            [X*] Create the Welcome page
+            [X] Add reactRouter and implement {planning for Sunday (8/23)}
+            [] Download and Create a basic Formik form
+            [] Basic CSS for shape and test colors
+            [] Add 404 page not found component
+            [] Create space for API DATA and implement placeholder for graph
+            [] ...API...
+            [] create toolbar with stats/info to show use of Context 
+    8.25 starting late. 
+        to do:
+            [X] Move ChartData to be in ChartMain
+            [X*] Create the Welcome page
+            [X] Add reactRouter and implement {planning for Sunday (8/23)}
+            [] Download and Create a basic Formik form
+            [] Basic CSS for shape and test colors
+            [] Add 404 page not found component
+            [] Create space for API DATA and implement placeholder for graph
+            [] ...API...
+            [] create toolbar with stats/info to show use of Context
+
 
  -->
 

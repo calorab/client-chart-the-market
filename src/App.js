@@ -1,5 +1,5 @@
 import React from 'react'
-import {Route} from 'react-router-dom'
+import {Route , Switch} from 'react-router-dom'
 import Aux from '../../hoc/Aux/Aux'
 import ChartMain from './Chart/chartMain'
 import Welcome from './welcome'
@@ -15,8 +15,10 @@ function App() {
       <header className="App-header">
       </header>
       <Aux>
-        <Route exact path='/' component={Welcome} />
-        <Route path='/chartmain' component={ChartMain} />
+        <Switch>
+          <Route exact path='/' component={Welcome} />
+          <Route path='/chartmain' component={ChartMain} />
+        </Switch>
       </Aux>
     </div>
   );

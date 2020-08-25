@@ -12,10 +12,6 @@ class Welcome extends Component {
         //     setInterval(() => {return slide}), 3000)
         // })
     }
-    
-    handleCarousel() {
-
-    }
 
     render() {
         return (
@@ -26,6 +22,7 @@ class Welcome extends Component {
                         bottom: eventually signup/login, at first features
                 */}
                 <section className='welcomeVideo' >
+                    <h2> Chart the market uses the BarChart API to bring you not only dinamic, custom charts for global markets but many other investment tools and recommendations. </h2>
                     <Link to='/chartmain' >Try it out!</Link>
                     {/* display video/gif/media */}
                 </section>
