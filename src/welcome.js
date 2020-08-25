@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 import Aux from '../../hoc/Aux/Aux'
-import { setInterval } from 'timers'
+// import { setInterval } from 'timers'
 
 class Welcome extends Component {
 
@@ -25,6 +26,7 @@ class Welcome extends Component {
                         bottom: eventually signup/login, at first features
                 */}
                 <section className='welcomeVideo' >
+                    <Link to='/chartmain' >Try it out!</Link>
                     {/* display video/gif/media */}
                 </section>
                 <section>

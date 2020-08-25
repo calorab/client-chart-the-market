@@ -22,6 +22,7 @@
             [] Add reactRouter and implement {planning for Sunday (8/23)}
             [] Download and Create a basic Formik form
             [] Basic CSS for shape and test colors
+            [] Add 404 page not found component
             [] Create space for API DATA and implement placeholder for graph
             [] ...API...
             [] create toolbar with stats/info to show use of Context 
