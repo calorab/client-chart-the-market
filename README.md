@@ -14,11 +14,12 @@
             [] Create space for API DATA and implement placeholder for graph
             [] ...API...
             [] create toolbar with stats/info to show use of Context 
-    8.21 ........
+
+    8.21 Created basic welcome component structure with features below the picture carousel. The picture carousel was tougher to create without online help (everything I found was old) but it was a good exercise. I think I got it if I can use setInterval to interrupt a map of an array... we'll see. I added the basic logic for it today (hence the asterisk) but it's Friday night so I'm working at a slower pace
         to do:
             [X] Move ChartData to be in ChartMain
-            [] Create the Welcome page
-            [] Add reactRouter and implement
+            [X*] Create the Welcome page
+            [] Add reactRouter and implement {planning for Sunday (8/23)}
             [] Download and Create a basic Formik form
             [] Basic CSS for shape and test colors
             [] Create space for API DATA and implement placeholder for graph

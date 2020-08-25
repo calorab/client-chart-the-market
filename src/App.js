@@ -1,4 +1,5 @@
-import React from 'react';
+import React from 'react'
+import {Route} from 'react-router-dom'
 import Aux from '../../hoc/Aux/Aux'
 import ChartMain from './Chart/chartMain'
 import Welcome from './welcome'
@@ -13,10 +14,10 @@ function App() {
     <div className="App">
       <header className="App-header">
       </header>
-      <main>
-        <Welcome></Welcome>
-        <ChartMain />
-      </main>
+      <Aux>
+        <Route exact path='/' component={Welcome} />
+        <Route path='/chartmain' component={ChartMain} />
+      </Aux>
     </div>
   );
 }

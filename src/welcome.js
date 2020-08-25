@@ -7,7 +7,7 @@ class Welcome extends Component {
     handleSlideDisplay() {
         // Here's the outline of my idea
         // slides.map(element => {
-        //     let slide = [...html]
+        //     let slide = [...html with element data]
         //     setInterval(() => {return slide}), 3000)
         // })
     }
