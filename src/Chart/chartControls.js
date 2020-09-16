@@ -14,7 +14,7 @@ class ChartControls extends Component {
                 NOTE:
                     Using AnyChart charting API and Alpha Vantage API
                 */}
-                
+
                 <Formik initialValues={{symbol: "", check: []}} onSubmit={alert("Sumbitted")} >
                     <Form>
                         <div className='stockSymbol' name='symbol'>
@@ -36,7 +36,7 @@ class ChartControls extends Component {
                             </label>   
                         </div>
                     </Form>
-                    <button className='chartSubmitButton'>Submit</button>
+                    <button type='submit' className='chartSubmitButton'>Submit</button>
                 </Formik>
             </Aux>
         )
