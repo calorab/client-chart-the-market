@@ -22,19 +22,9 @@ class Welcome extends Component {
                         bottom: eventually signup/login, at first features
                 */}
                 <section className='welcomeVideo' >
-                    <h2> Chart the market uses the BarChart API to bring you not only dinamic, custom charts for global markets but many other investment tools and recommendations. </h2>
+                    <h2> Chart the market uses the BarChart API to bring you not only dinamic, custom charts for global markets 
+                            but many other investment tools and recommendations. </h2>
                     <Link to='/chartmain' >Try it out!</Link>
-                    {/* display video/gif/media */}
-                </section>
-                <section>
-                    <h3>Features</h3>
-                    <ul>
-                        <li>feature 1</li>
-                        <li>feature 2</li>
-                        <li>feature 3</li>
-                        <li>feature 4</li>
-                        <li>feature 5</li>
-                    </ul>
                 </section>
             </Aux>
         )
