@@ -16,27 +16,28 @@ class ChartControls extends Component {
 
     render() {
 
-        // const form = 
-        //     <Formik
-        //         initialValues={{tickerSymbol: ""}}
-        //         validationSchema={Yup.object({tickerSymbol: Yup.string().required('Required')})}
-        //         onSubmit={() => {
-        //             this.onSubmitHandler()
-        //         }}
-        //     >
-        //         <Form>
-        //             <label htmlFor="tickerSymbol">Search for a Ticker Symbol</label>
-        //             <Field name="tickerSymbol" type="text" />
-        //             <ErrorMessage name="tickerSymbol" />
-        //             <button type="submit">Search</button>
-        //         </Form>
-        //     </Formik>;
+        const form = 
+            <Formik
+                initialValues={{tickerSymbol: ""}}
+                validationSchema={Yup.object({tickerSymbol: Yup.string().required('Required')})}
+                onSubmit={() => {
+                    this.onSubmitHandler()
+                }}
+            >
+                <Form>
+                    <label htmlFor="tickerSymbol">Search for a Ticker Symbol</label>
+                    <Field name="tickerSymbol" type="text" />
+                    <ErrorMessage name="tickerSymbol" />
+                    <button type="submit">Search</button>
+                </Form>
+            </Formik>;
 
         return (
+            <div>
+                {form}
+            </div>
 
-            //     {form}
-
-            <p>Hello World!</p>
+            // <p>Hello World!</p>
         )
     }
 }
