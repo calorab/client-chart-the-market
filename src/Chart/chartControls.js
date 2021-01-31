@@ -10,11 +10,20 @@ class ChartControls extends Component {
 
     }
 
-    onSubmitHandler = () => {
-        alert("Submitted!");
+    onSubmitHandler = async () => {
+        let result = await this.testForHandler()
+        console.log(result);
+        return result
+    }
+
+    testForHandler() {
+        console.log('test');
+        return 'finished'
     }
 
     render() {
+
+        
 
         const form = 
             <Formik
