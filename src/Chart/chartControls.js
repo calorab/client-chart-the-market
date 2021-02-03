@@ -83,16 +83,32 @@ class ChartControls extends Component {
 
         const formCustom = 
             <Formik
-                initialValues={{equitySymbol: "", lowEMAInterval: "", highEMAInterval: "", macd: true, macdInterval: ""}}
+                initialValues={{equitySymbol: "", lowEMAInterval: "", highEMAInterval: "", MACD: true, MACDInterval: ""}}
                 validationSchema={Yup.object({tickerSymbol: Yup.string().required('Required')})}
                 onSubmit={() => {
-                    this.onTickerSubmitHandler()
+                    this.onChartSubmithandler()
                 }}
             >
                 <Form>
-                    <label htmlFor="tickerSymbol">Search for a Ticker Symbol</label>
-                    <Field name="tickerSymbol" type="text" />
-                    <ErrorMessage name="tickerSymbol" />
+                    <label htmlFor="equitySymbol">Already know the symbol? </label>
+                    <Field name="equitySymbol" type="text" />
+                    <ErrorMessage name="equitySymbol" />
+
+                    <label htmlFor="lowEMAInterval">Enter the shorter EMA interval: </label>
+                    <Field name="lowEMAInterval" type="text" />
+                    <ErrorMessage name="lowEMAInterval" />
+
+                    <label htmlFor="highEMAInterval">Enter the longer EMA interval: </label>
+                    <Field name="highEMAInterval" type="text" />
+                    <ErrorMessage name="highEMAInterval" />
+
+                    <label htmlFor="MACD">MACD:</label>
+                    <Field name="MACD" type="checkbox" />
+                    
+                    <label htmlFor="MACDInterval">MACD Interval: </label>
+                    <Field name="MACDInterval" type="text" />
+                    <ErrorMessage name="MACDInterval" />
+                    
                     <button type="submit">Search</button>
                 </Form>
             </Formik>;
