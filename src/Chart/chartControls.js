@@ -8,11 +8,13 @@ class ChartControls extends Component {
         ticker: "",
         submitting: false,
         companyResults: [],
-    }
-
-   
+        emaLow: [],
+        emaHigh: [],
+        macd: [],
+        equityPrice: []
+    }   
     
-    onTickerSubmitHandler = async event => {
+    tickerSubmitHandler = async event => {
         this.setState({submitting: true})
         // let keyword = event.target.tickerSymbol.value
         let apiEndpoint = "http://localhost:8000/symbol/stocksymbol?keyword=ibm" 
@@ -23,19 +25,19 @@ class ChartControls extends Component {
             }
         })
         const matches = await response.json();
-        // console.log(matches.bestMatches)
+        // console.log(matches.bestMatches) *** successfully fetching symbol data!! ***
         this.setState({companyResults: matches.bestMatches, submitting: false})
         // console.log(this.state.companyResults)
     }
 
     // onChartSubmithandler = async event => {
-    //     const [emaLow, emaHigh, macd, price] = await Promise.all([onEMALowHandler(), onEMAHighHandler(), onMACDHandler(), onPriceHandler()])
+    //     const [emaLow, emaHigh, macd, price] = await Promise.all([emaLowHandler(), emaHighHandler(), macdHandler(), priceHandler()])
     // }
 
-    onEMALowHandler = async event => {
+    emaLowHandler = async event => {
         let symbol = "ibm"
-        let interval = 10
-        let timePeriod = "daily"
+        let interval = "daily"
+        let timePeriod = 10
 
         let emaLowEndpoint = "http://localhost:8000/chartdata/ema?symbol=" + symbol + "&interval=" + interval + "&time_period=" + timePeriod 
 
@@ -46,15 +48,68 @@ class ChartControls extends Component {
         })
 
         let emaLow = await response.json()
-
-        return emaLow
+        console.log("emaLow: ", emaLow) // *** successfully fetching ema data!! ***
+        // this.setState({emaLow: emaLow})
+        // return emaLow
     }
 
-    onEMAHighHandler = () => {}
+    emaHighHandler = async () => {
+        let symbol = "ibm"
+        let interval = "daily"
+        let timePeriod = 10
 
-    onMACDHandler = () => {}
+        let emaHighEndpoint = "http://localhost:8000/chartdata/ema?symbol=" + symbol + "&interval=" + interval + "&time_period=" + timePeriod 
 
-    onPriceHandler = () => {}
+        let response = await fetch(emaHighEndpoint, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        let emaHigh = await response.json()
+        console.log("emaHigh: ", emaHigh) // *** successfully fetching ema data!! ***
+        // this.setState({emaHigh: emaHigh})
+        // return emaHigh
+    }
+
+    macdHandler = async () => {
+        //IDEA: make emaLow = fast period and emaHigh = slow period and signalperiod 0(??)
+
+        let symbol = "ibm"
+        let interval = "daily"
+
+        let macdEndpoint = "http://localhost:8000/chartdata/macd?symbol=" + symbol + "&interval=" + interval
+
+        let response = await fetch(macdEndpoint, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        let macd = await response.json()
+        console.log("MACD: ", macd) // *** successfully fetching MACD data!! ***
+        // this.setState({emaHigh: emaHigh})
+        // return 
+    }
+
+    priceHandler = async () => {
+        // IDEA: add weekly stock prices
+
+        let symbol = "ibm"
+
+        let priceEndpoint = "http://localhost:8000/chartdata?symbol=" + symbol
+
+        let response = await fetch(priceEndpoint, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        let priceData = await response.json()
+        console.log("Price Data: ", priceData) // *** successfully fetching Chart data!! ***
+        // this.setState({equityPrice: priceData})
+        // return 
+    }
 
     render() {
 
@@ -70,7 +125,7 @@ class ChartControls extends Component {
                 initialValues={{tickerSymbol: ""}}
                 validationSchema={Yup.object({tickerSymbol: Yup.string().required('Required')})}
                 onSubmit={() => {
-                    this.onTickerSubmitHandler()
+                    this.priceHandler()
                 }}
             >
                 <Form>
@@ -83,8 +138,13 @@ class ChartControls extends Component {
 
         const formCustom = 
             <Formik
-                initialValues={{equitySymbol: "", lowEMAInterval: "", highEMAInterval: "", MACD: true, MACDInterval: ""}}
-                validationSchema={Yup.object({tickerSymbol: Yup.string().required('Required')})}
+                initialValues={{equitySymbol: "", lowEMAInterval: "", highEMAInterval: "", MACD: true}}
+                validationSchema={Yup.object(
+                    {
+                        equitySymbol: Yup.string().required('Required'), 
+                        lowEMAInterval: Yup.number().max(500, "No values over 500").min(5, "No values less than 5"), 
+                        highEMAInterval: Yup.number().max(500, "no values over 500").min(5, "No values less than 5")
+                    })}
                 onSubmit={() => {
                     this.onChartSubmithandler()
                 }}
@@ -104,11 +164,7 @@ class ChartControls extends Component {
 
                     <label htmlFor="MACD">MACD:</label>
                     <Field name="MACD" type="checkbox" />
-                    
-                    <label htmlFor="MACDInterval">MACD Interval: </label>
-                    <Field name="MACDInterval" type="text" />
-                    <ErrorMessage name="MACDInterval" />
-                    
+    
                     <button type="submit">Search</button>
                 </Form>
             </Formik>;
@@ -116,6 +172,7 @@ class ChartControls extends Component {
         return (
             <div>
                 {formSymbol}
+                <br></br>
                 {formCustom}
                 {symbolResults}
             </div>
