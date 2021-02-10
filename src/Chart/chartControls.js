@@ -11,10 +11,14 @@ class ChartControls extends Component {
         emaLow: [],
         emaHigh: [],
         macd: [],
-        equityPrice: []
+        equityPrices: []
     }   
     
-    tickerSubmitHandler = async event => {
+    // fullChartDatahandler = async event => {
+    //     const [emaLow, emaHigh, macd, priceData] = await Promise.all([emaLowHandler(), emaHighHandler(), macdHandler(), priceHandler()])
+    // }
+
+    tickerSearchHandler = async event => {
         this.setState({submitting: true})
         // let keyword = event.target.tickerSymbol.value
         let apiEndpoint = "http://localhost:8000/symbol/stocksymbol?keyword=ibm" 
@@ -25,14 +29,10 @@ class ChartControls extends Component {
             }
         })
         const matches = await response.json();
-        // console.log(matches.bestMatches) *** successfully fetching symbol data!! ***
-        this.setState({companyResults: matches.bestMatches, submitting: false})
+        console.log(matches.bestMatches) 
+        // this.setState({companyResults: matches.bestMatches, submitting: false})
         // console.log(this.state.companyResults)
     }
-
-    // onChartSubmithandler = async event => {
-    //     const [emaLow, emaHigh, macd, price] = await Promise.all([emaLowHandler(), emaHighHandler(), macdHandler(), priceHandler()])
-    // }
 
     emaLowHandler = async event => {
         let symbol = "ibm"
@@ -48,7 +48,7 @@ class ChartControls extends Component {
         })
 
         let emaLow = await response.json()
-        console.log("emaLow: ", emaLow) // *** successfully fetching ema data!! ***
+        console.log("emaLow: ", emaLow["Technical Analysis: EMA"]) 
         // this.setState({emaLow: emaLow})
         // return emaLow
     }
@@ -67,8 +67,9 @@ class ChartControls extends Component {
         })
 
         let emaHigh = await response.json()
-        console.log("emaHigh: ", emaHigh) // *** successfully fetching ema data!! ***
-        // this.setState({emaHigh: emaHigh})
+        // console.log("emaHigh: ", emaHigh["Technical Analysis: EMA"]) 
+        this.setState({emaHigh: emaHigh["Technical Analysis: EMA"]})
+        console.log("EMA: ", this.state.emaHigh)
         // return emaHigh
     }
 
@@ -87,8 +88,9 @@ class ChartControls extends Component {
         })
 
         let macd = await response.json()
-        console.log("MACD: ", macd) // *** successfully fetching MACD data!! ***
-        // this.setState({emaHigh: emaHigh})
+        // console.log("MACD: ", macd["Technical Analysis: MACD"])
+        this.setState({macd: macd["Technical Analysis: MACD"]})
+        console.log("macd Data: ", this.state.macd)
         // return 
     }
 
@@ -106,18 +108,19 @@ class ChartControls extends Component {
         })
 
         let priceData = await response.json()
-        console.log("Price Data: ", priceData) // *** successfully fetching Chart data!! ***
-        // this.setState({equityPrice: priceData})
-        // return 
+        // console.log("Price Data: ", priceData["Meta Data"]["2. Symbol"]) 
+        this.setState({equityPrices: priceData["Time Series (Daily)"], ticker: priceData["Meta Data"]["2. Symbol"]})
+        console.log("Ticker: ", this.state.ticker, "price: ", this.state.equityPrices)
+        return priceData
     }
 
     render() {
 
         const symbolResults = this.state.companyResults.map(element => {
             return <div>
-                        <h3>{element.name}</h3>
-                        <button type='submit' onClick={this.onChartSubmithandler()}>Get chart data for this company</button>                       
-                    </div>
+                    <h3>{element.name}</h3>
+                    <button type='submit' onClick={this.fullChartDatahandler()}>Get chart data for this company</button>                       
+                </div>
         })
 
         const formSymbol = 
@@ -125,7 +128,7 @@ class ChartControls extends Component {
                 initialValues={{tickerSymbol: ""}}
                 validationSchema={Yup.object({tickerSymbol: Yup.string().required('Required')})}
                 onSubmit={() => {
-                    this.priceHandler()
+                    this.tickerSearchHandler()
                 }}
             >
                 <Form>
