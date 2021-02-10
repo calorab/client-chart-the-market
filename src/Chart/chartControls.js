@@ -14,9 +14,10 @@ class ChartControls extends Component {
         equityPrices: []
     }   
     
-    // fullChartDatahandler = async event => {
-    //     const [emaLow, emaHigh, macd, priceData] = await Promise.all([emaLowHandler(), emaHighHandler(), macdHandler(), priceHandler()])
-    // }
+    fullChartDatahandler = async event => {
+        const [emaLow, emaHigh, macd, priceData] = await Promise.all([this.emaLowHandler(), this.emaHighHandler(), this.macdHandler(), this.priceHandler()])
+        console.log(this.state)
+    }
 
     tickerSearchHandler = async event => {
         this.setState({submitting: true})
@@ -48,9 +49,9 @@ class ChartControls extends Component {
         })
 
         let emaLow = await response.json()
-        console.log("emaLow: ", emaLow["Technical Analysis: EMA"]) 
-        // this.setState({emaLow: emaLow})
-        // return emaLow
+        // console.log("emaLow: ", emaLow["Technical Analysis: EMA"]) 
+        this.setState({emaLow: emaLow["Technical Analysis: EMA"]})
+        return emaLow
     }
 
     emaHighHandler = async () => {
@@ -69,8 +70,8 @@ class ChartControls extends Component {
         let emaHigh = await response.json()
         // console.log("emaHigh: ", emaHigh["Technical Analysis: EMA"]) 
         this.setState({emaHigh: emaHigh["Technical Analysis: EMA"]})
-        console.log("EMA: ", this.state.emaHigh)
-        // return emaHigh
+        // console.log("EMA: ", this.state.emaHigh)
+        return emaHigh
     }
 
     macdHandler = async () => {
@@ -90,8 +91,8 @@ class ChartControls extends Component {
         let macd = await response.json()
         // console.log("MACD: ", macd["Technical Analysis: MACD"])
         this.setState({macd: macd["Technical Analysis: MACD"]})
-        console.log("macd Data: ", this.state.macd)
-        // return 
+        // console.log("macd Data: ", this.state.macd)
+        return macd
     }
 
     priceHandler = async () => {
@@ -110,7 +111,7 @@ class ChartControls extends Component {
         let priceData = await response.json()
         // console.log("Price Data: ", priceData["Meta Data"]["2. Symbol"]) 
         this.setState({equityPrices: priceData["Time Series (Daily)"], ticker: priceData["Meta Data"]["2. Symbol"]})
-        console.log("Ticker: ", this.state.ticker, "price: ", this.state.equityPrices)
+        // console.log("Ticker: ", this.state.ticker, "price: ", this.state.equityPrices)
         return priceData
     }
 
@@ -128,7 +129,7 @@ class ChartControls extends Component {
                 initialValues={{tickerSymbol: ""}}
                 validationSchema={Yup.object({tickerSymbol: Yup.string().required('Required')})}
                 onSubmit={() => {
-                    this.tickerSearchHandler()
+                    this.fullChartDatahandler()
                 }}
             >
                 <Form>
