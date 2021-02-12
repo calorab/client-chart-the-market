@@ -14,15 +14,19 @@ class ChartControls extends Component {
         equityPrices: []
     }   
     
-    fullChartDatahandler = async event => {
+    fullChartDataHandler = async event => {
+        this.setState({submitting: true, companyResults: []})
         const [emaLow, emaHigh, macd, priceData] = await Promise.all([this.emaLowHandler(), this.emaHighHandler(), this.macdHandler(), this.priceHandler()])
-        console.log(this.state)
+        console.log("SUCCESS!!! state: ", this.state)
+
+        this.setState({submitting: false})
     }
 
     tickerSearchHandler = async event => {
         this.setState({submitting: true})
-        // let keyword = event.target.tickerSymbol.value
-        let apiEndpoint = "http://localhost:8000/symbol/stocksymbol?keyword=ibm" 
+        console.log("Event: ", event, "Event.target.tickerSymbol", event.target.tickerSymbol)
+        let keyword = event.target.tickerSymbol.value;
+        let apiEndpoint = "http://localhost:8000/symbol/stocksymbol?keyword=" + keyword
 
         let response = await fetch(apiEndpoint, {
             headers: {
@@ -30,15 +34,15 @@ class ChartControls extends Component {
             }
         })
         const matches = await response.json();
-        console.log(matches.bestMatches) 
-        // this.setState({companyResults: matches.bestMatches, submitting: false})
-        // console.log(this.state.companyResults)
+        console.log("Response: ", matches.bestMatches) 
+        this.setState({companyResults: matches.bestMatches, submitting: false})
+        console.log('State: ', this.state.companyResults)
     }
 
     emaLowHandler = async event => {
-        let symbol = "ibm"
-        let interval = "daily"
-        let timePeriod = 10
+        let symbol = event.target.equitySymbol.value
+        let interval = event.target.interval.value
+        let timePeriod = event.target.lowEMAInterval.value
 
         let emaLowEndpoint = "http://localhost:8000/chartdata/ema?symbol=" + symbol + "&interval=" + interval + "&time_period=" + timePeriod 
 
@@ -54,10 +58,10 @@ class ChartControls extends Component {
         return emaLow
     }
 
-    emaHighHandler = async () => {
-        let symbol = "ibm"
-        let interval = "daily"
-        let timePeriod = 10
+    emaHighHandler = async event => {
+        let symbol = event.target.equitySymbol.value
+        let interval = event.target.interval.value
+        let timePeriod = event.target.highEMAInterval.value
 
         let emaHighEndpoint = "http://localhost:8000/chartdata/ema?symbol=" + symbol + "&interval=" + interval + "&time_period=" + timePeriod 
 
@@ -74,11 +78,11 @@ class ChartControls extends Component {
         return emaHigh
     }
 
-    macdHandler = async () => {
+    macdHandler = async event => {
         //IDEA: make emaLow = fast period and emaHigh = slow period and signalperiod 0(??)
 
-        let symbol = "ibm"
-        let interval = "daily"
+        let symbol = event.target.equitySymbol.value
+        let interval = event.target.interval.value
 
         let macdEndpoint = "http://localhost:8000/chartdata/macd?symbol=" + symbol + "&interval=" + interval
 
@@ -95,10 +99,10 @@ class ChartControls extends Component {
         return macd
     }
 
-    priceHandler = async () => {
+    priceHandler = async event => {
         // IDEA: add weekly stock prices
 
-        let symbol = "ibm"
+        let symbol = event.target.equitySymbol.value
 
         let priceEndpoint = "http://localhost:8000/chartdata?symbol=" + symbol
 
@@ -119,8 +123,9 @@ class ChartControls extends Component {
 
         const symbolResults = this.state.companyResults.map(element => {
             return <div>
-                    <h3>{element.name}</h3>
-                    <button type='submit' onClick={this.fullChartDatahandler()}>Get chart data for this company</button>                       
+                    <h3>{element["1. symbol"]}</h3>
+                    <p>{element["2. name"]}</p>
+                    <button type='submit' onClick={this.fullChartDatahandler}>Get chart data for this company</button>                       
                 </div>
         })
 
@@ -129,11 +134,11 @@ class ChartControls extends Component {
                 initialValues={{tickerSymbol: ""}}
                 validationSchema={Yup.object({tickerSymbol: Yup.string().required('Required')})}
                 onSubmit={() => {
-                    this.fullChartDatahandler()
+                    this.tickerSearchHandler()
                 }}
             >
-                <Form>
-                    <label htmlFor="tickerSymbol">Search for a Ticker Symbol</label>
+                <Form onSubmit={this.tickerSearchHandler}>
+                    <label>Search for a Ticker Symbol</label>
                     <Field name="tickerSymbol" type="text" />
                     <ErrorMessage name="tickerSymbol" />
                     <button type="submit">Search</button>
@@ -142,7 +147,7 @@ class ChartControls extends Component {
 
         const formCustom = 
             <Formik
-                initialValues={{equitySymbol: "", lowEMAInterval: "", highEMAInterval: "", MACD: true}}
+                initialValues={{equitySymbol: "", lowEMAInterval: "", highEMAInterval: "", MACD: true, interval: ""}}
                 validationSchema={Yup.object(
                     {
                         equitySymbol: Yup.string().required('Required'), 
@@ -150,24 +155,31 @@ class ChartControls extends Component {
                         highEMAInterval: Yup.number().max(500, "no values over 500").min(5, "No values less than 5")
                     })}
                 onSubmit={() => {
-                    this.onChartSubmithandler()
+                    this.fullChartDataHandler()
                 }}
             >
-                <Form>
+                <Form onSubmit={this.fullChartDataHandler}>
                     <label htmlFor="equitySymbol">Already know the symbol? </label>
                     <Field name="equitySymbol" type="text" />
                     <ErrorMessage name="equitySymbol" />
 
                     <label htmlFor="lowEMAInterval">Enter the shorter EMA interval: </label>
-                    <Field name="lowEMAInterval" type="text" />
+                    <Field name="lowEMAInterval" type="number" />
                     <ErrorMessage name="lowEMAInterval" />
 
                     <label htmlFor="highEMAInterval">Enter the longer EMA interval: </label>
-                    <Field name="highEMAInterval" type="text" />
+                    <Field name="highEMAInterval" type="number" />
                     <ErrorMessage name="highEMAInterval" />
 
                     <label htmlFor="MACD">MACD:</label>
                     <Field name="MACD" type="checkbox" />
+
+                    <label>Interval Period</label>
+                    <Field name="interval" as="select">
+                        <option value=""></option>
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                    </Field>
     
                     <button type="submit">Search</button>
                 </Form>
@@ -176,12 +188,10 @@ class ChartControls extends Component {
         return (
             <div>
                 {formSymbol}
+                {this.state.companyResults ? symbolResults : null}
                 <br></br>
                 {formCustom}
-                {symbolResults}
             </div>
-
-            // <p>Hello World!</p>
         )
     }
 }
