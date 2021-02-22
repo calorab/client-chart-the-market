@@ -13,9 +13,14 @@ class ChartControls extends Component {
         macd: [],
         equityPrices: []
     }   
+
+    clearSearchHandler = () => (
+        this.setState({companyResults: []})
+    )
     
     fullChartDataHandler = async event => {
         event.preventDefault()
+        console.log()
         // this.setState({submitting: true, companyResults: []})
         // const [emaLow, emaHigh, macd, priceData] = await Promise.all([this.emaLowHandler(), this.emaHighHandler(), this.macdHandler(), this.priceHandler()])
         // console.log("SUCCESS!!! state: ", this.state)
@@ -195,6 +200,7 @@ class ChartControls extends Component {
         return (
             <div>
                 {formSymbol}
+                <button type="submit" onClick={this.clearSearchHandler}>Reset</button>
                 {this.state.companyResults ? symbolResults : null}
                 <br></br>
                 {formCustom}
