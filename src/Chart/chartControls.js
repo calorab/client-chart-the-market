@@ -15,14 +15,17 @@ class ChartControls extends Component {
     }   
     
     fullChartDataHandler = async event => {
-        this.setState({submitting: true, companyResults: []})
-        const [emaLow, emaHigh, macd, priceData] = await Promise.all([this.emaLowHandler(), this.emaHighHandler(), this.macdHandler(), this.priceHandler()])
-        console.log("SUCCESS!!! state: ", this.state)
+        event.preventDefault()
+        // this.setState({submitting: true, companyResults: []})
+        // const [emaLow, emaHigh, macd, priceData] = await Promise.all([this.emaLowHandler(), this.emaHighHandler(), this.macdHandler(), this.priceHandler()])
+        // console.log("SUCCESS!!! state: ", this.state)
 
-        this.setState({submitting: false})
+        // this.setState({submitting: false})
     }
 
     tickerSearchHandler = async event => {
+        event.preventDefault()
+        console.log("hi")
         this.setState({submitting: true})
         console.log("Event: ", event, "Event.target.tickerSymbol", event.target.tickerSymbol)
         let keyword = event.target.tickerSymbol.value;
@@ -40,7 +43,9 @@ class ChartControls extends Component {
     }
 
     emaLowHandler = async event => {
-        let symbol = event.target.equitySymbol.value
+        event.preventDefault()
+        let symbol = event.equitySymbol.value
+        console.log(symbol)
         let interval = event.target.interval.value
         let timePeriod = event.target.lowEMAInterval.value
 
@@ -59,6 +64,7 @@ class ChartControls extends Component {
     }
 
     emaHighHandler = async event => {
+        event.preventDefault()
         let symbol = event.target.equitySymbol.value
         let interval = event.target.interval.value
         let timePeriod = event.target.highEMAInterval.value
@@ -79,6 +85,7 @@ class ChartControls extends Component {
     }
 
     macdHandler = async event => {
+        event.preventDefault()
         //IDEA: make emaLow = fast period and emaHigh = slow period and signalperiod 0(??)
 
         let symbol = event.target.equitySymbol.value
@@ -100,6 +107,7 @@ class ChartControls extends Component {
     }
 
     priceHandler = async event => {
+        event.preventDefault()
         // IDEA: add weekly stock prices
 
         let symbol = event.target.equitySymbol.value
@@ -122,7 +130,7 @@ class ChartControls extends Component {
     render() {
 
         const symbolResults = this.state.companyResults.map(element => {
-            return <div>
+            return <div key={element["1. symbol"]}>
                     <h3>{element["1. symbol"]}</h3>
                     <p>{element["2. name"]}</p>
                     <button type='submit' onClick={this.fullChartDatahandler}>Get chart data for this company</button>                       
@@ -176,7 +184,6 @@ class ChartControls extends Component {
 
                     <label>Interval Period</label>
                     <Field name="interval" as="select">
-                        <option value=""></option>
                         <option value="daily">Daily</option>
                         <option value="weekly">Weekly</option>
                     </Field>
