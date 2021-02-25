@@ -5,7 +5,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-// !! ------ Alpha Vantage API key: 5P5SO06XDJ9E5Y6P ------ !!
+
 
 ReactDOM.render(
   <BrowserRouter>
