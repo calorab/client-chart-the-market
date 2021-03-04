@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Formik, Field, Form, ErrorMessage} from 'formik'
 import * as Yup from 'yup';
-import {AnyChart} from 'anychart-react'
+import AnyChart from 'anychart-react'
 import anychart from 'anychart'
 
 class ChartMain extends Component {
@@ -48,24 +48,23 @@ class ChartMain extends Component {
     //     this.setState({submitting: false})
     // }
 
-    // tickerSearchHandler = async event => {
-    //     event.preventDefault()
-    //     console.log("hi")
-    //     this.setState({submitting: true})
-    //     console.log("Event: ", event, "Event.target.tickerSymbol", event.target.tickerSymbol)
-    //     let keyword = event.target.tickerSymbol.value;
-    //     let apiEndpoint = "http://localhost:8000/symbol/stocksymbol?keyword=" + keyword
+    tickerSearchHandler = async event => {
+        event.preventDefault()
 
-    //     let response = await fetch(apiEndpoint, {
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     })
-    //     const matches = await response.json();
-    //     console.log("Response: ", matches.bestMatches) 
-    //     this.setState({companyResults: matches.bestMatches, submitting: false})
-    //     console.log('State: ', this.state.companyResults)
-    // }
+        this.setState({submitting: true})
+        console.log("Event: ", event, "Event.target.tickerSymbol", event.target.tickerSymbol)
+        let keyword = event.target.tickerSymbol.value;
+        let apiEndpoint = "http://localhost:8000/symbol/stocksymbol?keyword=" + keyword
+
+        let response = await fetch(apiEndpoint, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const matches = await response.json();
+
+        this.setState({companyResults: matches.bestMatches, submitting: false})
+    }
 
     // emaLowHandler = async (symbol, interval, EMALow) => {
         
@@ -119,6 +118,8 @@ class ChartMain extends Component {
     // }
 
     priceHandler = async event => {
+        event.preventDefault();
+
         // IDEA: add weekly stock prices
         let symbol = event.target.equitySymbol.value
         let EMALow = event.target.lowEMAInterval.value
@@ -134,7 +135,14 @@ class ChartMain extends Component {
 
         let priceData = await response.json()
         // console.log("Price Data: ", priceData["Meta Data"]["2. Symbol"]) 
-        this.setState({equityPrices: priceData["Time Series (Daily)"], ticker: priceData["Meta Data"]["2. Symbol"], emaLow: EMALow, emaHigh: EMAHigh, showChart: true})
+        this.setState({
+            equityPrices: priceData["Time Series (Daily)"], 
+            ticker: priceData["Meta Data"]["2. Symbol"], 
+            emaLow: EMALow, 
+            emaHigh: EMAHigh, 
+            showChart: true
+        })
+
         console.log("Ticker: ", this.state.ticker, "PRICE: ", this.state.equityPrices)
         return 
     }
@@ -145,7 +153,7 @@ class ChartMain extends Component {
             return <div key={element["1. symbol"]}>
                     <h3>{element["1. symbol"]}</h3>
                     <p>{element["2. name"]}</p>
-                    {/* <button type='submit' onClick={this.fullChartDatahandler}>Get chart data for this company</button>                        */}
+                    {/* <button type='submit' onClick={this.fullChartDatahandler}>Get chart data for this company</button>                   */}
                 </div>
         })
 
@@ -167,12 +175,12 @@ class ChartMain extends Component {
 
         const formCustom = 
             <Formik
-                initialValues={{equitySymbol: "", lowEMAInterval: "", highEMAInterval: "", MACD: true, interval: "daily"}}
+                initialValues={{equitySymbol: "", lowEMAInterval: 0, highEMAInterval: 0, interval: "daily"}}
                 validationSchema={Yup.object(
                     {
                         equitySymbol: Yup.string().required('Required'), 
-                        lowEMAInterval: Yup.number().max(500, "No values over 500").min(5, "No values less than 5"), 
-                        highEMAInterval: Yup.number().max(500, "no values over 500").min(5, "No values less than 5")
+                        lowEMAInterval: Yup.number().max(500, "No values over 500").min(5, "No values less than 5"),
+                        highEMAInterval: Yup.number().max(500, "No values over 500").min(5, "No values less than 5"),
                     })}
                 onSubmit={() => {
                     this.priceHandler()
@@ -191,9 +199,6 @@ class ChartMain extends Component {
                     <Field name="highEMAInterval" type="number" />
                     <ErrorMessage name="highEMAInterval" />
 
-                    <label htmlFor="MACD">MACD:</label>
-                    <Field name="MACD" type="checkbox" />
-
                     <label>Interval Period</label>
                     <Field name="interval" as="select">
                         <option value="daily">Daily</option>
@@ -208,14 +213,17 @@ class ChartMain extends Component {
             let mainChartTable = anychart.data.table();
             mainChartTable.addData(this.state.equityPrices);
 
-            let priceMapping = mainChartTable.mapAs({open: , High: , Low: , close: ,}) // HOW-TO for Objects - HEREEEEEEEEEEEE
+            let priceMapping = mainChartTable.mapAs({value: '5. adjusted close'}) 
 
             let chart = anychart.stock();
 
             let mainChart = chart.plot(0);
-            mainChart.candlestick(priceMapping).name(this.state.ticker);
+            mainChart.area(priceMapping).name(this.state.ticker);
 
-            // let macdPlot = chart.plot(1);
+            let macdPlot = chart.plot(1);
+            let macdIndicator = macdPlot.macd(priceMapping)
+            let macdSeries = macdIndicator.macdSeries()
+            macdSeries.stroke('#F44336')
             // macdPlot.splineArea(orclDataTable.mapAs({'value': 4})).fill('#1976d2 0.65').stroke('1.5 #1976d2').name('ORCL');
 
                     // ------- Scroller is for sliding date range - see chart here: https://www.anychart.com/technical-integrations/samples/react-charts/#examples
