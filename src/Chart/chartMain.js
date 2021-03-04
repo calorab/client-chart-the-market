@@ -12,7 +12,8 @@ class ChartMain extends Component {
         companyResults: [],
         emaLow: 0,
         emaHigh: 0,
-        equityPrices: []
+        equityPrices: [],
+        showChart: false
     }   
 
     clearSearchHandler = () => {
@@ -20,10 +21,10 @@ class ChartMain extends Component {
             ticker: "", 
             submitting: false, 
             companyResults: [],
-            emaLow: [],
-            emaHigh: [],
-            macd: [],
-            equityPrices: []
+            emaLow: 0,
+            emaHigh: 0,
+            equityPrices: [],
+            showChart: false
         })
     }
     
@@ -133,7 +134,7 @@ class ChartMain extends Component {
 
         let priceData = await response.json()
         // console.log("Price Data: ", priceData["Meta Data"]["2. Symbol"]) 
-        this.setState({equityPrices: priceData["Time Series (Daily)"], ticker: priceData["Meta Data"]["2. Symbol"], emaLow: EMALow, emaHigh: EMAHigh})
+        this.setState({equityPrices: priceData["Time Series (Daily)"], ticker: priceData["Meta Data"]["2. Symbol"], emaLow: EMALow, emaHigh: EMAHigh, showChart: true})
         console.log("Ticker: ", this.state.ticker, "PRICE: ", this.state.equityPrices)
         return 
     }
@@ -203,39 +204,19 @@ class ChartMain extends Component {
                 </Form>
             </Formik>;
 
-                     // ------- Below table data is defined with methods from AC -------
 
-            // let msftDataTable = anychart.data.table();
-            // msftDataTable.addData(window.get_msft_daily_short_data());
+            let mainChartTable = anychart.data.table();
+            mainChartTable.addData(this.state.equityPrices);
 
-            // let orclDataTable = anychart.data.table();
-            // orclDataTable.addData(window.get_orcl_daily_short_data());
-
-            // let cscoDataTable = anychart.data.table();
-            // cscoDataTable.addData(window.get_csco_daily_short_data());
-
-            // let ibmDataTable = anychart.data.table();
-            // ibmDataTable.addData(window.get_ibm_daily_short_data());
-               
-                    // ------- chart initialized -------
+            let priceMapping = mainChartTable.mapAs({open: , High: , Low: , close: ,}) // HOW-TO for Objects - HEREEEEEEEEEEEE
 
             let chart = anychart.stock();
 
-                    // ------- Below the charts are initialized and data from above is imported. chart.plot([index]) displays chart (I assume) in order -------
-
             let mainChart = chart.plot(0);
-            // mainChart.candlestick(msftDataTable.mapAs({'value': 4})).name('MSFT');
+            mainChart.candlestick(priceMapping).name(this.state.ticker);
 
-            // let secondPlot = chart.plot(1);
-            // secondPlot.splineArea(orclDataTable.mapAs({'value': 4})).fill('#1976d2 0.65').stroke('1.5 #1976d2').name('ORCL');
-
-            // let thirdPlot = chart.plot(2);
-            // thirdPlot.stepArea(cscoDataTable.mapAs({'value': 4})).fill('#ef6c00 0.65').stroke('1.5 #ef6c00').name('CSCO');
-
-            // let forthPlot = chart.plot(3);
-            // forthPlot.line(msftDataTable.mapAs({'value': 4})).name('MSFT').tooltip(null);
-            // forthPlot.spline(orclDataTable.mapAs({'value': 4})).name('ORCL').tooltip(null);
-            // forthPlot.stepLine(cscoDataTable.mapAs({'value': 4})).name('CSCO').tooltip(null);
+            // let macdPlot = chart.plot(1);
+            // macdPlot.splineArea(orclDataTable.mapAs({'value': 4})).fill('#1976d2 0.65').stroke('1.5 #1976d2').name('ORCL');
 
                     // ------- Scroller is for sliding date range - see chart here: https://www.anychart.com/technical-integrations/samples/react-charts/#examples
 
