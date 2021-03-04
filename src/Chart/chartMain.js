@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {Formik, Field, Form, ErrorMessage} from 'formik'
 import * as Yup from 'yup';
-import Anychart from 'anychart-react.min.js'
-import anychart from 'anychart-react'
+import {AnyChart} from 'anychart-react'
+import anychart from 'anychart'
 
 class ChartMain extends Component {
 
@@ -10,9 +10,8 @@ class ChartMain extends Component {
         ticker: "",
         submitting: false,
         companyResults: [],
-        emaLow: [],
-        emaHigh: [],
-        macd: [],
+        emaLow: 0,
+        emaHigh: 0,
         equityPrices: []
     }   
 
@@ -28,98 +27,101 @@ class ChartMain extends Component {
         })
     }
     
-    fullChartDataHandler = async event => {
-        event.preventDefault()
-        console.log("State before search: ", this.state)
+    // fullChartDataHandler = async event => {
+    //     event.preventDefault()
+    //     console.log("State before search: ", this.state)
+    //     let symbol = event.target.equitySymbol.value
+    //     let interval = event.target.interval.value
+    //     let EMALow = event.target.lowEMAInterval.value
+    //     let EMAHigh = event.target.highEMAInterval.value
+        
+    //     this.setState({submitting: true, companyResults: []})
+    //     const [emaLow, emaHigh, macd, priceData] = await Promise.all([
+    //         this.emaLowHandler(symbol, interval, EMALow), 
+    //         this.emaHighHandler(symbol, interval, EMAHigh), 
+    //         this.macdHandler(symbol, interval), 
+    //         this.priceHandler(symbol)
+    //     ])
+    //     console.log("SUCCESS!!! state: ", this.state)
+
+    //     this.setState({submitting: false})
+    // }
+
+    // tickerSearchHandler = async event => {
+    //     event.preventDefault()
+    //     console.log("hi")
+    //     this.setState({submitting: true})
+    //     console.log("Event: ", event, "Event.target.tickerSymbol", event.target.tickerSymbol)
+    //     let keyword = event.target.tickerSymbol.value;
+    //     let apiEndpoint = "http://localhost:8000/symbol/stocksymbol?keyword=" + keyword
+
+    //     let response = await fetch(apiEndpoint, {
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         }
+    //     })
+    //     const matches = await response.json();
+    //     console.log("Response: ", matches.bestMatches) 
+    //     this.setState({companyResults: matches.bestMatches, submitting: false})
+    //     console.log('State: ', this.state.companyResults)
+    // }
+
+    // emaLowHandler = async (symbol, interval, EMALow) => {
+        
+    //     let emaLowEndpoint = "http://localhost:8000/chartdata/ema?symbol=" + symbol + "&interval=" + interval + "&time_period=" + EMALow 
+
+    //     let response = await fetch(emaLowEndpoint, {
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         }
+    //     })
+
+    //     let emaLow = await response.json()
+    //     // console.log("emaLow: ", emaLow["Technical Analysis: EMA"]) 
+    //     this.setState({emaLow: emaLow["Technical Analysis: EMA"]})
+    //     return emaLow
+    // }
+
+    // emaHighHandler = async (symbol, interval, EMAHigh) => {
+
+    //     let emaHighEndpoint = "http://localhost:8000/chartdata/ema?symbol=" + symbol + "&interval=" + interval + "&time_period=" + EMAHigh 
+
+    //     let response = await fetch(emaHighEndpoint, {
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         }
+    //     })
+
+    //     let emaHigh = await response.json()
+    //     // console.log("emaHigh: ", emaHigh["Technical Analysis: EMA"]) 
+    //     this.setState({emaHigh: emaHigh["Technical Analysis: EMA"]})
+    //     // console.log("EMA: ", this.state.emaHigh)
+    //     return emaHigh
+    // }
+
+    // macdHandler = async (symbol, interval) => {
+    //     //IDEA: make emaLow = fast period and emaHigh = slow period and signalperiod 0(??)
+
+    //     let macdEndpoint = "http://localhost:8000/chartdata/macd?symbol=" + symbol + "&interval=" + interval
+
+    //     let response = await fetch(macdEndpoint, {
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         }
+    //     })
+
+    //     let macd = await response.json()
+    //     // console.log("MACD: ", macd["Technical Analysis: MACD"])
+    //     this.setState({macd: macd["Technical Analysis: MACD"]})
+    //     // console.log("macd Data: ", this.state.macd)
+    //     return macd
+    // }
+
+    priceHandler = async event => {
+        // IDEA: add weekly stock prices
         let symbol = event.target.equitySymbol.value
-        let interval = event.target.interval.value
         let EMALow = event.target.lowEMAInterval.value
         let EMAHigh = event.target.highEMAInterval.value
-        
-        this.setState({submitting: true, companyResults: []})
-        const [emaLow, emaHigh, macd, priceData] = await Promise.all([
-            this.emaLowHandler(symbol, interval, EMALow), 
-            this.emaHighHandler(symbol, interval, EMAHigh), 
-            this.macdHandler(symbol, interval), 
-            this.priceHandler(symbol)
-        ])
-        console.log("SUCCESS!!! state: ", this.state)
-
-        this.setState({submitting: false})
-    }
-
-    tickerSearchHandler = async event => {
-        event.preventDefault()
-        console.log("hi")
-        this.setState({submitting: true})
-        console.log("Event: ", event, "Event.target.tickerSymbol", event.target.tickerSymbol)
-        let keyword = event.target.tickerSymbol.value;
-        let apiEndpoint = "http://localhost:8000/symbol/stocksymbol?keyword=" + keyword
-
-        let response = await fetch(apiEndpoint, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        const matches = await response.json();
-        console.log("Response: ", matches.bestMatches) 
-        this.setState({companyResults: matches.bestMatches, submitting: false})
-        console.log('State: ', this.state.companyResults)
-    }
-
-    emaLowHandler = async (symbol, interval, EMALow) => {
-        
-        let emaLowEndpoint = "http://localhost:8000/chartdata/ema?symbol=" + symbol + "&interval=" + interval + "&time_period=" + EMALow 
-
-        let response = await fetch(emaLowEndpoint, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-
-        let emaLow = await response.json()
-        // console.log("emaLow: ", emaLow["Technical Analysis: EMA"]) 
-        this.setState({emaLow: emaLow["Technical Analysis: EMA"]})
-        return emaLow
-    }
-
-    emaHighHandler = async (symbol, interval, EMAHigh) => {
-
-        let emaHighEndpoint = "http://localhost:8000/chartdata/ema?symbol=" + symbol + "&interval=" + interval + "&time_period=" + EMAHigh 
-
-        let response = await fetch(emaHighEndpoint, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-
-        let emaHigh = await response.json()
-        // console.log("emaHigh: ", emaHigh["Technical Analysis: EMA"]) 
-        this.setState({emaHigh: emaHigh["Technical Analysis: EMA"]})
-        // console.log("EMA: ", this.state.emaHigh)
-        return emaHigh
-    }
-
-    macdHandler = async (symbol, interval) => {
-        //IDEA: make emaLow = fast period and emaHigh = slow period and signalperiod 0(??)
-
-        let macdEndpoint = "http://localhost:8000/chartdata/macd?symbol=" + symbol + "&interval=" + interval
-
-        let response = await fetch(macdEndpoint, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-
-        let macd = await response.json()
-        // console.log("MACD: ", macd["Technical Analysis: MACD"])
-        this.setState({macd: macd["Technical Analysis: MACD"]})
-        // console.log("macd Data: ", this.state.macd)
-        return macd
-    }
-
-    priceHandler = async symbol => {
-        // IDEA: add weekly stock prices
 
         let priceEndpoint = "http://localhost:8000/chartdata?symbol=" + symbol
 
@@ -131,9 +133,9 @@ class ChartMain extends Component {
 
         let priceData = await response.json()
         // console.log("Price Data: ", priceData["Meta Data"]["2. Symbol"]) 
-        this.setState({equityPrices: priceData["Time Series (Daily)"], ticker: priceData["Meta Data"]["2. Symbol"]})
-        // console.log("Ticker: ", this.state.ticker, "price: ", this.state.equityPrices)
-        return priceData
+        this.setState({equityPrices: priceData["Time Series (Daily)"], ticker: priceData["Meta Data"]["2. Symbol"], emaLow: EMALow, emaHigh: EMAHigh})
+        console.log("Ticker: ", this.state.ticker, "PRICE: ", this.state.equityPrices)
+        return 
     }
 
     render() {
@@ -172,10 +174,10 @@ class ChartMain extends Component {
                         highEMAInterval: Yup.number().max(500, "no values over 500").min(5, "No values less than 5")
                     })}
                 onSubmit={() => {
-                    this.fullChartDataHandler()
+                    this.priceHandler()
                 }}
             >
-                <Form onSubmit={this.fullChartDataHandler}>
+                <Form onSubmit={this.priceHandler}>
                     <label htmlFor="equitySymbol">Already know the symbol? </label>
                     <Field name="equitySymbol" type="text" />
                     <ErrorMessage name="equitySymbol" />
@@ -201,26 +203,42 @@ class ChartMain extends Component {
                 </Form>
             </Formik>;
 
+                     // ------- Below table data is defined with methods from AC -------
 
             // let msftDataTable = anychart.data.table();
             // msftDataTable.addData(window.get_msft_daily_short_data());
+
             // let orclDataTable = anychart.data.table();
             // orclDataTable.addData(window.get_orcl_daily_short_data());
+
             // let cscoDataTable = anychart.data.table();
             // cscoDataTable.addData(window.get_csco_daily_short_data());
+
             // let ibmDataTable = anychart.data.table();
             // ibmDataTable.addData(window.get_ibm_daily_short_data());
-            // let chart = anychart.stock();
-            // let firstPlot = chart.plot(0);
-            // firstPlot.area(msftDataTable.mapAs({'value': 4})).name('MSFT');
+               
+                    // ------- chart initialized -------
+
+            let chart = anychart.stock();
+
+                    // ------- Below the charts are initialized and data from above is imported. chart.plot([index]) displays chart (I assume) in order -------
+
+            let mainChart = chart.plot(0);
+            // mainChart.candlestick(msftDataTable.mapAs({'value': 4})).name('MSFT');
+
             // let secondPlot = chart.plot(1);
             // secondPlot.splineArea(orclDataTable.mapAs({'value': 4})).fill('#1976d2 0.65').stroke('1.5 #1976d2').name('ORCL');
+
             // let thirdPlot = chart.plot(2);
             // thirdPlot.stepArea(cscoDataTable.mapAs({'value': 4})).fill('#ef6c00 0.65').stroke('1.5 #ef6c00').name('CSCO');
+
             // let forthPlot = chart.plot(3);
             // forthPlot.line(msftDataTable.mapAs({'value': 4})).name('MSFT').tooltip(null);
             // forthPlot.spline(orclDataTable.mapAs({'value': 4})).name('ORCL').tooltip(null);
             // forthPlot.stepLine(cscoDataTable.mapAs({'value': 4})).name('CSCO').tooltip(null);
+
+                    // ------- Scroller is for sliding date range - see chart here: https://www.anychart.com/technical-integrations/samples/react-charts/#examples
+
             // chart.scroller().area(msftDataTable.mapAs({'value': 4}));
             // chart.selectRange('2005-01-03', '2005-11-20');
         
@@ -235,18 +253,21 @@ class ChartMain extends Component {
 
         return (
             <div>
-            {/* <AnyChart
-                width={800}
-                height={600}
-                instance={chart}
-                title="Stock demo"
-            /> */}
                 {formSymbol}
                 <button type="submit" onClick={this.clearSearchHandler}>Reset</button>
                 {this.state.companyResults ? symbolResults : null}
                 <br></br>
                 {formCustom}
+                <br></br>
+                {this.state.showChart ? <div><AnyChart
+                width={800}
+                height={600}
+                instance={chart}
+                title={this.state.ticker}
+                /></div> : null}
             </div>
+            
+            
         )
     }
 }
