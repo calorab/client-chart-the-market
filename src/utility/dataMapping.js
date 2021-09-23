@@ -28,7 +28,7 @@ const dataMapping = data => {
 const parse = (array) => {
     let numArray = []
     for (let i=0; i<array.length; i++) {
-        let num = parseInt(array[i], 10);
+        let num = parseFloat(array[i]); // WTFUCK is toFixed not working here - either it comverts to float or fixes the length not both
         numArray.push(num);
     }
     return numArray;
