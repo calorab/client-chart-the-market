@@ -3,6 +3,7 @@ import {Formik, Field, Form, ErrorMessage} from 'formik'
 import * as Yup from 'yup';
 import AnyChart from 'anychart-react'
 import anychart from 'anychart'
+import dataMapping from '../utility/dataMapping'
 
 class ChartMain extends Component {
 
@@ -12,7 +13,7 @@ class ChartMain extends Component {
         companyResults: [],
         emaLow: 0,
         emaHigh: 0,
-        equityPrices: [],
+        equityPrices: {},
         showChart: false
     }   
 
@@ -52,7 +53,7 @@ class ChartMain extends Component {
         event.preventDefault()
 
         this.setState({submitting: true})
-        console.log("Event: ", event, "Event.target.tickerSymbol", event.target.tickerSymbol)
+        // console.log("Event: ", event, "Event.target.tickerSymbol", event.target.tickerSymbol)
         let keyword = event.target.tickerSymbol.value;
         let apiEndpoint = "http://localhost:8000/symbol/stocksymbol?keyword=" + keyword
 
@@ -133,18 +134,21 @@ class ChartMain extends Component {
             }
         })
 
-        let priceData = await response.json()
-        // console.log("Price Data: ", priceData["Meta Data"]["2. Symbol"]) 
+        let fullData = await response.json()
+        let priceData = fullData["Time Series (Daily)"];
+        
+        const {timeline, numPrices} = dataMapping(priceData);
+
         this.setState({
-            equityPrices: priceData["Time Series (Daily)"], 
-            ticker: priceData["Meta Data"]["2. Symbol"], 
+            equityPrices: numPrices,
+            equityTimeline: timeline, 
+            ticker: fullData["Meta Data"]["2. Symbol"], 
             emaLow: EMALow, 
             emaHigh: EMAHigh, 
             showChart: true
         })
-
-        console.log("Ticker: ", this.state.ticker, "PRICE: ", this.state.equityPrices)
-        return 
+        console.log("equityTimeline: ", this.state.equityTimeline, "prices: ", this.state.equityPrices);
+        return;
     }
 
     render() {
@@ -153,7 +157,7 @@ class ChartMain extends Component {
             return <div key={element["1. symbol"]}>
                     <h3>{element["1. symbol"]}</h3>
                     <p>{element["2. name"]}</p>
-                    {/* <button type='submit' onClick={this.fullChartDatahandler}>Get chart data for this company</button>                   */}
+                    {/* <button type='submit' onClick={this.fullChartDatahandler}>Get chart data for this company</button> */}
                 </div>
         })
 
@@ -210,20 +214,20 @@ class ChartMain extends Component {
             </Formik>;
 
 
-            let mainChartTable = anychart.data.table();
-            mainChartTable.addData(this.state.equityPrices);
-
-            let priceMapping = mainChartTable.mapAs({value: '5. adjusted close'}) 
-
+            let mainChartTable = anychart.data.table(0);
+            // mainChartTable.addData(this.state.equityPrices);
+            // // console.log(mainChartTable.data)
+            // let priceMapping = mainChartTable.mapAs() 
+            
             let chart = anychart.stock();
 
-            let mainChart = chart.plot(0);
-            mainChart.area(priceMapping).name(this.state.ticker);
+            // let mainChart = chart.plot(0);
+            // mainChart.area(priceMapping).name(this.state.ticker);
 
-            let macdPlot = chart.plot(1);
-            let macdIndicator = macdPlot.macd(priceMapping)
-            let macdSeries = macdIndicator.macdSeries()
-            macdSeries.stroke('#F44336')
+            // let macdPlot = chart.plot(1);
+            // let macdIndicator = macdPlot.macd(priceMapping)
+            // let macdSeries = macdIndicator.macdSeries()
+            // macdSeries.stroke('#F44336')
             // macdPlot.splineArea(orclDataTable.mapAs({'value': 4})).fill('#1976d2 0.65').stroke('1.5 #1976d2').name('ORCL');
 
                     // ------- Scroller is for sliding date range - see chart here: https://www.anychart.com/technical-integrations/samples/react-charts/#examples
