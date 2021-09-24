@@ -13,7 +13,7 @@ class ChartMain extends Component {
         companyResults: [],
         emaLow: 0,
         emaHigh: 0,
-        equityPrices: {},
+        equityTable: [],
         showChart: false
     }   
 
@@ -28,26 +28,6 @@ class ChartMain extends Component {
             showChart: false
         })
     }
-    
-    // fullChartDataHandler = async event => {
-    //     event.preventDefault()
-    //     console.log("State before search: ", this.state)
-    //     let symbol = event.target.equitySymbol.value
-    //     let interval = event.target.interval.value
-    //     let EMALow = event.target.lowEMAInterval.value
-    //     let EMAHigh = event.target.highEMAInterval.value
-        
-    //     this.setState({submitting: true, companyResults: []})
-    //     const [emaLow, emaHigh, macd, priceData] = await Promise.all([
-    //         this.emaLowHandler(symbol, interval, EMALow), 
-    //         this.emaHighHandler(symbol, interval, EMAHigh), 
-    //         this.macdHandler(symbol, interval), 
-    //         this.priceHandler(symbol)
-    //     ])
-    //     console.log("SUCCESS!!! state: ", this.state)
-
-    //     this.setState({submitting: false})
-    // }
 
     tickerSearchHandler = async event => {
         event.preventDefault()
@@ -67,61 +47,9 @@ class ChartMain extends Component {
         this.setState({companyResults: matches.bestMatches, submitting: false})
     }
 
-    // emaLowHandler = async (symbol, interval, EMALow) => {
-        
-    //     let emaLowEndpoint = "http://localhost:8000/chartdata/ema?symbol=" + symbol + "&interval=" + interval + "&time_period=" + EMALow 
-
-    //     let response = await fetch(emaLowEndpoint, {
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     })
-
-    //     let emaLow = await response.json()
-    //     // console.log("emaLow: ", emaLow["Technical Analysis: EMA"]) 
-    //     this.setState({emaLow: emaLow["Technical Analysis: EMA"]})
-    //     return emaLow
-    // }
-
-    // emaHighHandler = async (symbol, interval, EMAHigh) => {
-
-    //     let emaHighEndpoint = "http://localhost:8000/chartdata/ema?symbol=" + symbol + "&interval=" + interval + "&time_period=" + EMAHigh 
-
-    //     let response = await fetch(emaHighEndpoint, {
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     })
-
-    //     let emaHigh = await response.json()
-    //     // console.log("emaHigh: ", emaHigh["Technical Analysis: EMA"]) 
-    //     this.setState({emaHigh: emaHigh["Technical Analysis: EMA"]})
-    //     // console.log("EMA: ", this.state.emaHigh)
-    //     return emaHigh
-    // }
-
-    // macdHandler = async (symbol, interval) => {
-    //     //IDEA: make emaLow = fast period and emaHigh = slow period and signalperiod 0(??)
-
-    //     let macdEndpoint = "http://localhost:8000/chartdata/macd?symbol=" + symbol + "&interval=" + interval
-
-    //     let response = await fetch(macdEndpoint, {
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     })
-
-    //     let macd = await response.json()
-    //     // console.log("MACD: ", macd["Technical Analysis: MACD"])
-    //     this.setState({macd: macd["Technical Analysis: MACD"]})
-    //     // console.log("macd Data: ", this.state.macd)
-    //     return macd
-    // }
-
     priceHandler = async event => {
         event.preventDefault();
 
-        // IDEA: add weekly stock prices
         let symbol = event.target.equitySymbol.value
         let EMALow = event.target.lowEMAInterval.value
         let EMAHigh = event.target.highEMAInterval.value
@@ -157,7 +85,7 @@ class ChartMain extends Component {
                     <h3>{element["1. symbol"]}</h3>
                     <p>{element["2. name"]}</p>
                     {/* <button type='submit' onClick={this.fullChartDatahandler}>Get chart data for this company</button> */}
-                </div>
+            </div>
         })
 
         const formSymbol = 
@@ -178,7 +106,7 @@ class ChartMain extends Component {
 
         const formCustom = 
             <Formik
-                initialValues={{equitySymbol: "", lowEMAInterval: 0, highEMAInterval: 0, interval: "daily"}}
+                initialValues={{equitySymbol: "", lowEMAInterval: 10, highEMAInterval: 20, interval: "daily"}}
                 validationSchema={Yup.object(
                     {
                         equitySymbol: Yup.string().required('Required'), 
@@ -213,30 +141,23 @@ class ChartMain extends Component {
             </Formik>;
 
                 // create table
-                let dataTable = anychart.data.table('date'); // possible issue
+                let dataTable = anychart.data.table('date');
                 // add data
                 dataTable.addData(this.state.equityTable);
                 // mapAs
-                let mapping = dataTable.mapAs({x: 'date', value: 'price'}); // assignment??
+                let mapping = dataTable.mapAs({x: 'date', value: 'price'});
                 // create chart
                 let chart = anychart.stock();
                 // add series
                 let series = chart.plot(0).column(mapping);
+                // --- technical indicators ---
+                chart.plot(0).ema(mapping, this.state.emaLow, "line");
+                chart.plot(0).ema(mapping, this.state.emaHigh, "line");
+                chart.plot(1).macd(mapping); // need to change height to be smaller - 50% probs.
+                // ----- end technical indicators ---
                 series.name(`${this.state.ticker}`);
                 chart.draw();
             
-
-
-            // let macdPlot = chart.plot(1);
-            // let macdIndicator = macdPlot.macd(datesMapping)
-            // let macdSeries = macdIndicator.macdSeries()
-            // macdSeries.stroke('#F44336')
-            // macdPlot.splineArea(orclDataTable.mapAs({'value': 4})).fill('#1976d2 0.65').stroke('1.5 #1976d2').name('ORCL');
-
-                    // ------- Scroller is for sliding date range - see chart here: https://www.anychart.com/technical-integrations/samples/react-charts/#examples
-
-            // chart.scroller().area(msftDataTable.mapAs({'value': 4}));
-            // chart.selectRange('2005-01-03', '2005-11-20');
         
             // {/* ChartWindow component needed for the graph? 
             //     anyChart links for later:
