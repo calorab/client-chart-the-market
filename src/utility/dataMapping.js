@@ -1,4 +1,4 @@
-import { object } from "yup/lib/locale"
+// import { object } from "yup/lib/locale"
 
 const dataMapping = data => {
 
@@ -14,24 +14,13 @@ const dataMapping = data => {
             throw new Error("Dates should not be equal to each other")
         }
     })
-    const timeline = sortedArray.map((keyValuePair) => {
-        return keyValuePair[0];
+
+    const dataTable = sortedArray.map((keyValuePair) => {
+        let numPrice = parseFloat(keyValuePair[1]["5. adjusted close"]);
+        return {'date': keyValuePair[0], 'price': numPrice};
     })
-    const prices = sortedArray.map(keyValuePair2 => {
-        return keyValuePair2[1]["5. adjusted close"];
-    })
-    let numPrices = parse(prices);
-    return {timeline, numPrices};
+    
+    return dataTable;
 }
-
-
-const parse = (array) => {
-    let numArray = []
-    for (let i=0; i<array.length; i++) {
-        let num = parseFloat(array[i]); // WTFUCK is toFixed not working here - either it comverts to float or fixes the length not both
-        numArray.push(num);
-    }
-    return numArray;
-};
 
 export default dataMapping;

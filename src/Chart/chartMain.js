@@ -24,7 +24,7 @@ class ChartMain extends Component {
             companyResults: [],
             emaLow: 0,
             emaHigh: 0,
-            equityPrices: [],
+            equityTable: [],
             showChart: false
         })
     }
@@ -137,17 +137,16 @@ class ChartMain extends Component {
         let fullData = await response.json()
         let priceData = fullData["Time Series (Daily)"];
         
-        const {timeline, numPrices} = dataMapping(priceData);
+        const dataTable = dataMapping(priceData);
 
         this.setState({
-            equityPrices: numPrices,
-            equityTimeline: timeline, 
+            equityTable: dataTable, 
             ticker: fullData["Meta Data"]["2. Symbol"], 
             emaLow: EMALow, 
             emaHigh: EMAHigh, 
             showChart: true
         })
-        console.log("equityTimeline: ", this.state.equityTimeline, "prices: ", this.state.equityPrices);
+
         return;
     }
 
@@ -213,19 +212,23 @@ class ChartMain extends Component {
                 </Form>
             </Formik>;
 
-
-            let mainChartTable = anychart.data.table(0);
-            // mainChartTable.addData(this.state.equityPrices);
-            // // console.log(mainChartTable.data)
-            // let priceMapping = mainChartTable.mapAs() 
+                // create table
+                let dataTable = anychart.data.table('date'); // possible issue
+                // add data
+                dataTable.addData(this.state.equityTable);
+                // mapAs
+                let mapping = dataTable.mapAs({x: 'date', value: 'price'}); // assignment??
+                // create chart
+                let chart = anychart.stock();
+                // add series
+                let series = chart.plot(0).column(mapping);
+                series.name(`${this.state.ticker}`);
+                chart.draw();
             
-            let chart = anychart.stock();
 
-            // let mainChart = chart.plot(0);
-            // mainChart.area(priceMapping).name(this.state.ticker);
 
             // let macdPlot = chart.plot(1);
-            // let macdIndicator = macdPlot.macd(priceMapping)
+            // let macdIndicator = macdPlot.macd(datesMapping)
             // let macdSeries = macdIndicator.macdSeries()
             // macdSeries.stroke('#F44336')
             // macdPlot.splineArea(orclDataTable.mapAs({'value': 4})).fill('#1976d2 0.65').stroke('1.5 #1976d2').name('ORCL');
@@ -256,7 +259,7 @@ class ChartMain extends Component {
                 width={800}
                 height={600}
                 instance={chart}
-                title={this.state.ticker}
+                title={`100-Day ${this.state.ticker} chart with EMA's of ${this.state.emaLow} & ${this.state.emaHigh}`}
                 /></div> : null}
             </div>
             
