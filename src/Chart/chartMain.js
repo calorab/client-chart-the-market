@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import AnyChart from 'anychart-react';
 import anychart from 'anychart';
 import dataMapping from '../utility/dataMapping';
-import Spinner from '../spinner/spinner';
+// import Spinner from '../spinner/spinner';
 
 class ChartMain extends Component {
 
@@ -33,7 +33,7 @@ class ChartMain extends Component {
     tickerSearchHandler = async event => {
         event.preventDefault()
 
-        this.setState({submitting: true, showChart: false})
+        this.setState({submitting: true})
         
         let keyword = event.target.tickerSymbol.value;
         let apiEndpoint = "http://localhost:8000/symbol/stocksymbol?keyword=" + keyword
@@ -50,7 +50,8 @@ class ChartMain extends Component {
 
     priceHandler = async event => {
         event.preventDefault();
-        
+        this.setState({submitting: true, showchart: false})
+
         let symbol = event.target.equitySymbol.value
         let EMALow = event.target.lowEMAInterval.value
         let EMAHigh = event.target.highEMAInterval.value
@@ -66,6 +67,7 @@ class ChartMain extends Component {
 
         let fullData = await response.json()
         let priceData = fullData["Time Series (Daily)"];
+        // For weekly price values once implemented
         if (!fullData["Time Series (Daily)"]) {
             priceData = fullData['Weekly Adjusted Time Series']; 
         }
@@ -79,7 +81,9 @@ class ChartMain extends Component {
             ticker: fullData["Meta Data"]["2. Symbol"], 
             emaLow: EMALow, 
             emaHigh: EMAHigh, 
-            showChart: true
+            showChart: true,
+            submitting: false,
+            spinner: false
         })
 
         return;
@@ -164,11 +168,9 @@ class ChartMain extends Component {
         chart.plot(0).ema(mapping, this.state.emaHigh, "line");
         chart.plot(1).macd(mapping); // need to change height to be smaller - 50% probs. ----  .height('50%') ... let macd_plot = 
         // ----- end technical indicators ---
-
         series.name(`${this.state.ticker}`);
         chart.draw();
-            
-        
+
             // {/* ChartWindow component needed for the graph? 
             //     anyChart links for later:
             //         https://github.com/AnyChart/AnyChart-React/ - React Plugin
@@ -177,6 +179,17 @@ class ChartMain extends Component {
 
             // */}
             // 
+        // ---------- End Anychart Config ----------
+        let chartDisplay;
+        
+        if (this.state.showChart) {
+            chartDisplay = <div><AnyChart
+                width={800}
+                height={600}
+                instance={chart}
+                title={`100-Day ${this.state.ticker} chart with EMA's of ${this.state.emaLow} & ${this.state.emaHigh}`}
+            /></div>;
+        }
 
         return (
             <div>
@@ -185,13 +198,8 @@ class ChartMain extends Component {
                 {this.state.companyResults ? symbolResults : null}
                 <br></br>
                 {formCustom}
-                <br></br>
-                {this.state.showChart ? <div><AnyChart
-                width={800}
-                height={600}
-                instance={chart}
-                title={`100-Day ${this.state.ticker} chart with EMA's of ${this.state.emaLow} & ${this.state.emaHigh}`}
-                /></div> : <Spinner />}
+                <br></br> 
+                {chartDisplay}
             </div>
             
             
