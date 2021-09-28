@@ -48,16 +48,21 @@ class ChartMain extends Component {
         this.setState({companyResults: matches.bestMatches, submitting: false})
     }
 
-    priceHandler = async event => {
+    priceHandler = async (event, listSymbol) => {
         event.preventDefault();
-        this.setState({submitting: true, showchart: false})
+        this.setState({submitting: true, showchart: false});
 
-        let symbol = event.target.equitySymbol.value
-        let EMALow = event.target.lowEMAInterval.value
-        let EMAHigh = event.target.highEMAInterval.value
+        let symbol = listSymbol;
+        if (!listSymbol) {
+            symbol = event.target.equitySymbol.value;
+        };
+        console.log(symbol);
+        let EMALow = event.target.lowEMAInterval.value || 10;
+        let EMAHigh = event.target.highEMAInterval.value || 20;
+
         // let interval = event.target.interval.value 
 // for below when weekly data issue resolved... : + "&interval=" + interval
-        let priceEndpoint = "http://localhost:8000/chartdata?symbol=" + symbol 
+        let priceEndpoint = "http://localhost:8000/chartdata?symbol=" + symbol
 
         let response = await fetch(priceEndpoint, {
             headers: {
@@ -72,7 +77,7 @@ class ChartMain extends Component {
             priceData = fullData['Weekly Adjusted Time Series']; 
         }
 
-        console.log(priceData);
+        // console.log(priceData);
         
         const dataTable = dataMapping(priceData);
 
@@ -95,9 +100,9 @@ class ChartMain extends Component {
             return <div key={element["1. symbol"]}>
                     <h3>{element["1. symbol"]}</h3>
                     <p>{element["2. name"]}</p>
-                    {/* <button type='submit' onClick={this.fullChartDatahandler}>Get chart data for this company</button> */}
-            </div>
-        })
+                    <button type='submit' onClick={event => this.priceHandler(event, element["1. symbol"])}>Get chart data for this company</button>
+                    </div>
+        });
 
         const formSymbol = 
             <Formik
@@ -117,7 +122,7 @@ class ChartMain extends Component {
 
         const formCustom = 
             <Formik
-                initialValues={{equitySymbol: "", lowEMAInterval: 10, highEMAInterval: 20, interval: "daily"}}
+                initialValues={{equitySymbol: "", lowEMAInterval: 0, highEMAInterval: 0, interval: "daily"}}
                 validationSchema={Yup.object(
                     {
                         equitySymbol: Yup.string().required('Required'), 
