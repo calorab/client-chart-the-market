@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import AnyChart from 'anychart-react';
 import anychart from 'anychart';
 import dataMapping from '../utility/dataMapping';
+import Investments from '../Investments/investments';
 // import Spinner from '../spinner/spinner';
 
 class ChartMain extends Component {
@@ -94,7 +95,7 @@ class ChartMain extends Component {
         return;
     }
 
-    render() {
+    render(props) {
 
         const symbolResults = this.state.companyResults.map(element => {
             return <div key={element["1. symbol"]}>
@@ -205,6 +206,7 @@ class ChartMain extends Component {
                 {formCustom}
                 <br></br> 
                 {chartDisplay}
+                <button type="submit" onClick={event => this.props.history.push('/investments')}>Your portfolio</button>
             </div>
             
             
