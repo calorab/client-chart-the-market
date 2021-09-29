@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 
 class Investments extends Component {
     state = {
-        test: "Portfolio 1",
-
+        test: "",
     }
 
     componentDidMount() {
@@ -20,9 +19,7 @@ class Investments extends Component {
             
         })
 
-        // console.log('THE RESPONSE: ', )
         const data = await response.text();
-        // console.log("THE DATA: ", data)
 
         this.setState({test: data})
     }
