@@ -3,6 +3,28 @@ import React, {Component} from 'react';
 class Investments extends Component {
     state = {
         test: "Portfolio 1",
+
+    }
+
+    componentDidMount() {
+        this.getInvestmentsHandler();
+    }
+
+    getInvestmentsHandler = async () => {
+        const investmentEndpoint = 'http://localhost:8000/myinvestments'
+
+        let response = await fetch(investmentEndpoint, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            
+        })
+
+        // console.log('THE RESPONSE: ', )
+        const data = await response.text();
+        // console.log("THE DATA: ", data)
+
+        this.setState({test: data})
     }
 
     testHandler = () => {
