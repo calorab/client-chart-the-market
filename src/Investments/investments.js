@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 class Investments extends Component {
     state = {
-        test: "",
+        test: "", 
     }
 
     componentDidMount() {
@@ -24,8 +24,23 @@ class Investments extends Component {
         this.setState({test: data})
     }
 
-    testHandler = () => {
-        this.setState({test: "BOOM!!!!!!!!!"});
+    testHandler = async () => {
+        // create hardcoded email and password for test
+        let registerEndpoint = 'http://localhost:8000/user/register'
+        // send fetch req w/ body
+        let response = await fetch(registerEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'Application/json'
+            },
+            body: JSON.stringify({
+                email: "test@test.com",
+                password: "12345"
+            }),
+        })
+
+        let data = await response.json();
+        console.log("THE DATA... ", data);
     }
 
     render(props) {
