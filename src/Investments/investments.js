@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 class Investments extends Component {
     state = {
-        test: "", 
+        test: "",
     }
 
     componentDidMount() {
@@ -26,7 +26,7 @@ class Investments extends Component {
 
     testHandler = async () => {
         // create hardcoded email and password for test
-        let registerEndpoint = 'http://localhost:8000/user/register'
+        let registerEndpoint = 'http://localhost:8000/user/signin'
         // send fetch req w/ body
         let response = await fetch(registerEndpoint, {
             method: 'POST',
@@ -40,7 +40,8 @@ class Investments extends Component {
         })
 
         let data = await response.json();
-        console.log("THE DATA... ", data);
+        // Data looks like {token: "...AJKS63BC396BHV3vjv4...", userId: "...139884359..."}
+        this.setState({loggedIn: true});
     }
 
     render(props) {
