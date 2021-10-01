@@ -25,6 +25,10 @@ class Investments extends Component {
     }
 
     testHandler = async () => {
+
+        // MOVE THIS TO NEW SIGNIN/REGISTER COMPONENT(S)!!!!!!!!!!!!!!!!!!
+        // ---------------------------------------------------------------
+
         // create hardcoded email and password for test
         let registerEndpoint = 'http://localhost:8000/user/signin'
         // send fetch req w/ body

@@ -57,13 +57,13 @@ class ChartMain extends Component {
         if (!listSymbol) {
             symbol = event.target.equitySymbol.value;
         };
-        console.log(symbol);
+        // console.log(symbol);
         let EMALow = event.target.lowEMAInterval.value || 10;
         let EMAHigh = event.target.highEMAInterval.value || 20;
 
-        // let interval = event.target.interval.value 
-// for below when weekly data issue resolved... : + "&interval=" + interval
-        let priceEndpoint = "http://localhost:8000/chartdata?symbol=" + symbol
+        let interval = event.target.interval.value 
+        // for below when weekly data issue resolved... : + "&interval=" + interval
+        let priceEndpoint = "http://localhost:8000/chartdata?symbol=" + symbol + "&interval=" + interval
 
         let response = await fetch(priceEndpoint, {
             headers: {
@@ -78,7 +78,7 @@ class ChartMain extends Component {
             priceData = fullData['Weekly Adjusted Time Series']; 
         }
 
-        // console.log(priceData);
+        console.log("WEEKLY PRICEDATA: ", priceData);
         
         const dataTable = dataMapping(priceData);
 
@@ -147,11 +147,11 @@ class ChartMain extends Component {
                     <Field name="highEMAInterval" type="number" />
                     <ErrorMessage name="highEMAInterval" />
 
-                    {/* <label htmlFor="interval">Interval Period</label>
+                    <label htmlFor="interval">Interval Period</label>
                     <Field name="interval" as="select">
                         <option value="daily">Daily</option>
                         <option value="weekly">Weekly</option>
-                    </Field> */}
+                    </Field>
     
                     <button type="submit">Search</button>
                 </Form>
