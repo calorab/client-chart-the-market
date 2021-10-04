@@ -92,6 +92,33 @@ class ChartMain extends Component {
         return;
     }
 
+    buyHandler = async () => {
+        let symbol = this.state.ticker;
+        let lots =  100;
+        let date = this.state.equityTable[this.state.equityTable.length-1]['date'];
+        let value = this.state.equityTable[this.state.equityTable.length-1]['price']
+        let user = sessionStorage.getItem('userId');
+        let investmentEndpoint = 'http://localhost:8000/myinvestments/add'
+
+        let response = await fetch(investmentEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                symbol: symbol,
+                lots: lots,
+                date: date,
+                value: value,
+                userId: user
+            })
+        })
+
+        const data = await response.json();
+
+        console.log("the buy data: ", data)
+    }
+
     handleLogout = () => {
         this.props.history.push('/logout');
     };
@@ -211,6 +238,7 @@ class ChartMain extends Component {
                 <br></br> 
                 {chartDisplay}
                 <button type="submit" onClick={event => this.props.history.push('/investments')}>Your portfolio</button>
+                <button type="submit" onClick={this.buyHandler}>Buy this stock!</button>
             </div>
             
             

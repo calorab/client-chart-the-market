@@ -3,9 +3,14 @@ import React, {Component} from 'react';
 class Investments extends Component {
     state = {
         test: "",
+        investmentsArray: []
     }
 
     componentDidMount() {
+        if (!sessionStorage.getItem('userId') && this.props.history) {
+            console.log('Hitting the investment IF statement');
+            this.props.history.push('/auth');
+        }
         this.getInvestmentsHandler();
     }
 
@@ -13,39 +18,16 @@ class Investments extends Component {
         const investmentEndpoint = 'http://localhost:8000/myinvestments'
 
         let response = await fetch(investmentEndpoint, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            
+            body: JSON.stringify({userId: sessionStorage.getItem('userId')})
         })
 
-        const data = await response.text();
+        const data = await response.json();
 
-        this.setState({test: data})
-    }
-
-    testHandler = async () => {
-
-        // MOVE THIS TO NEW SIGNIN/REGISTER COMPONENT(S)!!!!!!!!!!!!!!!!!!
-        // ---------------------------------------------------------------
-
-        // create hardcoded email and password for test
-        // let registerEndpoint = 'http://localhost:8000/user/signin'
-        // send fetch req w/ body
-        // let response = await fetch(registerEndpoint, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'Application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         email: "test@test.com",
-        //         password: "12345"
-        //     }),
-        // })
-
-        // let data = await response.json();
-        // // Data looks like {token: "...AJKS63BC396BHV3vjv4...", userId: "...139884359..."}
-        // this.setState({loggedIn: true});
+        console.log("the data: ", data)
     }
 
     handleLogout = () => {
@@ -56,14 +38,16 @@ class Investments extends Component {
 
         return (
             <div>
-                <h2>{this.state.test}</h2>
+                <h2>Your Data</h2>
                 <div>IBM - 100 shares at 145</div>
                 <div>AAPL - 200 shares at 350</div>
                 <div>GOOG - 400 shares at 200</div>
-                <button type='submit' onClick={event => this.testHandler()}>Testing...1, 2, 3</button>
                 <button type='submit' onClick={event => this.props.history.push('/')}>Return to chart</button>
                 <div>
                     <button onClick={this.handleLogout}>Logout</button>
+                </div>
+                <div>
+                    <button onClick={this.getInvestmentsHandler}>Get Investments TEST BUTTON</button>
                 </div>
             </div>
             
