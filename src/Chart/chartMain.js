@@ -73,12 +73,9 @@ class ChartMain extends Component {
 
         let fullData = await response.json()
         let priceData = fullData["Time Series (Daily)"];
-        // For weekly price values once implemented
         if (!fullData["Time Series (Daily)"]) {
             priceData = fullData['Weekly Adjusted Time Series']; 
         }
-
-        console.log("WEEKLY PRICEDATA: ", priceData);
         
         const dataTable = dataMapping(priceData);
 
@@ -94,6 +91,10 @@ class ChartMain extends Component {
 
         return;
     }
+
+    handleLogout = () => {
+        this.props.history.push('/logout');
+    };
 
     render(props) {
 
@@ -199,6 +200,9 @@ class ChartMain extends Component {
 
         return (
             <div>
+                <div>
+                    <button onClick={this.handleLogout}>Logout</button>
+                </div>
                 {formSymbol}
                 <button type="submit" onClick={this.clearSearchHandler}>Reset</button>
                 {this.state.companyResults ? symbolResults : null}

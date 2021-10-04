@@ -30,23 +30,27 @@ class Investments extends Component {
         // ---------------------------------------------------------------
 
         // create hardcoded email and password for test
-        let registerEndpoint = 'http://localhost:8000/user/signin'
+        // let registerEndpoint = 'http://localhost:8000/user/signin'
         // send fetch req w/ body
-        let response = await fetch(registerEndpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'Application/json'
-            },
-            body: JSON.stringify({
-                email: "test@test.com",
-                password: "12345"
-            }),
-        })
+        // let response = await fetch(registerEndpoint, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'Application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         email: "test@test.com",
+        //         password: "12345"
+        //     }),
+        // })
 
-        let data = await response.json();
-        // Data looks like {token: "...AJKS63BC396BHV3vjv4...", userId: "...139884359..."}
-        this.setState({loggedIn: true});
+        // let data = await response.json();
+        // // Data looks like {token: "...AJKS63BC396BHV3vjv4...", userId: "...139884359..."}
+        // this.setState({loggedIn: true});
     }
+
+    handleLogout = () => {
+        this.props.history.push('/logout');
+    };
 
     render(props) {
 
@@ -58,7 +62,11 @@ class Investments extends Component {
                 <div>GOOG - 400 shares at 200</div>
                 <button type='submit' onClick={event => this.testHandler()}>Testing...1, 2, 3</button>
                 <button type='submit' onClick={event => this.props.history.push('/')}>Return to chart</button>
+                <div>
+                    <button onClick={this.handleLogout}>Logout</button>
+                </div>
             </div>
+            
         )
     }
 }
