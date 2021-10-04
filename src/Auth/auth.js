@@ -37,10 +37,10 @@ class Auth extends Component {
         // Data looks like {token: "...AJKS63BC396BHV3vjv4...", userId: "...139884359..."}
         let data = await response.json();
         // Error handling???
-        console.log('The Data: ', data)
+        
         sessionStorage.setItem('token', data.token);
         sessionStorage.setItem('userId', data.userId);
-        console.log('Session Storage: ', sessionStorage);
+        // console.log('Session Storage: ', sessionStorage);
         this.props.history.push('/investments');
 
         

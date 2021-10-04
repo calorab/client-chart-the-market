@@ -27,6 +27,23 @@ class Investments extends Component {
 
         const data = await response.json();
 
+        this.setState({investmentsArray: data})
+
+        console.log("state.investmentsArray: ", this.state.investmentsArray)
+    }
+
+    sellHandler = async () => {
+        const investmentEndpoint = 'http://localhost:8000/myinvestments/sell'
+        let response = await fetch(investmentEndpoint, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({userId: sessionStorage.getItem('userId')})
+        })
+
+        const data = await response.json();
+
         console.log("the data: ", data)
     }
 
@@ -36,12 +53,36 @@ class Investments extends Component {
 
     render(props) {
 
+        let myInvestmentsArray = [];
+        for (const element of this.state.investmentsArray) {
+            myInvestmentsArray.push({
+                id: element._id,
+                symbol: element.equity,
+                purchaseDate: element.date,
+                purchasePrice: element.buyPrice, 
+            })
+        }
+
+        let myInvestmentResults = 
+        <div>
+            <h5>Such Empty!</h5>
+            <p>Return to the main page to buy stocks and see them here!</p>
+        </div>;
+
+        // START HERE: Create component for investment display!
+        myInvestmentResults = myInvestmentsArray.map(element => {
+            return <MyArtistItem 
+                key={element.data._id}
+                link={element.data.url}
+                tour={element.data.tour ? element.data.tour : 'Not on tour'}
+                cnclButton={event => this.unfollowHandler(element.data._id, event)}>
+                {element.data.name}
+            </MyArtistItem>
+        });
         return (
             <div>
                 <h2>Your Data</h2>
-                <div>IBM - 100 shares at 145</div>
-                <div>AAPL - 200 shares at 350</div>
-                <div>GOOG - 400 shares at 200</div>
+                {myInvestmentResults}
                 <button type='submit' onClick={event => this.props.history.push('/')}>Return to chart</button>
                 <div>
                     <button onClick={this.handleLogout}>Logout</button>

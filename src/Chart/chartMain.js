@@ -115,7 +115,7 @@ class ChartMain extends Component {
         })
 
         const data = await response.json();
-
+        // data recieved! Next: send to state and display data (maybe in modal?)
         console.log("the buy data: ", data)
     }
 
