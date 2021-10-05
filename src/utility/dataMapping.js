@@ -1,4 +1,3 @@
-// import { object } from "yup/lib/locale"
 
 const dataMapping = data => {
 

@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
+import InvestmentCard from './investmentCard'
+import investmentMath from '../utility/investmentMath';
 
 class Investments extends Component {
     state = {
         test: "",
-        investmentsArray: []
+        investmentsArray: [],
+        percentReturn: 'NOT FINISHED!',
+        latestClosePrice: 200
     }
 
     componentDidMount() {
@@ -28,30 +32,30 @@ class Investments extends Component {
         const data = await response.json();
 
         this.setState({investmentsArray: data})
-
-        console.log("state.investmentsArray: ", this.state.investmentsArray)
     }
 
-    sellHandler = async () => {
-        const investmentEndpoint = 'http://localhost:8000/myinvestments/sell'
-        let response = await fetch(investmentEndpoint, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({userId: sessionStorage.getItem('userId')})
-        })
+    sellHandler = async (id, event) => {
+        event.preventDefault();
+        console.log("Button clicked)")
+        // const investmentEndpoint = 'http://localhost:8000/myinvestments/sell'
+        // let response = await fetch(investmentEndpoint, {
+        //     method: 'DELETE',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({userId: sessionStorage.getItem('userId')})
+        // })
 
-        const data = await response.json();
+        // const data = await response.json();
 
-        console.log("the data: ", data)
+        // console.log("the data: ", data)
     }
 
     handleLogout = () => {
         this.props.history.push('/logout');
     };
 
-    render(props) {
+    render() {
 
         let myInvestmentsArray = [];
         for (const element of this.state.investmentsArray) {
@@ -65,23 +69,26 @@ class Investments extends Component {
 
         let myInvestmentResults = 
         <div>
-            <h5>Such Empty!</h5>
+            <h5>You have no Investments</h5>
             <p>Return to the main page to buy stocks and see them here!</p>
         </div>;
 
-        // START HERE: Create component for investment display!
+        // TO DO: UPDATE date format to look normal and CREATE math utility function for return%
         myInvestmentResults = myInvestmentsArray.map(element => {
-            return <MyArtistItem 
-                key={element.data._id}
-                link={element.data.url}
-                tour={element.data.tour ? element.data.tour : 'Not on tour'}
-                cnclButton={event => this.unfollowHandler(element.data._id, event)}>
-                {element.data.name}
-            </MyArtistItem>
+            return <InvestmentCard 
+                key={element.id}
+                purchaseDate={element.purchaseDate}
+                purchasePrice={element.purchasePrice}
+                latestClose={this.state.latestClosePrice}
+                return={investmentMath(element.purchasePrice, this.state.latestClosePrice)}
+                clicked={event => this.sellHandler(element.id, event)}> 
+                {element.symbol}
+            </InvestmentCard>
         });
+
         return (
             <div>
-                <h2>Your Data</h2>
+                <h2>Your Investments</h2>
                 {myInvestmentResults}
                 <button type='submit' onClick={event => this.props.history.push('/')}>Return to chart</button>
                 <div>
