@@ -5,10 +5,12 @@ import dataMapping from '../utility/dataMapping';
 
 class Investments extends Component {
     state = {
-        test: "STILL NOT FINISHED",
         investmentsArray: [],
         percentReturn: 'NOT FINISHED!',
-        latestPrice: 9
+        latestPrice: 9,
+        saleData: {},
+        roi: 0,
+        profit: 0
     }
 
     componentDidMount() {
@@ -51,7 +53,7 @@ class Investments extends Component {
         })
 
         const data = await response.json();
-        console.log('DATA: ', data)
+        // console.log('DATA: ', data)
         this.setState({investmentsArray: data})
     }
 
@@ -81,11 +83,22 @@ class Investments extends Component {
         })
 
         let lastClose = await latestPrice.json();
-        console.log('Last Close Data: ', lastClose)
+        console.log('Last Close Data: ', lastClose) // looks like: {date: '2021-10-05', price: 141.11}
         // save to state
+        this.setState({
+            saleData: lastClose
+        })
         // do math
-        // display math
+        let {roi, profit} = investmentMath(purchasePrice, this.state.saleData['price'])
+        this.setState({
+            roi: roi,
+            profit: profit
+        })
+        // display math 
+        
+        console.log('STUFF: ', this.state.saleData, this.state.roi, this.state.profit)
         // call getInvestmenthander again to remove investment
+        this.getInvestmentsHandler();
     }
 
     handleLogout = () => {
