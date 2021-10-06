@@ -34,7 +34,7 @@ class ChartMain extends Component {
     tickerSearchHandler = async event => {
         event.preventDefault()
 
-        this.setState({submitting: true})
+        this.setState({submitting: true, showChart: false})
         
         let keyword = event.target.tickerSymbol.value;
         let apiEndpoint = "http://localhost:8000/symbol/stocksymbol?keyword=" + keyword
@@ -54,14 +54,16 @@ class ChartMain extends Component {
         this.setState({submitting: true, showchart: false});
 
         let symbol = listSymbol;
+        let EMAHigh = 20;
+        let EMALow = 10;
+        let interval = 'daily';
         if (!listSymbol) {
             symbol = event.target.equitySymbol.value;
-        };
-        // console.log(symbol);
-        let EMALow = event.target.lowEMAInterval.value || 10;
-        let EMAHigh = event.target.highEMAInterval.value || 20;
-
-        let interval = event.target.interval.value 
+            EMALow = event.target.lowEMAInterval.value;
+            EMAHigh = event.target.highEMAInterval.value;
+            interval = event.target.interval.value;
+        };        
+ 
         // for below when weekly data issue resolved... : + "&interval=" + interval
         let priceEndpoint = "http://localhost:8000/chartdata?symbol=" + symbol + "&interval=" + interval
 
@@ -86,7 +88,8 @@ class ChartMain extends Component {
             emaHigh: EMAHigh, 
             showChart: true,
             submitting: false,
-            spinner: false
+            spinner: false,
+            companyResults: []
         })
 
         return;
@@ -127,9 +130,9 @@ class ChartMain extends Component {
 
         const symbolResults = this.state.companyResults.map(element => {
             return <div key={element["1. symbol"]}>
-                    <h3>{element["1. symbol"]}</h3>
+                    <h5>{element["1. symbol"]}</h5>
                     <p>{element["2. name"]}</p>
-                    <button type='submit' onClick={event => this.priceHandler(event, element["1. symbol"])}>Get chart data for this company</button>
+                    <button type='submit' onClick={event => this.priceHandler(event, element["1. symbol"])}>Chart it</button>
                     </div>
         });
 
@@ -151,7 +154,7 @@ class ChartMain extends Component {
 
         const formCustom = 
             <Formik
-                initialValues={{equitySymbol: "", lowEMAInterval: 0, highEMAInterval: 0, interval: "daily"}}
+                initialValues={{equitySymbol: "", lowEMAInterval: '', highEMAInterval: '', interval: "daily"}}
                 validationSchema={Yup.object(
                     {
                         equitySymbol: Yup.string().required('Required'), 
@@ -236,7 +239,9 @@ class ChartMain extends Component {
                 <br></br>
                 {formCustom}
                 <br></br> 
-                {chartDisplay}
+                <div>
+                    {chartDisplay}
+                </div>
                 <button type="submit" onClick={event => this.props.history.push('/investments')}>Your portfolio</button>
                 <button type="submit" onClick={this.buyHandler}>Buy this stock!</button>
             </div>

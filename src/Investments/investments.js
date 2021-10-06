@@ -21,26 +21,6 @@ class Investments extends Component {
         this.getInvestmentsHandler();
     }
 
-    // getCloseHandler = async (symbol) => {
-    //     let priceEndpoint = "http://localhost:8000/chartdata?symbol=" + symbol;
-
-    //     let response = await fetch(priceEndpoint, {
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //     })
-
-    //     let fullData = await response.json();
-    //     // console.log('fullData: ', fullData)
-    //     let priceData = fullData["Time Series (Daily)"];
-    //     let priceArray = dataMapping(priceData);
-
-    //     let recentValue = priceArray[priceArray.length-1]['price'];
-        
-    //     return recentValue;
-    //     console.log('LatestPrice: ', this.state.latestPrice)
-    // }
-
     getInvestmentsHandler = async () => {
         const investmentEndpoint = 'http://localhost:8000/myinvestments'
 
