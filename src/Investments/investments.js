@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import InvestmentCard from './investmentCard'
 import investmentMath from '../utility/investmentMath';
 import dataMapping from '../utility/dataMapping';
+import './investments.css'
 
 class Investments extends Component {
     state = {
@@ -104,7 +105,7 @@ class Investments extends Component {
         </div>;
 
         // TO DO: UPDATE date format to look normal 
-        // put inside IF statement so ther above displays if array is empty
+        // put inside IF statement so the above displays if array is empty
         myInvestmentResults = myInvestmentsArray.map(element => {
             return <InvestmentCard 
                 key={element.id}
@@ -118,17 +119,18 @@ class Investments extends Component {
         });
 
         return (
-            <div>
-                <h2>Your Investments</h2>
-                <div>
-                {myInvestmentResults}
+            <div className='investMain'>
+                
+                <div className='investResults'>
+                    <div className='title'>
+                        <h5>Your Portfolio</h5>
+                    </div>
+                    {myInvestmentResults}
                 </div>
-                <button type='submit' onClick={event => this.props.history.push('/')}>Return to chart</button>
-                <div>
-                    <button onClick={this.handleLogout}>Logout</button>
-                </div>
-                <div>
-                    <button onClick={this.getInvestmentsHandler}>Get Investments TEST BUTTON</button>
+                <div className='line'></div>
+                <div className='investNav'>   
+                    <button classname='menuButton' onClick={this.handleLogout}>Logout</button>
+                    <button classname='menuButton' type='submit' onClick={event => this.props.history.push('/')}>Return to chart</button>
                 </div>
             </div>
             

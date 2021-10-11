@@ -1,0 +1,59 @@
+.chartMain {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap ;
+    align-items: center;
+    justify-content: space-around;
+    padding-top: 50px;
+}
+
+.chartContent, .chartFormContainer, .chartForm, .symbolForm {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    margin: 10px;
+    /* box-shadow: 0 2px 3px #ccc; */
+}
+
+.chartFormContainer {
+    margin-top: 50px;
+}
+
+.intro {
+    margin-bottom: 50px;
+}
+
+.chartNav {
+    width: 300px;
+    height: 450px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+}
+
+.menuButton {
+    margin: 10px;
+};
+
+.symbolFormContainer {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+input, button, .field {
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    max-width: 125px;
+};
+
+/* label {
+    margin-top: 20px;
+    margin-bottom: 5px;
+} */
+

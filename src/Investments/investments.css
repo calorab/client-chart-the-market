@@ -1,0 +1,40 @@
+.investMain {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap ;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title { 
+    width: 100%;
+    font-size: 1.8rem;
+    margin-bottom: ;
+}
+
+.investResults {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    /* box-shadow: 0 2px 3px #ccc; */
+}
+
+.line {
+    border-top: 3px solid black;
+    width: 350px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.investNav {
+    width: 80%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+button {
+    margin: 10px;
+};
+
