@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import AnyChart from 'anychart-react';
 import anychart from 'anychart';
 import dataMapping from '../utility/dataMapping';
+import arrayMapping from '../utility/arrayMapping'
 import Investments from '../Investments/investments';
 import '../Chart/ chartMain.css';
 
@@ -46,9 +47,11 @@ class ChartMain extends Component {
                 'Content-Type': 'application/json'
             }
         })
-        const matches = await response.json();
+        const data = await response.json();
 
-        this.setState({companyResults: matches.bestMatches, submitting: false, showForm: false})
+        const matches = arrayMapping(data.bestMatches)
+
+        this.setState({companyResults: matches, submitting: false, showForm: false})
     }
 
     priceHandler = async (event, listSymbol) => {

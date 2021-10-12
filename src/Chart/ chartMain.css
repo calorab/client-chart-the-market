@@ -24,7 +24,9 @@
 }
 
 .chartNav {
-    position: sticky;
+    /*position: static;
+    right: 0px;
+    top: 0px; */
     width: 300px;
     height: 450px;
     display: flex;
