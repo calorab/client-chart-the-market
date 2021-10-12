@@ -16,7 +16,8 @@ class ChartMain extends Component {
         emaLow: 0,
         emaHigh: 0,
         equityTable: [],
-        showChart: false
+        showChart: false,
+        showForm: true
     }   
 
     clearSearchHandler = () => {
@@ -27,7 +28,8 @@ class ChartMain extends Component {
             emaLow: 0,
             emaHigh: 0,
             equityTable: [],
-            showChart: false
+            showChart: false,
+            showForm: true
         })
     }
 
@@ -46,7 +48,7 @@ class ChartMain extends Component {
         })
         const matches = await response.json();
 
-        this.setState({companyResults: matches.bestMatches, submitting: false})
+        this.setState({companyResults: matches.bestMatches, submitting: false, showForm: false})
     }
 
     priceHandler = async (event, listSymbol) => {
@@ -89,7 +91,8 @@ class ChartMain extends Component {
             showChart: true,
             submitting: false,
             spinner: false,
-            companyResults: []
+            companyResults: [],
+            showForm: false
         })
 
         return;
@@ -238,7 +241,7 @@ class ChartMain extends Component {
                         {this.state.companyResults && !this.state.showChart ? symbolResults : null}
                     </div>
                     <div className='chartFormContainer'>
-                        {!this.state.showChart ? formCustom : null}
+                        {this.state.showForm  ? formCustom : null}
                     </div>
                     <div className='chartContainer'>
                         {chartDisplay}

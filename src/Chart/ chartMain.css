@@ -24,13 +24,13 @@
 }
 
 .chartNav {
+    position: sticky;
     width: 300px;
     height: 450px;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
     justify-content: center;
-    position: sticky;
 }
 
 .menuButton {
