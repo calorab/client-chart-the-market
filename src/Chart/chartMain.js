@@ -6,6 +6,8 @@ import anychart from 'anychart';
 import dataMapping from '../utility/dataMapping';
 import arrayMapping from '../utility/arrayMapping'
 import Investments from '../Investments/investments';
+import Button from '../UI/button'
+
 import '../Chart/ chartMain.css';
 
 class ChartMain extends Component {
@@ -68,8 +70,7 @@ class ChartMain extends Component {
             EMAHigh = event.target.highEMAInterval.value;
             interval = event.target.interval.value;
         };        
- 
-        // for below when weekly data issue resolved... : + "&interval=" + interval
+
         let priceEndpoint = "http://localhost:8000/chartdata?symbol=" + symbol + "&interval=" + interval
 
         let response = await fetch(priceEndpoint, {
@@ -138,7 +139,7 @@ class ChartMain extends Component {
             return <div key={element["1. symbol"]}>
                     <h5>{element["1. symbol"]}</h5>
                     <p>{element["2. name"]}</p>
-                    <button type='submit' onClick={event => this.priceHandler(event, element["1. symbol"])}>Chart it</button>
+                    <Button type='submit' clicked={event => this.priceHandler(event, element["1. symbol"])}>Chart it</Button>
                     </div>
         });
 
@@ -154,7 +155,7 @@ class ChartMain extends Component {
                     <label>Search for a Ticker Symbol</label>
                     <Field name="tickerSymbol" type="text" />
                     <ErrorMessage name="tickerSymbol" />
-                    <button type="submit">Search</button>
+                    <Button type="submit">Search</Button>
                 </Form>
             </Formik>;
 
@@ -163,7 +164,7 @@ class ChartMain extends Component {
                 initialValues={{equitySymbol: "", lowEMAInterval: '', highEMAInterval: '', interval: "daily"}}
                 validationSchema={Yup.object(
                     {
-                        equitySymbol: Yup.string().required('Required'), 
+                        equitySymbol: Yup.string().required('Symbol Name Required'), 
                         lowEMAInterval: Yup.number().max(500, "No values over 500").min(5, "No values less than 5"),
                         highEMAInterval: Yup.number().max(500, "No values over 500").min(5, "No values less than 5"),
                     })}
@@ -172,17 +173,16 @@ class ChartMain extends Component {
                 }}
             >
                 <Form onSubmit={this.priceHandler} className='chartForm'>
-                    <label htmlFor="equitySymbol">Already know the symbol? </label>
+                    <ErrorMessage name="equitySymbol" className='error'/>
+                    
+                    <label htmlFor="equitySymbol">Already know the symbol?</label>
                     <Field name="equitySymbol" type="text" className='field'/>
-                    <ErrorMessage name="equitySymbol" />
 
                     <label htmlFor="lowEMAInterval">Enter the shorter EMA interval: </label>
                     <Field name="lowEMAInterval" type="number" className='field' />
-                    <ErrorMessage name="lowEMAInterval" />
 
                     <label htmlFor="highEMAInterval">Enter the longer EMA interval: </label>
                     <Field name="highEMAInterval" type="number" className='field' />
-                    <ErrorMessage name="highEMAInterval" />
 
                     <label htmlFor="interval">Interval Period</label>
                     <Field name="interval" as="select" className='field'>
@@ -190,7 +190,7 @@ class ChartMain extends Component {
                         <option value="weekly">Weekly</option>
                     </Field>
     
-                    <button type="submit">Chart</button>
+                    <Button type="submit">Chart</Button>
                 </Form>
             </Formik>;
 
@@ -253,10 +253,10 @@ class ChartMain extends Component {
                 <div className='chartNav'>
                     <h3>Welcome to Chart the Market</h3>
                     <p className='intro'>On the left either search for a stock symbol by company name or if you already know the symbol, then enter it, pick your moving averages (default is 10 and 20 respectively) and click Chart.</p>
-                    <button className='menuButton' type="submit"  onClick={event => this.props.history.push('/investments')} >Your portfolio</button>
-                    <button type="submit" className='menuButton' onClick={this.buyHandler} >Buy this stock!</button>
-                    <button type="submit" className='menuButton' onClick={this.clearSearchHandler} >Reset</button>
-                    <button className='menuButton' onClick={this.handleLogout} >Logout</button>
+                    <Button type="submit"  clicked={event => this.props.history.push('/investments')} >Your portfolio</Button>
+                    {this.state.showChart ? <Button type="submit" clicked={this.buyHandler} >Buy this stock!</Button> : null}
+                    <Button type="submit" clicked={this.clearSearchHandler} >Reset</Button>
+                    {sessionStorage.getItem('userId') ? <Button clicked={this.handleLogout} >Logout</Button> : <Button clicked={event => this.props.history.push('/auth')} >Sign in</Button>}
                 </div>
 
                 

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import InvestmentCard from './investmentCard'
 import investmentMath from '../utility/investmentMath';
-import dataMapping from '../utility/dataMapping';
+import Button from '../UI/button'
 import './investments.css'
 
 class Investments extends Component {
@@ -129,8 +129,8 @@ class Investments extends Component {
                 </div>
                 <div className='line'></div>
                 <div className='investNav'>   
-                    <button classname='menuButton' onClick={this.handleLogout}>Logout</button>
-                    <button classname='menuButton' type='submit' onClick={event => this.props.history.push('/')}>Return to chart</button>
+                    <Button clicked={this.handleLogout}>Logout</Button>
+                    <Button type='submit' clicked={event => this.props.history.push('/')}>Return to chart</Button>
                 </div>
             </div>
             

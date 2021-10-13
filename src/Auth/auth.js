@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import './auth.css'
+
+import Button from '../UI/button'
 
 class Auth extends Component {
     state = {
@@ -35,15 +38,11 @@ class Auth extends Component {
         });
 
         // Data looks like {token: "...AJKS63BC396BHV3vjv4...", userId: "...139884359..."}
-        let data = await response.json();
-        // Error handling???
+        let data = await response.json().catch(err => console.log(err));
         
         sessionStorage.setItem('token', data.token);
         sessionStorage.setItem('userId', data.userId);
-        // console.log('Session Storage: ', sessionStorage);
         this.props.history.push('/investments');
-
-        
     };
 
     switchAuthModeHandler = () => {
@@ -101,25 +100,27 @@ class Auth extends Component {
                 onSubmit={({ setSubmitting }) => { 
                     this.onAuthHandler();
                 }}>
-                <Form className='testing' onSubmit={this.onAuthHandler} >
+                <Form className='authForm' onSubmit={this.onAuthHandler} >
+                    <label htmlFor='email' >Email:</label>
                     <Field name="email" type="email" className='inputEmail' value='test@test.com' />
                     <ErrorMessage name="email" />
+                    <label htmlFor='password' >Password:</label>
                     <Field name="password" type="" className='inputPassword' value='12345' />
                     <ErrorMessage name="password" />
-                    <br></br>
-                    <button type='submit' >Log-in</button>
-                    {/* <Button 
-                        className='testing1' 
-                        btnType='Success'
-                        type='submit'>
-                        {this.state.isSignup ? 'SIGNUP' : 'LOGIN'}
-                    </Button> */}
+                    <Button type='submit'>Log-in</Button>
                 </Form>
             </Formik>;
 
         return (
             <div className='formContainer'>
+                <div>
                 {signinForm}
+                </div>
+                <div className='lineAuth' ></div>
+                <div className='authIntro'>
+                    <h3>Sign into the Demo account</h3>
+                    <p>Sign into the Demo account to the left to checkout your portfolio and buy and sell stocks.</p>
+                </div>
             </div>
         )
     }
