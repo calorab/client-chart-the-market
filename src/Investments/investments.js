@@ -1,3 +1,4 @@
+require('dotenv').config();
 import React, {Component} from 'react';
 import InvestmentCard from './investmentCard'
 import investmentMath from '../utility/investmentMath';
@@ -22,7 +23,7 @@ class Investments extends Component {
     }
 
     getInvestmentsHandler = async () => {
-        const investmentEndpoint = 'http://localhost:8000/myinvestments'
+        const investmentEndpoint = process.env.API_ENDPOINT + '/myinvestments';
 
         let response = await fetch(investmentEndpoint, {
             method: 'POST',
@@ -38,7 +39,7 @@ class Investments extends Component {
 
     sellHandler = async (id, purchasePrice, symbol,  event) => {
         event.preventDefault();
-        const saleEndpoint = 'http://localhost:8000/myinvestments/sell'
+        const saleEndpoint = process.env.API_ENDPOINT + 'myinvestments/sell';
         let response = await fetch(saleEndpoint, {
             method: 'DELETE',
             headers: {
@@ -51,7 +52,7 @@ class Investments extends Component {
         //Phase 2: display sell data and send to state
        
         // get latest price
-        const latestPriceEndpoint = 'http://localhost:8000/myinvestments/saleprice'
+        const latestPriceEndpoint = process.env.API_ENDPOINT + 'myinvestments/saleprice'
         let latestPrice = await fetch(latestPriceEndpoint, {
             method: 'POST',
             headers: {

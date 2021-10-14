@@ -1,3 +1,4 @@
+require('dotenv').config();
 import React, {Component} from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -20,9 +21,9 @@ class Auth extends Component {
     onAuthHandler = async (event) => {
         event.preventDefault();
         this.setState({login: false});
-        let apiEndpoint = 'http://localhost:8000/user/signin';
+        let apiEndpoint = process.env.API_ENDPOINT + 'user/signin';
         if (!this.state.login) {
-            apiEndpoint = 'http://localhost:8000/user/register'
+            apiEndpoint = process.env.API_ENDPOINT + 'user/register';
         }
         
         let response = await fetch(apiEndpoint, {

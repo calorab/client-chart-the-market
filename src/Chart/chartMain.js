@@ -1,3 +1,4 @@
+require('dotenv').config();
 import React, {Component} from 'react';
 import {Formik, Field, Form, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
@@ -41,7 +42,7 @@ class ChartMain extends Component {
         this.setState({submitting: true, showChart: false})
         
         let keyword = event.target.tickerSymbol.value;
-        let apiEndpoint = "http://localhost:8000/symbol/stocksymbol?keyword=" + keyword
+        let apiEndpoint = process.env.API_ENDPOINT + "symbol/stocksymbol?keyword=" + keyword
 
         let response = await fetch(apiEndpoint, {
             headers: {
@@ -70,7 +71,7 @@ class ChartMain extends Component {
             interval = event.target.interval.value;
         };        
 
-        let priceEndpoint = "http://localhost:8000/chartdata?symbol=" + symbol + "&interval=" + interval
+        let priceEndpoint = process.env.API_ENDPOINT + "chartdata?symbol=" + symbol + "&interval=" + interval
 
         let response = await fetch(priceEndpoint, {
             headers: {
@@ -105,9 +106,9 @@ class ChartMain extends Component {
         let symbol = this.state.ticker;
         let lots =  100;
         let date = this.state.equityTable[this.state.equityTable.length-1]['date'];
-        let value = this.state.equityTable[this.state.equityTable.length-1]['price']
+        let value = this.state.equityTable[this.state.equityTable.length-1]['price'];
         let user = sessionStorage.getItem('userId');
-        let investmentEndpoint = 'http://localhost:8000/myinvestments/add'
+        let investmentEndpoint = process.env.API_ENDPOINT + 'myinvestments/add';
 
         let response = await fetch(investmentEndpoint, {
             method: 'POST',
