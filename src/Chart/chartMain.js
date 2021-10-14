@@ -1,4 +1,3 @@
-require('dotenv').config();
 import React, {Component} from 'react';
 import {Formik, Field, Form, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
@@ -9,6 +8,7 @@ import arrayMapping from '../utility/arrayMapping'
 import Button from '../UI/button'
 
 import '../Chart/ chartMain.css';
+require('dotenv').config();
 
 class ChartMain extends Component {
 

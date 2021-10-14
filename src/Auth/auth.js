@@ -1,10 +1,10 @@
-require('dotenv').config();
 import React, {Component} from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import './auth.css'
 
 import Button from '../UI/button'
+require('dotenv').config();
 
 class Auth extends Component {
     state = {

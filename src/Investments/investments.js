@@ -1,9 +1,9 @@
-require('dotenv').config();
 import React, {Component} from 'react';
 import InvestmentCard from './investmentCard'
 import investmentMath from '../utility/investmentMath';
 import Button from '../UI/button'
 import './investments.css'
+require('dotenv').config();
 
 class Investments extends Component {
     state = {
