@@ -119,7 +119,9 @@ class Auth extends Component {
                 <div className='lineAuth' ></div>
                 <div className='authIntro'>
                     <h3>Sign into the Demo account</h3>
-                    <p>Sign into the Demo account to the left to checkout your portfolio and buy and sell stocks.</p>
+                    <p>Sign in to the left to checkout your portfolio and buy </p>
+                    <p>and sell stocks.</p>
+                    <Button clicked={event => this.props.history.push('/')}>Back to Home</Button>
                 </div>
             </div>
         )

@@ -251,7 +251,7 @@ class ChartMain extends Component {
                     </div>
                 </div>
                 <div className='chartNav'>
-                    <h3>Welcome to Chart the Market</h3>
+                    <h2 className='introTitle'>Welcome to Chart the Market</h2>
                     <p className='intro'>On the left either search for a stock symbol by company name or if you already know the symbol, then enter it, pick your moving averages (default is 10 and 20 respectively) and click Chart.</p>
                     <Button type="submit"  clicked={event => this.props.history.push('/investments')} >Your portfolio</Button>
                     {this.state.showChart ? <Button type="submit" clicked={this.buyHandler} >Buy this stock!</Button> : null}

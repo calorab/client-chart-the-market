@@ -6,7 +6,7 @@ const investmentCard = (props) => {
 
     return (
         <div className='investmentCard'>
-            <h3>{props.children}</h3>
+            <h3 className='cardSymbol'>{props.children}</h3>
             <h5>Purchased on: {props.purchaseDate}</h5>
             <h5>Purchased at: ${props.purchasePrice}</h5>
             {/* <h5>Latest Close: ${props.latestClose}</h5>
