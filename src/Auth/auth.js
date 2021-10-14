@@ -18,6 +18,7 @@ class Auth extends Component {
         } 
     };
 
+    
     onAuthHandler = async (event) => {
         event.preventDefault();
         this.setState({login: false});
