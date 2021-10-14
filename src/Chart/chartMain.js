@@ -5,7 +5,6 @@ import AnyChart from 'anychart-react';
 import anychart from 'anychart';
 import dataMapping from '../utility/dataMapping';
 import arrayMapping from '../utility/arrayMapping'
-import Investments from '../Investments/investments';
 import Button from '../UI/button'
 
 import '../Chart/ chartMain.css';
@@ -125,8 +124,8 @@ class ChartMain extends Component {
         })
 
         const data = await response.json();
-        // data recieved! Next: send to state and display data (maybe in modal?)
-        console.log("the buy data: ", data)
+        // data recieved! Phase 2: send to state and display data (maybe in modal?)
+        // console.log("the buy data: ", data)
     }
 
     handleLogout = () => {
@@ -257,9 +256,7 @@ class ChartMain extends Component {
                     {this.state.showChart ? <Button type="submit" clicked={this.buyHandler} >Buy this stock!</Button> : null}
                     <Button type="submit" clicked={this.clearSearchHandler} >Reset</Button>
                     {sessionStorage.getItem('userId') ? <Button clicked={this.handleLogout} >Logout</Button> : <Button clicked={event => this.props.history.push('/auth')} >Sign in</Button>}
-                </div>
-
-                
+                </div>  
             </div>
             
             

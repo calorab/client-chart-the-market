@@ -1,7 +1,7 @@
 
 const investmentMath = (buyPrice, sellPrice) => {
     // let resolvedPrice = () => return Promise.resolve(sellPrice);
-    console.log('SellPrice: ', sellPrice)
+    // Phase 2: solve data issue or is this needed at all??
     let percentage = ((sellPrice - buyPrice) / buyPrice) * 100;
     let roi = percentage.toFixed(2);
     let profit = sellPrice - buyPrice;

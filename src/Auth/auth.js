@@ -12,7 +12,6 @@ class Auth extends Component {
 
     componentDidMount = () => {
         // Check if already logged in
-        console.log('Pushing to /investments');
         if (sessionStorage.getItem('token') && sessionStorage.getItem('token') !== "undefined") {
             this.props.history.push('/investments');
         } 
@@ -37,7 +36,6 @@ class Auth extends Component {
             })
         });
 
-        // Data looks like {token: "...AJKS63BC396BHV3vjv4...", userId: "...139884359..."}
         let data = await response.json().catch(err => console.log(err));
         
         sessionStorage.setItem('token', data.token);

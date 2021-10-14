@@ -9,8 +9,6 @@ import Logout from './Auth/logout'
 import './App.css';
 
 function App() {
-  
-  // code below
 
   return (
     <div className="App">

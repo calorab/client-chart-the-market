@@ -16,7 +16,6 @@ class Investments extends Component {
 
     componentDidMount() {
         if (!sessionStorage.getItem('userId') && this.props.history) {
-            console.log('Hitting the investments IF statement');
             this.props.history.push('/auth');
         }
         this.getInvestmentsHandler();
@@ -34,13 +33,11 @@ class Investments extends Component {
         })
 
         const data = await response.json();
-        // console.log('DATA: ', data)
         this.setState({investmentsArray: data})
     }
 
     sellHandler = async (id, purchasePrice, symbol,  event) => {
         event.preventDefault();
-        console.log("Button clicked)")
         const saleEndpoint = 'http://localhost:8000/myinvestments/sell'
         let response = await fetch(saleEndpoint, {
             method: 'DELETE',
@@ -51,7 +48,7 @@ class Investments extends Component {
         })
 
         const data = await response.json();
-        console.log("the data: ", data)
+        //Phase 2: display sell data and send to state
        
         // get latest price
         const latestPriceEndpoint = 'http://localhost:8000/myinvestments/saleprice'
@@ -64,7 +61,7 @@ class Investments extends Component {
         })
 
         let lastClose = await latestPrice.json();
-        console.log('Last Close Data: ', lastClose) // looks like: {date: '2021-10-05', price: 141.11}
+        // console.log('Last Close Data: ', lastClose)  looks like: {date: '2021-10-05', price: 141.11}
         // save to state
         this.setState({
             saleData: lastClose
@@ -75,9 +72,8 @@ class Investments extends Component {
             roi: roi,
             profit: profit
         })
+        // Phase 2:
         // display math 
-        
-        console.log('STUFF: ', this.state.saleData, this.state.roi, this.state.profit)
         // call getInvestmenthander again to remove investment
         this.getInvestmentsHandler();
     }
