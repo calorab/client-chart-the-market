@@ -42,13 +42,14 @@ class ChartMain extends Component {
         this.setState({submitting: true, showChart: false})
         
         let keyword = event.target.tickerSymbol.value;
-        let apiEndpoint = process.env.API_ENDPOINT + "symbol/stocksymbol?keyword=" + keyword
+        let apiEndpoint = "https://pure-ridge-03326.herokuapp.com/symbol/stocksymbol?keyword=" + keyword
 
         let response = await fetch(apiEndpoint, {
             headers: {
                 'Content-Type': 'application/json'
             }
-        })
+        }).catch(err => console.log(err))
+
         const data = await response.json();
 
         const matches = arrayMapping(data.bestMatches)
@@ -71,7 +72,7 @@ class ChartMain extends Component {
             interval = event.target.interval.value;
         };        
 
-        let priceEndpoint = process.env.API_ENDPOINT + "chartdata?symbol=" + symbol + "&interval=" + interval
+        let priceEndpoint = "https://pure-ridge-03326.herokuapp.com/chartdata?symbol=" + symbol + "&interval=" + interval
 
         let response = await fetch(priceEndpoint, {
             headers: {
@@ -108,7 +109,7 @@ class ChartMain extends Component {
         let date = this.state.equityTable[this.state.equityTable.length-1]['date'];
         let value = this.state.equityTable[this.state.equityTable.length-1]['price'];
         let user = sessionStorage.getItem('userId');
-        let investmentEndpoint = process.env.API_ENDPOINT + 'myinvestments/add';
+        let investmentEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/add'
 
         let response = await fetch(investmentEndpoint, {
             method: 'POST',
@@ -125,6 +126,7 @@ class ChartMain extends Component {
         })
 
         const data = await response.json();
+        data ? console.log("Data") : console.log("no Data");
         // data recieved! Phase 2: send to state and display data (maybe in modal?)
         // console.log("the buy data: ", data)
     }
@@ -212,7 +214,8 @@ class ChartMain extends Component {
         chart.plot(1).macd(mapping); // need to change height to be smaller - 50% probs. ----  .height('50%') ... let macd_plot = 
         // ----- end technical indicators ---
         series.name(`${this.state.ticker}`);
-        chart.draw();
+        chart.container('chartContainer');
+        // chart.draw();
 
             // {/* ChartWindow component needed for the graph? 
             //     anyChart links for later:
@@ -226,12 +229,13 @@ class ChartMain extends Component {
         let chartDisplay;
         
         if (this.state.showChart) {
-            chartDisplay = <div><AnyChart
+            chartDisplay = <AnyChart
+                id='chartContainer'
                 width={800}
                 height={600}
                 instance={chart}
                 title={`100-Day ${this.state.ticker} chart with EMA's of ${this.state.emaLow} & ${this.state.emaHigh}`}
-            /></div>;
+            />;
         }
 
         return (

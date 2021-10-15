@@ -23,8 +23,8 @@ class Investments extends Component {
     }
 
     getInvestmentsHandler = async () => {
-        const investmentEndpoint = process.env.API_ENDPOINT + '/myinvestments';
-
+        const investmentEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments';
+        console.log('session storage ',sessionStorage.getItem('userId'))
         let response = await fetch(investmentEndpoint, {
             method: 'POST',
             headers: {
@@ -39,7 +39,7 @@ class Investments extends Component {
 
     sellHandler = async (id, purchasePrice, symbol,  event) => {
         event.preventDefault();
-        const saleEndpoint = process.env.API_ENDPOINT + 'myinvestments/sell';
+        const saleEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/sell';
         let response = await fetch(saleEndpoint, {
             method: 'DELETE',
             headers: {
@@ -49,10 +49,11 @@ class Investments extends Component {
         })
 
         const data = await response.json();
+        data ? console.log("Data") : console.log("no Data");
         //Phase 2: display sell data and send to state
        
         // get latest price
-        const latestPriceEndpoint = process.env.API_ENDPOINT + 'myinvestments/saleprice'
+        const latestPriceEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/saleprice'
         let latestPrice = await fetch(latestPriceEndpoint, {
             method: 'POST',
             headers: {

@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import './auth.css'
-
 import Button from '../UI/button'
 require('dotenv').config();
 
@@ -22,9 +21,9 @@ class Auth extends Component {
     onAuthHandler = async (event) => {
         event.preventDefault();
         this.setState({login: false});
-        let apiEndpoint = process.env.API_ENDPOINT + 'user/signin';
+        let apiEndpoint = "https://pure-ridge-03326.herokuapp.com/user/signin"
         if (!this.state.login) {
-            apiEndpoint = process.env.API_ENDPOINT + 'user/register';
+            apiEndpoint = 'https://pure-ridge-03326.herokuapp.com/user/register';
         }
         
         let response = await fetch(apiEndpoint, {
@@ -39,6 +38,7 @@ class Auth extends Component {
         });
 
         let data = await response.json().catch(err => console.log(err));
+        console.log("DATA: ", data)
         
         sessionStorage.setItem('token', data.token);
         sessionStorage.setItem('userId', data.userId);
