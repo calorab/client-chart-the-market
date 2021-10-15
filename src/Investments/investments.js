@@ -24,7 +24,6 @@ class Investments extends Component {
 
     getInvestmentsHandler = async () => {
         const investmentEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments';
-        console.log('session storage ',sessionStorage.getItem('userId'))
         let response = await fetch(investmentEndpoint, {
             method: 'POST',
             headers: {

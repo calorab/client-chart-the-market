@@ -38,7 +38,6 @@ class Auth extends Component {
         });
 
         let data = await response.json().catch(err => console.log(err));
-        console.log("DATA: ", data)
         
         sessionStorage.setItem('token', data.token);
         sessionStorage.setItem('userId', data.userId);
