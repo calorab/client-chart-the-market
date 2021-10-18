@@ -35,7 +35,7 @@ input {
     background-color: white;
     font: inherit;
     padding: 6px 10px;
-    display: block;
+    /* display: block; */
     width: 100%;
 }
 

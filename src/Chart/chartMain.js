@@ -239,7 +239,7 @@ class ChartMain extends Component {
         }
 
         return (
-            <div className='chartMain'>
+            <div id='chartMain' >
                 <div className='chartContent'>
                     <div className='symbolFormContainer'>
                         {!this.state.showChart ? formSymbol : null}    
