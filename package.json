@@ -17,6 +17,7 @@
     "formik": "^2.1.5",
     "gulp": "^4.0.2",
     "immer": "^9.0.6",
+    "normalize.css": "^8.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
