@@ -62,21 +62,26 @@ class Investments extends Component {
         })
 
         let lastClose = await latestPrice.json();
-        // console.log('Last Close Data: ', lastClose)  looks like: {date: '2021-10-05', price: 141.11}
+        // console.log('Last Close Data: ', lastClose);  Data looks like: {date: '2021-10-05', price: 141.11}
         // save to state
         this.setState({
             saleData: lastClose
         })
+
+        // INSTRUCTIONS FOR NEXT STEPS - 10/26
+        // 1) POST to sale to log sale and update the DOM
+        // 2) Set state and do math
+        // 3) Modal to display confirmations and maybe sell data from recent sale only
         // do math
         let {roi, profit} = investmentMath(purchasePrice, this.state.saleData['price'])
         this.setState({
             roi: roi,
             profit: profit
         })
-        // Phase 2:
-        // display math 
+        
         // call getInvestmenthander again to remove investment
         this.getInvestmentsHandler();
+        // call getSaleHandler (OR whatever i call it) to update the portfolio results
     }
 
     handleLogout = () => {
