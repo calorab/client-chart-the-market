@@ -15,7 +15,9 @@ class Investments extends Component {
         saleData: {},
         roi: 0,
         profit: 0,
-        modal: false
+        modal: false,
+        toDateReturn: 0,
+        toDateProfit: 0
     }
 
     componentDidMount() {
@@ -123,9 +125,27 @@ class Investments extends Component {
 
         const data = await response.json();
         // update state and/or format data and do math - CALEB0
-        console.log("sales Handler post-response.json: ", data)
-        
+        console.log("sales Handler post-response.json: ", data) ;
+
+        this.statsHandler(data);
+        console.log('statsHandler state values (return/profit): ', this.state.toDateReturn, this.state.toDateProfit);
     }
+
+    statsHandler = (arr) => {
+        // define $ and % values, set equal to 0
+        let dollar = 0;
+        let percentage = 0;
+        // iterate over the array
+        for (let i=0; i<arr.length; i++) {
+            // use investmentMath() on each getting the roi and $profit
+            let {roi, profit} = investmentMath(arr[i]['buyPrice'], arr[i]['sellPrice']);
+            // add roi and profit from investmentMath() to defined values above
+            dollar += profit;
+            percentage += roi;
+        }
+        // set defined values to state (... anndddd display said state)
+        this.setState({toDateReturn: percentage, toDateProfit: dollar})
+    };
 
     handleLogout = () => {
         this.props.history.push('/logout');
