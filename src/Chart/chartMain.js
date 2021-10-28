@@ -6,6 +6,8 @@ import anychart from 'anychart';
 import dataMapping from '../utility/dataMapping';
 import arrayMapping from '../utility/arrayMapping'
 import Button from '../UI/button'
+import Wrapper from '../utility/Wrapper/wrapper';
+import Modal from '../UI/modal';
 
 import '../Chart/ chartMain.css';
 require('dotenv').config();
@@ -20,7 +22,8 @@ class ChartMain extends Component {
         emaHigh: 0,
         equityTable: [],
         showChart: false,
-        showForm: true
+        showForm: true,
+        modal: false
     }   
 
     clearSearchHandler = () => {
@@ -129,11 +132,16 @@ class ChartMain extends Component {
         data ? console.log("Data") : console.log("no Data");
         // data recieved! Phase 2: send to state and display data (maybe in modal?)
         // console.log("the buy data: ", data)
+        this.setState({modal: true})
     }
 
     handleLogout = () => {
         this.props.history.push('/logout');
     };
+
+    handleModal = () => {
+        this.setState({modal: false})
+    }
 
     render(props) {
 
@@ -239,30 +247,33 @@ class ChartMain extends Component {
         }
 
         return (
-            <div id='chartMain' >
-                <div className='chartContent'>
-                    <div className='symbolFormContainer'>
-                        {!this.state.showChart ? formSymbol : null}    
+            <Wrapper>
+                {this.state.modal ? <Modal title='Success!' message={`You bought ${this.state.ticker} stock for $${this.state.equityTable[this.state.equityTable.length-1]['price']}`} onConfirm={this.handleModal}></Modal> : null}
+                <div id='chartMain' >
+                    <div className='chartContent'>
+                        <div className='symbolFormContainer'>
+                            {!this.state.showChart ? formSymbol : null}    
+                        </div>
+                        <div className='companyResultsContainer'>
+                            {this.state.companyResults && !this.state.showChart ? symbolResults : null}
+                        </div>
+                        <div className='chartFormContainer'>
+                            {this.state.showForm  ? formCustom : null}
+                        </div>
+                        <div className='chartContainer'>
+                            {chartDisplay}
+                        </div>
                     </div>
-                    <div className='companyResultsContainer'>
-                        {this.state.companyResults && !this.state.showChart ? symbolResults : null}
-                    </div>
-                    <div className='chartFormContainer'>
-                        {this.state.showForm  ? formCustom : null}
-                    </div>
-                    <div className='chartContainer'>
-                        {chartDisplay}
-                    </div>
+                    <div className='chartNav'>
+                        <h2 className='introTitle'>Welcome to Chart the Market</h2>
+                        <p className='intro'>On the left either search for a stock symbol by company name or if you already know the symbol, then enter it, pick your moving averages (default is 10 and 20 respectively) and click Chart.</p>
+                        <Button type="submit"  clicked={event => this.props.history.push('/investments')} >Your portfolio</Button>
+                        {this.state.showChart ? <Button type="submit" clicked={this.buyHandler} >Buy this stock!</Button> : null}
+                        <Button type="submit" clicked={this.clearSearchHandler} >Reset</Button>
+                        {sessionStorage.getItem('userId') ? <Button clicked={this.handleLogout} >Logout</Button> : <Button clicked={event => this.props.history.push('/auth')} >Sign in</Button>}
+                    </div>  
                 </div>
-                <div className='chartNav'>
-                    <h2 className='introTitle'>Welcome to Chart the Market</h2>
-                    <p className='intro'>On the left either search for a stock symbol by company name or if you already know the symbol, then enter it, pick your moving averages (default is 10 and 20 respectively) and click Chart.</p>
-                    <Button type="submit"  clicked={event => this.props.history.push('/investments')} >Your portfolio</Button>
-                    {this.state.showChart ? <Button type="submit" clicked={this.buyHandler} >Buy this stock!</Button> : null}
-                    <Button type="submit" clicked={this.clearSearchHandler} >Reset</Button>
-                    {sessionStorage.getItem('userId') ? <Button clicked={this.handleLogout} >Logout</Button> : <Button clicked={event => this.props.history.push('/auth')} >Sign in</Button>}
-                </div>  
-            </div>
+            </Wrapper>
             
             
         )

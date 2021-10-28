@@ -2,17 +2,20 @@ import React, {Component} from 'react';
 import InvestmentCard from './investmentCard'
 import investmentMath from '../utility/investmentMath';
 import Button from '../UI/button'
+import Modal from '../UI/modal'
+import Wrapper from '../utility/Wrapper/wrapper'
 import './investments.css'
 require('dotenv').config();
 
 class Investments extends Component {
     state = {
         investmentsArray: [],
-        percentReturn: 'NOT FINISHED!',
+        soldSymbol: '',
         latestPrice: 9,
         saleData: {},
         roi: 0,
-        profit: 0
+        profit: 0,
+        modal: false
     }
 
     componentDidMount() {
@@ -63,7 +66,7 @@ class Investments extends Component {
         })
 
         let lastClose = await latestPrice.json();
-        console.log('Last Close Data: ', lastClose);  // Data looks like: {date: '2021-10-05', price: 141.11}
+        //console.log('Last Close Data: ', lastClose); - Data looks like: {date: '2021-10-05', price: 141.11}
         // save to state
         this.setState({
             saleData: lastClose
@@ -96,7 +99,9 @@ class Investments extends Component {
         let {roi, profit} = investmentMath(purchasePrice, this.state.saleData['price'])
         this.setState({
             roi: roi,
-            profit: profit
+            profit: profit,
+            modal: true,
+            soldSymbol: symbol
         })
         // 3) Modal to display confirmations and maybe sell data from recent sale only - CALEB3
 
@@ -125,6 +130,10 @@ class Investments extends Component {
     handleLogout = () => {
         this.props.history.push('/logout');
     };
+
+    handleModal = () => {
+        this.setState({modal: false})
+    }
 
     render() {
 
@@ -158,21 +167,25 @@ class Investments extends Component {
             </InvestmentCard>
         });
 
+        const sellMessage = `You have sold ${this.state.soldSymbol} stock for $${this.state.saleData.price}, netting $${this.state.profit} per share or ${this.state.roi}%`;
+
         return (
-            <div className='investMain'>
-                
-                <div className='investResults'>
-                    <div className='title'>
-                        <h5>Your Portfolio</h5>
+            <Wrapper>
+                {this.state.modal ? <Modal title={`${this.state.soldSymbol} Stock Sold!`} message={sellMessage} onConfirm={this.handleModal}></Modal> : null}
+                <div className='investMain'>
+                    <div className='investResults'>
+                        <div className='title'>
+                            <h5>Your Portfolio</h5>
+                        </div>
+                        {myInvestmentResults}
                     </div>
-                    {myInvestmentResults}
+                    <div className='line'></div>
+                    <div className='investNav'>   
+                        <Button clicked={this.handleLogout}>Logout</Button>
+                        <Button type='submit' clicked={event => this.props.history.push('/')}>Return to chart</Button>
+                    </div>
                 </div>
-                <div className='line'></div>
-                <div className='investNav'>   
-                    <Button clicked={this.handleLogout}>Logout</Button>
-                    <Button type='submit' clicked={event => this.props.history.push('/')}>Return to chart</Button>
-                </div>
-            </div>
+            </Wrapper>
             
         )
     }

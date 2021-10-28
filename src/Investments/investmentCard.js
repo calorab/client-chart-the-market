@@ -9,8 +9,6 @@ const investmentCard = (props) => {
             <h3 className='cardSymbol'>{props.children}</h3>
             <h5>Purchased on: {props.purchaseDate}</h5>
             <h5>Purchased at: ${props.purchasePrice}</h5>
-            {/* <h5>Latest Close: ${props.latestClose}</h5>
-            <h5>Return%: {props.return}%</h5> */}
             <Button type='submit' clicked={props.clicked}>Sell</Button>
         </div>
     )
