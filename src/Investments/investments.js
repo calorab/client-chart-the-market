@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import InvestmentCard from './investmentCard'
 import investmentMath from '../utility/investmentMath';
-import Button from '../UI/button'
-import Modal from '../UI/modal'
-import Wrapper from '../utility/Wrapper/wrapper'
+import Button from '../UI/button';
+import Modal from '../UI/modal';
+import Wrapper from '../utility/Wrapper/wrapper';
+import TrackRecord from './trackRecord';
 import './investments.css'
 require('dotenv').config();
 
@@ -55,7 +56,6 @@ class Investments extends Component {
 
         const data = await response.json();
         data ? console.log("Data") : console.log("no Data");
-        //Phase 2: display sell data and send to state
        
         // get latest price https://pure-ridge-03326.herokuapp.com/
         const latestPriceEndpoint = 'http://localhost:8000/myinvestments/saleprice'
@@ -68,8 +68,7 @@ class Investments extends Component {
         })
 
         let lastClose = await latestPrice.json();
-        //console.log('Last Close Data: ', lastClose); - Data looks like: {date: '2021-10-05', price: 141.11}
-        // save to state
+        
         this.setState({
             saleData: lastClose
         })
@@ -95,9 +94,8 @@ class Investments extends Component {
 
         const result = await postSale.json();
         console.log('The result of sale POST!!!!!: ', result)
-        // 2) Set state and do math - CALEB2
 
-        // do math
+        
         let {roi, profit} = investmentMath(purchasePrice, this.state.saleData['price'])
         this.setState({
             roi: roi,
@@ -105,14 +103,12 @@ class Investments extends Component {
             modal: true,
             soldSymbol: symbol
         })
-        // 3) Modal to display confirmations and maybe sell data from recent sale only - CALEB3
-
-        // call getInvestmenthander again to remove investment
+        
         await this.getInvestmentsHandler();
-        // call getSalesHandler to update the portfolio results
+        
         await this.getSalesHandler();
     }
-// CALEBNOW - test API call!!
+
     getSalesHandler = async () => {
         const getSaleEndpoint = 'http://localhost:8000/sale/all';
         let response = await fetch(getSaleEndpoint, {
@@ -124,7 +120,7 @@ class Investments extends Component {
         })
 
         const data = await response.json();
-        // update state and/or format data and do math - CALEB0
+       
         console.log("sales Handler post-response.json: ", data) ;
 
         this.statsHandler(data);
@@ -132,18 +128,14 @@ class Investments extends Component {
     }
 
     statsHandler = (arr) => {
-        // define $ and % values, set equal to 0
         let dollar = 0;
         let percentage = 0;
-        // iterate over the array
+        
         for (let i=0; i<arr.length; i++) {
-            // use investmentMath() on each getting the roi and $profit
             let {roi, profit} = investmentMath(arr[i]['buyPrice'], arr[i]['sellPrice']);
-            // add roi and profit from investmentMath() to defined values above
             dollar += profit;
             percentage += roi;
         }
-        // set defined values to state (... anndddd display said state)
         this.setState({toDateReturn: percentage, toDateProfit: dollar})
     };
 
@@ -173,19 +165,17 @@ class Investments extends Component {
             <p>Return to the main page to buy stocks and see them here!</p>
         </div>;
 
-        // TO DO: UPDATE date format to look normal 
-        // put inside IF statement so the above displays if array is empty
-        myInvestmentResults = myInvestmentsArray.map(element => {
-            return <InvestmentCard 
-                key={element.id}
-                purchaseDate={element.purchaseDate}
-                purchasePrice={element.purchasePrice}
-                // latestClose={this.state.test}
-                // return={investmentMath(element.purchasePrice, 200)}
-                clicked={event => this.sellHandler(element.id, element.purchasePrice, element.symbol, event)}> 
-                {element.symbol}
-            </InvestmentCard>
-        });
+        if (this.state.investmentsArray) {
+            myInvestmentResults = myInvestmentsArray.map(element => {
+                return <InvestmentCard 
+                    key={element.id}
+                    purchaseDate={element.purchaseDate}
+                    purchasePrice={element.purchasePrice}
+                    clicked={event => this.sellHandler(element.id, element.purchasePrice, element.symbol, event)}> 
+                    {element.symbol}
+                </InvestmentCard>
+            });
+        }
 
         const sellMessage = `You have sold ${this.state.soldSymbol} stock for $${this.state.saleData.price}, netting $${this.state.profit} per share or ${this.state.roi}%`;
 
@@ -200,7 +190,8 @@ class Investments extends Component {
                         {myInvestmentResults}
                     </div>
                     <div className='line'></div>
-                    <div className='investNav'>   
+                    <div className='investNav'>  
+                        <TrackRecord percent={this.state.toDateReturn} dollars={this.state.toDateProfit}/>
                         <Button clicked={this.handleLogout}>Logout</Button>
                         <Button type='submit' clicked={event => this.props.history.push('/')}>Return to chart</Button>
                     </div>

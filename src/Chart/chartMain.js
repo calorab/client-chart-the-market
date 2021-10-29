@@ -130,8 +130,7 @@ class ChartMain extends Component {
 
         const data = await response.json();
         data ? console.log("Data") : console.log("no Data");
-        // data recieved! Phase 2: send to state and display data (maybe in modal?)
-        // console.log("the buy data: ", data)
+        
         this.setState({modal: true})
     }
 
@@ -219,7 +218,7 @@ class ChartMain extends Component {
         // --- technical indicators ---
         chart.plot(0).ema(mapping, this.state.emaLow, "line");
         chart.plot(0).ema(mapping, this.state.emaHigh, "line");
-        chart.plot(1).macd(mapping); // need to change height to be smaller - 50% probs. ----  .height('50%') ... let macd_plot = 
+        chart.plot(1).macd(mapping); 
         // ----- end technical indicators ---
         series.name(`${this.state.ticker}`);
         chart.container('chartContainer');
@@ -234,6 +233,7 @@ class ChartMain extends Component {
             // */}
             // 
         // ---------- End Anychart Config ----------
+        
         let chartDisplay;
         
         if (this.state.showChart) {
