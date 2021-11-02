@@ -30,7 +30,7 @@ class Investments extends Component {
     }
 
     getInvestmentsHandler = async () => {
-        const investmentEndpoint = 'http://localhost:8000/myinvestments';
+        const investmentEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments';
         let response = await fetch(investmentEndpoint, {
             method: 'POST',
             headers: {
@@ -45,7 +45,7 @@ class Investments extends Component {
 
     sellHandler = async (id, purchasePrice, symbol,  event) => {
         event.preventDefault();
-        const saleEndpoint = 'http://localhost:8000/myinvestments/sell';
+        const saleEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/sell';
         let response = await fetch(saleEndpoint, {
             method: 'DELETE',
             headers: {
@@ -57,8 +57,7 @@ class Investments extends Component {
         const data = await response.json();
         data ? console.log("Data") : console.log("no Data");
        
-        // get latest price https://pure-ridge-03326.herokuapp.com/
-        const latestPriceEndpoint = 'http://localhost:8000/myinvestments/saleprice'
+        const latestPriceEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/saleprice'
         let latestPrice = await fetch(latestPriceEndpoint, {
             method: 'POST',
             headers: {
@@ -75,7 +74,7 @@ class Investments extends Component {
 
         // INSTRUCTIONS FOR NEXT STEPS - 10/26
         // 1) POST to sale to log sale and update the DOM
-        const allSaleEndpoint = 'http://localhost:8000/sale/'
+        const allSaleEndpoint = 'https://pure-ridge-03326.herokuapp.com/sale/'
 
         let postSale = await fetch(allSaleEndpoint, {
             method: 'POST',
@@ -110,14 +109,15 @@ class Investments extends Component {
     }
 
     getSalesHandler = async () => {
-        const getSaleEndpoint = 'http://localhost:8000/sale/all';
+        const getSaleEndpoint = 'https://pure-ridge-03326.herokuapp.com/sale/all';
+        
         let response = await fetch(getSaleEndpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({userId: sessionStorage.getItem('userId')})
-        })
+        }).catch(err => console.log('The salesHandler error: ', err))
 
         const data = await response.json();
        
@@ -177,7 +177,7 @@ class Investments extends Component {
             });
         }
 
-        const sellMessage = `You have sold ${this.state.soldSymbol} stock for $${this.state.saleData.price}, netting $${this.state.profit} per share or ${this.state.roi}%`;
+        const sellMessage = `You have sold ${this.state.soldSymbol} stock for $${this.state.saleData.price}, netting $${this.state.profit.toFixed(2)} per share or ${this.state.roi.toFixed(2)}%`;
 
         return (
             <Wrapper>
