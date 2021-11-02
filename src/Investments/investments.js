@@ -5,8 +5,8 @@ import Button from '../UI/button';
 import Modal from '../UI/modal';
 import Wrapper from '../utility/Wrapper/wrapper';
 import TrackRecord from './trackRecord';
-import './investments.css'
-require('dotenv').config();
+import styles from './investments.module.css'
+require('dotenv').config(); // CALEB dig into this for endpoint simplicity
 
 class Investments extends Component {
     state = {
@@ -182,22 +182,21 @@ class Investments extends Component {
         return (
             <Wrapper>
                 {this.state.modal ? <Modal title={`${this.state.soldSymbol} Stock Sold!`} message={sellMessage} onConfirm={this.handleModal}></Modal> : null}
-                <div className='investMain'>
-                    <div className='investResults'>
-                        <div className='title'>
+                <div className={styles.investMain}>
+                    <div className={styles.investResults}>
+                        <div className={styles.title}>
                             <h5>Your Portfolio</h5>
                         </div>
                         {myInvestmentResults}
                     </div>
-                    <div className='line'></div>
-                    <div className='investNav'>  
+                    <div className={styles.line}></div>
+                    <div className={styles.investNav}>  
                         <TrackRecord percent={this.state.toDateReturn} dollars={this.state.toDateProfit}/>
                         <Button clicked={this.handleLogout}>Logout</Button>
                         <Button type='submit' clicked={event => this.props.history.push('/')}>Return to chart</Button>
                     </div>
                 </div>
             </Wrapper>
-            
         )
     }
 }

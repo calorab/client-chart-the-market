@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import './auth.css'
+import styles from './auth.module.css'
 import Button from '../UI/button'
 require('dotenv').config();
 
@@ -99,24 +99,24 @@ class Auth extends Component {
                 onSubmit={({ setSubmitting }) => { 
                     this.onAuthHandler();
                 }}>
-                <Form className='authForm' onSubmit={this.onAuthHandler} >
+                <Form className={styles.authForm} onSubmit={this.onAuthHandler} >
                     <label htmlFor='email' >Email:</label>
-                    <Field name="email" type="email" className='inputEmail' value='test@test.com' />
+                    <Field name="email" type="email" className={styles.inputEmail} value='test@test.com' />
                     <ErrorMessage name="email" />
                     <label htmlFor='password' >Password:</label>
-                    <Field name="password" type="" className='inputPassword' value='12345' />
+                    <Field name="password" type="" className={styles.inputPassword} value='12345' />
                     <ErrorMessage name="password" />
                     <Button type='submit'>Log-in</Button>
                 </Form>
             </Formik>;
 
         return (
-            <div className='formContainer'>
+            <div className={styles.formContainer}>
                 <div>
                 {signinForm}
                 </div>
-                <div className='lineAuth' ></div>
-                <div className='authIntro'>
+                <div className={styles.lineAuth}></div>
+                <div className={styles.authIntro}>
                     <h3>Sign into the Demo account</h3>
                     <p>Sign in to the left to checkout your portfolio and buy </p>
                     <p>and sell stocks.</p>

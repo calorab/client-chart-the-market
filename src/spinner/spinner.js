@@ -1,9 +1,9 @@
 import React from 'react';
 
-import './spinner.css';
+import styles from './spinner.module.css';
 
 const spinner = () => (
-    <div className="lds-facebook">
+    <div className={styles.lds-facebook}>
         <div></div>
         <div></div>
         <div></div>

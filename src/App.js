@@ -6,14 +6,14 @@ import Investments from './Investments/investments'
 import Auth from './Auth/auth'
 import Logout from './Auth/logout'
 
-import './App.css';
+import styles from './App.module.css';
 
 function App() {
 
   return (
-    <div className="App">
-      <header className="App-header">
-      </header>
+    <div className={styles.App}>
+      {/* <header className={styles.App-header}>
+      </header> */}
         <Switch>
           <Route path='/' exact component={ChartMain} />
           <Route path='/investments' component={Investments} />

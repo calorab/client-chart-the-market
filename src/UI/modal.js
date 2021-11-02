@@ -3,20 +3,20 @@ import React from 'react';
 import Backdrop from './backdrop';
 import Button from './button';
 import Wrapper from '../utility/Wrapper/wrapper'
-import './modal.css';
-
+import styles from './modal.module.css';
+ 
 const Modal = (props) => {
   return (
     <Wrapper>
       <Backdrop />
-      <div className='modal'>
-        <header className='header'>
+      <div className={styles.modal}>
+        <header className={styles.header}>
           <h2>{props.title}</h2>
         </header>
-        <div className='content'>
+        <div className={styles.content}>
           <p>{props.message}</p>
         </div>
-        <footer className='actions'>
+        <footer className={styles.actions}>
           <Button clicked={props.onConfirm}>Okay</Button>
         </footer>
       </div>

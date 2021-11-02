@@ -1,6 +1,7 @@
-div {
+/* Is the below necessary?  */
+/* div {
     display: flex;
-}
+} */
 
 div#chartMain {
     display: flex;

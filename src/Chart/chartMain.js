@@ -9,7 +9,7 @@ import Button from '../UI/button'
 import Wrapper from '../utility/Wrapper/wrapper';
 import Modal from '../UI/modal';
 
-import '../Chart/ chartMain.css';
+import styles from './chartMain.module.css';
 require('dotenv').config();
 
 class ChartMain extends Component {
@@ -160,7 +160,7 @@ class ChartMain extends Component {
                     this.tickerSearchHandler()
                 }}
             >
-                <Form onSubmit={this.tickerSearchHandler} className='symbolForm'>
+                <Form onSubmit={this.tickerSearchHandler} className={styles.symbolForm}>
                     <label>Search for a Ticker Symbol</label>
                     <Field name="tickerSymbol" type="text" />
                     <ErrorMessage name="tickerSymbol" />
@@ -181,20 +181,20 @@ class ChartMain extends Component {
                     this.priceHandler()
                 }}
             >
-                <Form onSubmit={this.priceHandler} className='chartForm'>
-                    <ErrorMessage name="equitySymbol" className='error'/>
+                <Form onSubmit={this.priceHandler} className={styles.chartForm}>
+                    <ErrorMessage name="equitySymbol" className={styles.error}/>
                     
                     <label htmlFor="equitySymbol">Already know the symbol?</label>
-                    <Field name="equitySymbol" type="text" className='field'/>
+                    <Field name="equitySymbol" type="text" className={styles.field}/>
 
                     <label htmlFor="lowEMAInterval">Enter the shorter EMA interval: </label>
-                    <Field name="lowEMAInterval" type="number" className='field' />
+                    <Field name="lowEMAInterval" type="number" className={styles.field} />
 
                     <label htmlFor="highEMAInterval">Enter the longer EMA interval: </label>
-                    <Field name="highEMAInterval" type="number" className='field' />
+                    <Field name="highEMAInterval" type="number" className={styles.field} />
 
                     <label htmlFor="interval">Interval Period</label>
-                    <Field name="interval" as="select" className='field'>
+                    <Field name="interval" as="select" className={styles.field}>
                         <option value="daily">Daily</option>
                         <option value="weekly">Weekly</option>
                     </Field>
@@ -238,35 +238,35 @@ class ChartMain extends Component {
         
         if (this.state.showChart) {
             chartDisplay = <AnyChart
-                id='chartContainer'
+                id={styles.chartContainer}
                 width={800}
                 height={600}
                 instance={chart}
                 title={`100-Day ${this.state.ticker} chart with EMA's of ${this.state.emaLow} & ${this.state.emaHigh}`}
             />;
         }
-
+ 
         return (
             <Wrapper>
                 {this.state.modal ? <Modal title='Success!' message={`You bought ${this.state.ticker} stock for $${this.state.equityTable[this.state.equityTable.length-1]['price']}`} onConfirm={this.handleModal}></Modal> : null}
-                <div id='chartMain' >
-                    <div className='chartContent'>
-                        <div className='symbolFormContainer'>
+                <div id={styles.chartMain} >
+                    <div className={styles.chartContent}>
+                        <div className={styles.symbolFormContainer}>
                             {!this.state.showChart ? formSymbol : null}    
                         </div>
-                        <div className='companyResultsContainer'>
+                        <div className={styles.companyResultsContainer}>
                             {this.state.companyResults && !this.state.showChart ? symbolResults : null}
                         </div>
-                        <div className='chartFormContainer'>
+                        <div className={styles.chartFormContainer}>
                             {this.state.showForm  ? formCustom : null}
                         </div>
-                        <div className='chartContainer'>
+                        <div className={styles.chartContainer}>
                             {chartDisplay}
                         </div>
                     </div>
-                    <div className='chartNav'>
-                        <h2 className='introTitle'>Welcome to Chart the Market</h2>
-                        <p className='intro'>On the left either search for a stock symbol by company name or if you already know the symbol, then enter it, pick your moving averages (default is 10 and 20 respectively) and click Chart.</p>
+                    <div className={styles.chartNav}>
+                        <h2 className={styles.introTitle}>Welcome to Chart the Market</h2>
+                        <p className={styles.intro}>On the left either search for a stock symbol by company name or if you already know the symbol, then enter it, pick your moving averages (default is 10 and 20 respectively) and click Chart.</p>
                         <Button type="submit"  clicked={event => this.props.history.push('/investments')} >Your portfolio</Button>
                         {this.state.showChart ? <Button type="submit" clicked={this.buyHandler} >Buy this stock!</Button> : null}
                         <Button type="submit" clicked={this.clearSearchHandler} >Reset</Button>
