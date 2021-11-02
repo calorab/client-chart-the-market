@@ -81,7 +81,7 @@ class ChartMain extends Component {
             headers: {
                 'Content-Type': 'application/json'
             },
-        })
+        }).catch(err => console.log(err))
 
         let fullData = await response.json()
         let priceData = fullData["Time Series (Daily)"];
@@ -126,10 +126,10 @@ class ChartMain extends Component {
                 value: value,
                 userId: user
             })
-        })
+        }).catch(err => console.log(err))
 
         const data = await response.json();
-        data ? console.log("Data") : console.log("no Data");
+        // data ? console.log("Data") : console.log("no Data");
         
         this.setState({modal: true})
     }

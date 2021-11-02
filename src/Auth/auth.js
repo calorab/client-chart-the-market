@@ -35,7 +35,7 @@ class Auth extends Component {
                 email: event.target.email.value, 
                 password: event.target.password.value
             })
-        });
+        }).catch(err => console.log(err))
 
         let data = await response.json().catch(err => console.log(err));
         

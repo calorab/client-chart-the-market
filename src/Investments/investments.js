@@ -37,7 +37,7 @@ class Investments extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({userId: sessionStorage.getItem('userId')})
-        })
+        }).catch(err => console.log(err))
 
         const data = await response.json();
         this.setState({investmentsArray: data})
@@ -52,10 +52,10 @@ class Investments extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({userId: sessionStorage.getItem('userId'), investmentId: id})
-        })
+        }).catch(err => console.log(err))
 
         const data = await response.json();
-        data ? console.log("Data") : console.log("no Data");
+        // data ? console.log("Data") : console.log("no Data");
        
         const latestPriceEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/saleprice'
         let latestPrice = await fetch(latestPriceEndpoint, {
@@ -64,7 +64,7 @@ class Investments extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({symbol: symbol})
-        })
+        }).catch(err => console.log(err))
 
         let lastClose = await latestPrice.json();
         
@@ -89,10 +89,10 @@ class Investments extends Component {
                 sellPrice: this.state.saleData['price'],
                 userId: sessionStorage.getItem('userId')
             })
-        })
+        }).catch(err => console.log(err))
 
         const result = await postSale.json();
-        console.log('The result of sale POST!!!!!: ', result)
+        // console.log('The result of sale POST!!!!!: ', result)
 
         
         let {roi, profit} = investmentMath(purchasePrice, this.state.saleData['price'])
@@ -121,10 +121,10 @@ class Investments extends Component {
 
         const data = await response.json();
        
-        console.log("sales Handler post-response.json: ", data) ;
+        // console.log("sales Handler post-response.json: ", data) ;
 
         this.statsHandler(data);
-        console.log('statsHandler state values (return/profit): ', this.state.toDateReturn, this.state.toDateProfit);
+        // console.log('statsHandler state values (return/profit): ', this.state.toDateReturn, this.state.toDateProfit);
     }
 
     statsHandler = (arr) => {
