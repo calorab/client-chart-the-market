@@ -1,9 +1,8 @@
-/* Is the below necessary?  */
-/* div {
+div {
     display: flex;
-} */
+}
 
-div#chartMain {
+#chartMain {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap ;

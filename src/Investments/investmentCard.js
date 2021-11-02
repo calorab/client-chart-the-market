@@ -13,5 +13,5 @@ const investmentCard = (props) => {
         </div>
     ) 
 };
-
+ 
 export default investmentCard;
