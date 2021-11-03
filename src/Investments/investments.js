@@ -8,6 +8,14 @@ import TrackRecord from './trackRecord';
 import styles from './investments.module.css'
 require('dotenv').config(); // CALEB dig into this for endpoint simplicity
 
+const investmentMainStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap' ,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+};
+
 class Investments extends Component {
     state = {
         investmentsArray: [],
@@ -182,7 +190,7 @@ class Investments extends Component {
         return (
             <Wrapper>
                 {this.state.modal ? <Modal title={`${this.state.soldSymbol} Stock Sold!`} message={sellMessage} onConfirm={this.handleModal}></Modal> : null}
-                <div className={styles.investMain}>
+                <div style={investmentMainStyle}>
                     <div className={styles.investResults}>
                         <div className={styles.title}>
                             <h5>Your Portfolio</h5>

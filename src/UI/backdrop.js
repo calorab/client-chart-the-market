@@ -1,8 +1,18 @@
 import React from 'react';
 import styles from '../UI/backdrop.module.css';
 
+const backdropStyle = {
+    width: '100%',
+    height: '100%',
+    position: 'fixed',
+    zIndex: '100',
+    left: '0',
+    top: '0',
+    backgroundColor: 'rgba(0, 0, 0, 0.651)',
+};
+
 const backdrop = (props) => (
-    <div className={styles.backdrop} onClick={props.clicked}></div>
+    <div style={backdropStyle} onClick={props.clicked}></div>
 );
  
 export default backdrop;
