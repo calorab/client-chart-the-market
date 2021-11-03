@@ -3,7 +3,7 @@ import React from 'react';
 import Backdrop from './backdrop';
 import Button from './button';
 import Wrapper from '../utility/Wrapper/wrapper'
-import styles from './modal.module.css';
+import styles from '../UI/modal.module.css';
  
 const Modal = (props) => {
   return (

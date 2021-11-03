@@ -23,7 +23,8 @@ class ChartMain extends Component {
         equityTable: [],
         showChart: false,
         showForm: true,
-        modal: false
+        modal: false,
+        untouched: false
     }   
 
     clearSearchHandler = () => {
@@ -35,7 +36,9 @@ class ChartMain extends Component {
             emaHigh: 0,
             equityTable: [],
             showChart: false,
-            showForm: true
+            showForm: true,
+            modal: false,
+            touched: false
         })
     }
 
@@ -73,7 +76,13 @@ class ChartMain extends Component {
             EMALow = event.target.lowEMAInterval.value;
             EMAHigh = event.target.highEMAInterval.value;
             interval = event.target.interval.value;
-        };        
+        };  
+        
+        // if (!symbol) {
+        //     this.setState({untouched: true});
+        //     console.log("PriceHandler stopped...")
+        //     return;
+        // }
 
         let priceEndpoint = "https://pure-ridge-03326.herokuapp.com/chartdata?symbol=" + symbol + "&interval=" + interval
 
@@ -102,7 +111,7 @@ class ChartMain extends Component {
             companyResults: [],
             showForm: false
         })
-
+        console.log("EMALOW and EMAHIGH: ", EMALow, EMAHigh)
         return;
     }
 
@@ -155,22 +164,22 @@ class ChartMain extends Component {
         const formSymbol = 
             <Formik
                 initialValues={{tickerSymbol: ""}}
-                validationSchema={Yup.object({tickerSymbol: Yup.string().required('Required')})}
+                validationSchema={Yup.object({tickerSymbol: Yup.string().required('Symbol Required')})}
                 onSubmit={() => {
                     this.tickerSearchHandler()
                 }}
             >
                 <Form onSubmit={this.tickerSearchHandler} className={styles.symbolForm}>
-                    <label>Search for a Ticker Symbol</label>
+                    <label>Search for a Stock Symbol</label>
                     <Field name="tickerSymbol" type="text" />
-                    <ErrorMessage name="tickerSymbol" />
-                    <Button type="submit">Search</Button>
+                    <ErrorMessage name="tickerSymbol" render={msg => <div className={styles.error}>{msg}</div>}/>
+                    <Button type="submit" disabled={!Formik.dirty}>Search</Button>
                 </Form>
             </Formik>;
 
         const formCustom = 
             <Formik
-                initialValues={{equitySymbol: "", lowEMAInterval: '', highEMAInterval: '', interval: "daily"}}
+                initialValues={{equitySymbol: "", lowEMAInterval: 10, highEMAInterval: 20, interval: "daily"}}
                 validationSchema={Yup.object(
                     {
                         equitySymbol: Yup.string().required('Symbol Name Required'), 
@@ -178,11 +187,12 @@ class ChartMain extends Component {
                         highEMAInterval: Yup.number().max(500, "No values over 500").min(5, "No values less than 5"),
                     })}
                 onSubmit={() => {
-                    this.priceHandler()
+                    this.priceHandler();
                 }}
             >
                 <Form onSubmit={this.priceHandler} className={styles.chartForm}>
-                    <ErrorMessage name="equitySymbol" className={styles.error}/>
+                <ErrorMessage name="equitySymbol" render={msg => <div className={styles.error}>{msg}</div>} />
+                
                     
                     <label htmlFor="equitySymbol">Already know the symbol?</label>
                     <Field name="equitySymbol" type="text" className={styles.field}/>
@@ -199,7 +209,7 @@ class ChartMain extends Component {
                         <option value="weekly">Weekly</option>
                     </Field>
     
-                    <Button type="submit">Chart</Button>
+                    <Button type="submit" disabled={!Formik.dirty}>Chart it!</Button>
                 </Form>
             </Formik>;
 
@@ -258,6 +268,7 @@ class ChartMain extends Component {
                             {this.state.companyResults && !this.state.showChart ? symbolResults : null}
                         </div>
                         <div className={styles.chartFormContainer}>
+                            {this.state.untouched ? <div className={styles.error}>Symbol Name Required</div>: null}
                             {this.state.showForm  ? formCustom : null}
                         </div>
                         <div className={styles.chartContainer}>
@@ -266,7 +277,7 @@ class ChartMain extends Component {
                     </div>
                     <div className={styles.chartNav}>
                         <h2 className={styles.introTitle}>Welcome to Chart the Market</h2>
-                        <p className={styles.intro}>On the left either search for a stock symbol by company name or if you already know the symbol, then enter it, pick your moving averages (default is 10 and 20 respectively) and click Chart.</p>
+                        <p className={styles.intro}>On the left either search for a stock symbol by company name or if you already know the symbol, then enter it, pick your moving averages and click Chart.</p>
                         <Button type="submit"  clicked={event => this.props.history.push('/investments')} >Your portfolio</Button>
                         {this.state.showChart ? <Button type="submit" clicked={this.buyHandler} >Buy this stock!</Button> : null}
                         <Button type="submit" clicked={this.clearSearchHandler} >Reset</Button>
