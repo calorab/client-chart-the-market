@@ -5,7 +5,7 @@ import styles from './investmentCard.module.css';
 const investmentCard = (props) => {
 
     return (
-        <div id={styles.investmentCard}>
+        <div className={styles.investmentCard}>
             <h3 className={styles.cardSymbol}>{props.children}</h3>
             <h5>Purchased on: {props.purchaseDate}</h5>
             <h5>Purchased at: ${props.purchasePrice}</h5>
