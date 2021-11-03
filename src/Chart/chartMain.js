@@ -48,7 +48,7 @@ class ChartMain extends Component {
         this.setState({submitting: true, showChart: false, untouched: false})
         
         let keyword = event.target.tickerSymbol.value;
-        
+
         if (!keyword) {
             this.setState({untouched: true});
             console.log("TickerSearchHandler stopped...")
@@ -185,7 +185,7 @@ class ChartMain extends Component {
 
         const formCustom = 
             <Formik
-                initialValues={{equitySymbol: "", lowEMAInterval: '', highEMAInterval: '', interval: "daily"}}
+                initialValues={{equitySymbol: "", lowEMAInterval: 10, highEMAInterval: 20, interval: "daily"}}
                 validationSchema={Yup.object(
                     {
                         equitySymbol: Yup.string().required('Symbol Name Required'), 

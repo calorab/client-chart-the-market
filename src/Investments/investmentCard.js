@@ -2,10 +2,19 @@ import React from 'react';
 import Button from '../UI/button';
 import styles from './investmentCard.module.css';
 
-const investmentCard = (props) => {
+const investmentCardStyle = {
+    margin: '20px auto',
+    textAlign: 'center',
+    boxShadow: '0 2px 3px #ccc',
+    border: '1px solid #eee',
+    borderRadius: '10px',
+    padding: '10px',
+};
 
+const investmentCard = (props) => {
+// className={styles.investmentCard}
     return (
-        <div className={styles.investmentCard}>
+        <div style={investmentCardStyle}>
             <h3 className={styles.cardSymbol}>{props.children}</h3>
             <h5>Purchased on: {props.purchaseDate}</h5>
             <h5>Purchased at: ${props.purchasePrice}</h5>
@@ -13,5 +22,5 @@ const investmentCard = (props) => {
         </div>
     ) 
 };
- 
+  
 export default investmentCard;
