@@ -38,16 +38,21 @@ class ChartMain extends Component {
             showChart: false,
             showForm: true,
             modal: false,
-            touched: false
+            untouched: false
         })
     }
 
     tickerSearchHandler = async event => {
         event.preventDefault()
 
-        this.setState({submitting: true, showChart: false})
+        this.setState({submitting: true, showChart: false, untouched: false})
         
         let keyword = event.target.tickerSymbol.value;
+        if (!keyword) {
+            this.setState({untouched: true});
+            console.log("TickerSearchHandler stopped...")
+            return;
+        }
         let apiEndpoint = "https://pure-ridge-03326.herokuapp.com/symbol/stocksymbol?keyword=" + keyword
 
         let response = await fetch(apiEndpoint, {
@@ -65,7 +70,7 @@ class ChartMain extends Component {
 
     priceHandler = async (event, listSymbol) => {
         event.preventDefault();
-        this.setState({submitting: true, showchart: false});
+        this.setState({submitting: true, showchart: false, untouched: false});
 
         let symbol = listSymbol;
         let EMAHigh = 20;
@@ -78,11 +83,11 @@ class ChartMain extends Component {
             interval = event.target.interval.value;
         };  
         
-        // if (!symbol) {
-        //     this.setState({untouched: true});
-        //     console.log("PriceHandler stopped...")
-        //     return;
-        // }
+        if (!symbol) {
+            this.setState({untouched: true});
+            console.log("PriceHandler stopped...")
+            return;
+        }
 
         let priceEndpoint = "https://pure-ridge-03326.herokuapp.com/chartdata?symbol=" + symbol + "&interval=" + interval
 
@@ -173,13 +178,13 @@ class ChartMain extends Component {
                     <label>Search for a Stock Symbol</label>
                     <Field name="tickerSymbol" type="text" />
                     <ErrorMessage name="tickerSymbol" render={msg => <div className={styles.error}>{msg}</div>}/>
-                    <Button type="submit" disabled={!Formik.dirty}>Search</Button>
+                    <Button type="submit" >Search</Button>
                 </Form>
             </Formik>;
 
         const formCustom = 
             <Formik
-                initialValues={{equitySymbol: "", lowEMAInterval: 10, highEMAInterval: 20, interval: "daily"}}
+                initialValues={{equitySymbol: "", lowEMAInterval: '', highEMAInterval: '', interval: "daily"}}
                 validationSchema={Yup.object(
                     {
                         equitySymbol: Yup.string().required('Symbol Name Required'), 
@@ -209,7 +214,7 @@ class ChartMain extends Component {
                         <option value="weekly">Weekly</option>
                     </Field>
     
-                    <Button type="submit" disabled={!Formik.dirty}>Chart it!</Button>
+                    <Button type="submit" >Chart it!</Button>
                 </Form>
             </Formik>;
 
@@ -262,13 +267,14 @@ class ChartMain extends Component {
                 <div id={styles.chartMain} >
                     <div className={styles.chartContent}>
                         <div className={styles.symbolFormContainer}>
+                            {this.state.untouched ? <div className={styles.error}>Symbol Required</div>: null}
                             {!this.state.showChart ? formSymbol : null}    
                         </div>
                         <div className={styles.companyResultsContainer}>
                             {this.state.companyResults && !this.state.showChart ? symbolResults : null}
                         </div>
                         <div className={styles.chartFormContainer}>
-                            {this.state.untouched ? <div className={styles.error}>Symbol Name Required</div>: null}
+                            {this.state.untouched ? <div className={styles.error}>Symbol Required</div>: null}
                             {this.state.showForm  ? formCustom : null}
                         </div>
                         <div className={styles.chartContainer}>
