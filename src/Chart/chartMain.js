@@ -57,8 +57,8 @@ class ChartMain extends Component {
             this.setState({untouched: true});
             console.log("TickerSearchHandler stopped...")
             return;
-        } // https://pure-ridge-03326.herokuapp.com
-        let apiEndpoint = "http://localhost:8000/symbol/stocksymbol?keyword=" + keyword
+        } // 
+        let apiEndpoint = "https://pure-ridge-03326.herokuapp.com/symbol/stocksymbol?keyword=" + keyword
 
         let response = await fetch(apiEndpoint, {
             headers: {
@@ -97,8 +97,8 @@ class ChartMain extends Component {
             console.log("PriceHandler stopped...")
             return;
         }
-// https://pure-ridge-03326.herokuapp.com
-        let priceEndpoint = "http://localhost:8000/chartdata?symbol=" + symbol + "&interval=" + interval
+// 
+        let priceEndpoint = "https://pure-ridge-03326.herokuapp.com/chartdata?symbol=" + symbol + "&interval=" + interval
 
         let response = await fetch(priceEndpoint, {
             headers: {
