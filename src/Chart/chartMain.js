@@ -24,7 +24,9 @@ class ChartMain extends Component {
         showChart: false,
         showForm: true,
         modal: false,
-        untouched: false
+        untouched: false,
+        searchError: false,
+        chartError: false
     }   
 
     clearSearchHandler = () => {
@@ -38,14 +40,16 @@ class ChartMain extends Component {
             showChart: false,
             showForm: true,
             modal: false,
-            untouched: false
+            untouched: false,
+            searchError: false,
+            chartError: false
         })
     }
 
     tickerSearchHandler = async event => {
         event.preventDefault()
 
-        this.setState({submitting: true, showChart: false, untouched: false})
+        this.setState({submitting: true, showChart: false, untouched: false, searchError: false})
         
         let keyword = event.target.tickerSymbol.value;
 
@@ -53,8 +57,8 @@ class ChartMain extends Component {
             this.setState({untouched: true});
             console.log("TickerSearchHandler stopped...")
             return;
-        }
-        let apiEndpoint = "https://pure-ridge-03326.herokuapp.com/symbol/stocksymbol?keyword=" + keyword
+        } // https://pure-ridge-03326.herokuapp.com
+        let apiEndpoint = "http://localhost:8000/symbol/stocksymbol?keyword=" + keyword
 
         let response = await fetch(apiEndpoint, {
             headers: {
@@ -64,6 +68,10 @@ class ChartMain extends Component {
 
         const data = await response.json();
 
+        if (data.bestMatches.length === 0) {
+            this.setState({searchError: true});
+            return;
+        } 
         const matches = arrayMapping(data.bestMatches)
 
         this.setState({companyResults: matches, submitting: false, showForm: false})
@@ -71,7 +79,7 @@ class ChartMain extends Component {
 
     priceHandler = async (event, listSymbol) => {
         event.preventDefault();
-        this.setState({submitting: true, showchart: false, untouched: false});
+        this.setState({submitting: true, showchart: false, untouched: false, chartError: false});
 
         let symbol = listSymbol;
         let EMAHigh = 20;
@@ -89,8 +97,8 @@ class ChartMain extends Component {
             console.log("PriceHandler stopped...")
             return;
         }
-
-        let priceEndpoint = "https://pure-ridge-03326.herokuapp.com/chartdata?symbol=" + symbol + "&interval=" + interval
+// https://pure-ridge-03326.herokuapp.com
+        let priceEndpoint = "http://localhost:8000/chartdata?symbol=" + symbol + "&interval=" + interval
 
         let response = await fetch(priceEndpoint, {
             headers: {
@@ -99,6 +107,10 @@ class ChartMain extends Component {
         }).catch(err => console.log(err))
 
         let fullData = await response.json()
+        if (fullData['Error Message']) {
+            this.setState({chartError: true})
+            return;
+        }
         let priceData = fullData["Time Series (Daily)"];
         if (!fullData["Time Series (Daily)"]) {
             priceData = fullData['Weekly Adjusted Time Series']; 
@@ -269,6 +281,7 @@ class ChartMain extends Component {
                     <div className={styles.chartContent}>
                         <div className={styles.symbolFormContainer}>
                             {this.state.untouched ? <div className={styles.error}>Symbol Required</div>: null}
+                            {this.state.searchError ? <div className={styles.error}>No Results found</div>: null}
                             {!this.state.showChart ? formSymbol : null}    
                         </div>
                         <div className={styles.companyResultsContainer}>
@@ -276,6 +289,8 @@ class ChartMain extends Component {
                         </div>
                         <div className={styles.chartFormContainer}>
                             {this.state.untouched ? <div className={styles.error}>Symbol Required</div>: null}
+                            { this.state.chartError ? <div className={styles.error}>Symbol not found</div>: null}
+                           
                             {this.state.showForm  ? formCustom : null}
                         </div>
                         <div className={styles.chartContainer}>

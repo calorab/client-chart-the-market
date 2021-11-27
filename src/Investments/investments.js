@@ -193,7 +193,7 @@ class Investments extends Component {
                 <div style={investmentMainStyle}>
                     <div className={styles.investResults}>
                         <div className={styles.title}>
-                            <h5>Your Portfolio</h5>
+                            <h5>Your Portfolio</h5> 
                         </div>
                         {myInvestmentResults}
                     </div>
