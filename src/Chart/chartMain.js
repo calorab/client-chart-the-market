@@ -46,7 +46,7 @@ const ChartMain = (props) => {
         setUntouched(false);
         setSearchError(false);
         
-        let keyword = event.target.tickerSymbol.value;
+        let keyword = event.target.tickerSymbol.value.toUpperCase();
 
         if (!keyword) {
             setUntouched(true);
@@ -71,7 +71,7 @@ const ChartMain = (props) => {
         setCompanyResults(matches);
         setShowForm(false);
     }
-
+// 
     const priceHandler = async (event, listSymbol) => {
         event.preventDefault();
         setShowChart(false);
@@ -83,7 +83,7 @@ const ChartMain = (props) => {
         let EMALow = 10;
         let interval = 'daily';
         if (!listSymbol) {
-            symbol = event.target.equitySymbol.value;
+            symbol = event.target.equitySymbol.value.toUpperCase();
             EMALow = event.target.lowEMAInterval.value;
             EMAHigh = event.target.highEMAInterval.value;
             interval = event.target.interval.value;
@@ -114,8 +114,7 @@ const ChartMain = (props) => {
         }
         
         const dataTable = dataMapping(priceData);
-
-        setTicker(fullData["Meta Data"]["2. Symbol"])
+        setTicker(fullData["Meta Data"]["2. Symbol"]);
         setCompanyResults([]);
         setEmaLow(EMALow);
         setEmaHigh(EMAHigh);
