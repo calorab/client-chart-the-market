@@ -27,7 +27,6 @@ const Investments = (props) => {
     const [toDateReturn,setToDateReturn] = useState(0);
     const [toDateProfit,setToDateProfit] = useState(0);
 
-// use effect
     useEffect(() => {
         if (!sessionStorage.getItem('userId') && props.history) {
             props.history.push('/auth');
@@ -48,7 +47,6 @@ const Investments = (props) => {
 
         const data = await response.json();
         setInvestmentsArray(data);
-        console.log("DATA: ",data)
     }
 
     const sellHandler = async (id, purchasePrice, symbol,  event) => {
@@ -75,8 +73,6 @@ const Investments = (props) => {
 
         let lastClose = await latestPrice.json();
         // CALEB - handle 'non-errors' here!!!!!!!!!!!!
-        // 
-        console.log("lastClose at sale: ",lastClose)
         
         const allSaleEndpoint = 'https://pure-ridge-03326.herokuapp.com/sale/'
 
@@ -96,8 +92,6 @@ const Investments = (props) => {
         }).catch(err => console.log(err))
 
         const result = await postSale.json();
-        console.log('The result of sale POST: ', result)
-
         
         let {roi, profit} = investmentMath(purchasePrice, lastClose['price'])
         setSoldSymbol(symbol);
@@ -124,7 +118,6 @@ const Investments = (props) => {
     }
 
     const statsHandler = (arr) => {
-        console.log("the array: ", arr)
         let dollar = 0;
         let percentage = 0;
         // CALEB - check math on adding percentages - is this the right output??
@@ -133,8 +126,6 @@ const Investments = (props) => {
             dollar += profit;
             percentage += roi;
         }
-        
-        console.log('$$ && %%', dollar, percentage);
         setToDateReturn(percentage);
         setToDateProfit(dollar);
     };
