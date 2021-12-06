@@ -50,7 +50,6 @@ const ChartMain = (props) => {
 
         if (!keyword) {
             setUntouched(true);
-            console.log("TickerSearchHandler stopped...")
             return;
         } // 
         let apiEndpoint = "https://pure-ridge-03326.herokuapp.com/symbol/stocksymbol?keyword=" + keyword
@@ -91,7 +90,6 @@ const ChartMain = (props) => {
         
         if (!symbol) {
             setUntouched(true);
-            console.log("PriceHandler stopped...")
             return;
         }
 // 
@@ -121,8 +119,6 @@ const ChartMain = (props) => {
         setEquityTable(dataTable);
         setShowChart(true);
         setShowForm(false);
-        
-        console.log("EMALOW and EMAHIGH: ", EMALow, EMAHigh)
         return;
     }
 
@@ -149,7 +145,6 @@ const ChartMain = (props) => {
         }).catch(err => console.log(err))
 
         const data = await response.json();
-        // data ? console.log("Data") : console.log("no Data");
         setModal(true);
     }
 
