@@ -5,9 +5,9 @@ Chart the Market is an app designed for users who want to test out investing ide
 ## Screenshots
 Home Page View | Login Page View
 :-------------------------:|:-------------------------:
-![Home Page]()  |![Home Page - Chart]()
+![Home Page](https://github.com/calorab/client-chart-the-market/blob/8350fddbf4ce8b86c5eb1d58a0d0e71c8b3b75d1/Screen%20Shot%202021-12-06%20at%205.04.15%20PM.png)  |![Home Page - Chart](https://github.com/calorab/client-chart-the-market/blob/8350fddbf4ce8b86c5eb1d58a0d0e71c8b3b75d1/Screen%20Shot%202021-12-06%20at%205.04.41%20PM.png)
 User Dashboard - Search Artist page| User Dashboard - Followed Artists page
-![User Portfolio]() |![Login Page]()
+![User Portfolio](https://github.com/calorab/client-chart-the-market/blob/8350fddbf4ce8b86c5eb1d58a0d0e71c8b3b75d1/Screen%20Shot%202021-12-06%20at%205.05.51%20PM.png) |![Login Page](https://github.com/calorab/client-chart-the-market/blob/8350fddbf4ce8b86c5eb1d58a0d0e71c8b3b75d1/Screen%20Shot%202021-12-06%20at%205.05.16%20PM.png)
 
 
 ## User Cases
