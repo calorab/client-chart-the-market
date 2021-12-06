@@ -4,8 +4,9 @@
     align-items: center;
     justify-content: space-around;
     margin-top: 150px;
+    
 }
-
+ 
 .authForm {
     display: flex;
     flex-flow: column nowrap;
@@ -14,25 +15,29 @@
     margin: 20px auto;
     padding-top: 20px;
     width: 125%;
-    box-shadow: 0 2px 3px #ccc;
-    border: 1px solid #eee;
+    box-shadow: 0 2px 3px rgb(0, 0, 0);
     padding: 10px;
     border-radius: 10px;
     margin-left: 15px;
     margin-right: 15px;
+    background-color: rgb(128, 128, 128);
 }
 
 .authIntro {
     display: flex;
     flex-flow: column nowrap;
     align-items: space-around;
+    padding: 20px;
+    background-color: rgb(128, 128, 128);
+    box-shadow: 0 2px 3px #ccc;
+    border-radius: 10px;
 }
 
 input {
     margin: 10px;
     outline: none;
     border: 1px solid #ccc;
-    background-color: white;
+    background-color: rgb(190, 190, 190);
     font: inherit;
     padding: 6px 10px;
     /* display: block; */
@@ -40,7 +45,7 @@ input {
 }
 
 .lineAuth {
-    border-right: 3px solid black;
+    border-right: 3px solid #76048d;
     height: 350px;
     margin-left: 50px;
     /* margin-bottom: 50px; */

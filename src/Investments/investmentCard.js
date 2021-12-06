@@ -5,14 +5,13 @@ import styles from './investmentCard.module.css';
 const investmentCardStyle = {
     margin: '20px auto',
     textAlign: 'center',
-    boxShadow: '0 2px 3px #ccc',
-    border: '1px solid #eee',
+    boxShadow: '0 2px 3px rgb(0, 0, 0)',
     borderRadius: '10px',
     padding: '10px',
+    backgroundColor: 'rgb(128, 128, 128)'
 };
 
 const investmentCard = (props) => {
-// className={styles.investmentCard}
     return (
         <div style={investmentCardStyle}>
             <h3 className={styles.cardSymbol}>{props.children}</h3>

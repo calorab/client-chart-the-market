@@ -21,9 +21,9 @@ You can access a working prototype of the app here: [Chart-the-Market - Beta]( h
 
 ## Functionality
 The app's functionality includes:
-* The User has the ability to search for stock symbols on company names
+* The User has the ability to search for stock symbols based on company names
 * The User can then display a chart for the stock symbol
-* The User get a chart in both end-of-day and end-of-week proces going back as far as 20 years
+* The User get a chart in both end-of-day and end-of-week prices going back as far as 20 years
 * The User can "purchase" stocks and see that stock in their portfolio page
 * Lastly the user can "sell" a stock in their portfolio and track their results (ROI(%) and Profit($))
 

@@ -159,7 +159,7 @@ const ChartMain = (props) => {
 
     const symbolResults = companyResults.map(element => {
         return <div key={element["1. symbol"]}>
-                <h5>{element["1. symbol"]}</h5>
+                <h3>{element["1. symbol"]}</h3>
                 <p>{element["2. name"]}</p>
                 <Button type='submit' clicked={event => priceHandler(event, element["1. symbol"])}>Chart it</Button>
                 </div>
@@ -175,7 +175,7 @@ const ChartMain = (props) => {
         >
             <Form onSubmit={tickerSearchHandler} className={styles.symbolForm}>
                 <label>Search for a Stock Symbol</label>
-                <Field name="tickerSymbol" type="text" />
+                <Field name="tickerSymbol" type="text" className={styles.field}/>
                 <ErrorMessage name="tickerSymbol" render={msg => <div className={styles.error}>{msg}</div>}/>
                 <Button type="submit" >Search</Button>
             </Form>
@@ -236,6 +236,11 @@ const ChartMain = (props) => {
     // ----- end technical indicators ---
     series.name(`${ticker}`);
     chart.container('chartContainer');
+
+    // --- Styling ---
+    chart.background().fill('rgb(128, 128, 128');
+    chart.background().cornerType('round')
+    chart.background().corners('10')
     // chart.draw();
 
         // {/* ChartWindow component needed for the graph? 

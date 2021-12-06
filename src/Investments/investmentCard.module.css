@@ -1,11 +1,12 @@
-div.investmentCard {
+/* div.investmentCard {
     margin: 20px auto;
     text-align: center;
+    background-color: rgb(128, 128, 128);
     box-shadow: 0 2px 3px #ccc;
     border: 1px solid #eee;
     border-radius: 10px;
     padding: 10px;
-};
+}; */
 
 div.cardSymbol {
     font-weight: 700;

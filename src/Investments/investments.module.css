@@ -8,7 +8,8 @@
 
 .title { 
     width: 100%;
-    font-size: 1.8rem;
+    font-size: 2.9rem;
+    color: #76048d;
 }
 
 .investResults {
@@ -19,22 +20,26 @@
 }
 
 .line {
-    border-top: 3px solid black;
+    border-top: 3px solid #76048d;
     width: 350px;
     margin-top: 50px;
     margin-bottom: 50px;
 }
 
 .investNav {
-    width: 80%;
+    width: 40%;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
     justify-content: center;
+    background-color: rgb(128, 128, 128);
+    box-shadow: 0 2px 3px #ccc;
+    border-radius: 10px;
+    padding: 20px;
 }
 
 button:hover {
-    color: royalblue;
+    color: rgb(255, 255, 255);
 }
 
 button {

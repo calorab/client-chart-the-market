@@ -27,7 +27,7 @@ const Modal = (props) => {
           <p>{props.message}</p>
         </div>
         <footer className={styles.actions}>
-          <Button clicked={props.onConfirm}>Okay</Button>
+          <Button clicked={props.onConfirm} className={styles.okayButton}>Okay</Button>
         </footer>
       </div>
     </Wrapper>

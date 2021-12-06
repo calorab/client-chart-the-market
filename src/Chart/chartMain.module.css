@@ -16,7 +16,16 @@
     flex-flow: column wrap;
     justify-content: center;
     margin: 10px;
-    /* box-shadow: 0 2px 3px #ccc; */
+}
+
+.companyResultsContainer {
+    padding: 20px;
+}
+
+.chartContent {
+    background-color: rgb(128, 128, 128);
+    box-shadow: 0 2px 3px #ccc;
+    border-radius: 10px;
 }
 
 .symbolForm {
@@ -25,7 +34,7 @@
 }
 
 .chartFormContainer {
-    margin-top: 50px;
+    margin-top: -48px;
 }
 
 .introTitle {
@@ -38,11 +47,15 @@
 
 .chartNav {
     width: 300px;
-    height: 450px;
+    height: 495px;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
     justify-content: center;
+    background-color: rgb(128, 128, 128);
+    padding: 20px;
+    box-shadow: 0 2px 5px rgb(0, 0, 0);
+    border-radius: 10px;
 }
 
 .error {
@@ -51,6 +64,7 @@
 
 .menuButton {
     margin: 10px;
+    background-color: rgb(190, 190, 190);
 };
 
 .symbolFormContainer {
@@ -66,5 +80,6 @@ input, .field {
     margin-top: 10px;
     margin-bottom: 20px;
     max-width: 125px;
+    background-color: rgb(190, 190, 190);
 };
 
