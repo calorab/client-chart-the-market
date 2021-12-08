@@ -1,8 +1,6 @@
 import React from 'react';
-
 import Backdrop from './backdrop';
 import Button from './button';
-import Wrapper from '../utility/Wrapper/wrapper'
 import styles from '../UI/modal.module.css';
 
 const modalStyle = {
@@ -17,7 +15,7 @@ const modalStyle = {
  
 const Modal = (props) => {
   return (
-    <Wrapper>
+    <>
       <Backdrop />
       <div style={modalStyle}>
         <header className={styles.header}>
@@ -30,7 +28,7 @@ const Modal = (props) => {
           <Button clicked={props.onConfirm} className={styles.okayButton}>Okay</Button>
         </footer>
       </div>
-    </Wrapper>
+    </>
   );
 };
 

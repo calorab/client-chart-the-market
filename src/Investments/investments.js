@@ -3,7 +3,6 @@ import InvestmentCard from './investmentCard'
 import investmentMath from '../utility/investmentMath';
 import Button from '../UI/button';
 import Modal from '../UI/modal';
-import Wrapper from '../utility/Wrapper/wrapper';
 import TrackRecord from './trackRecord';
 import styles from './investments.module.css'
 require('dotenv').config(); // CALEB dig into this for endpoint simplicity
@@ -169,7 +168,7 @@ const Investments = (props) => {
     const sellMessage = `You have sold ${soldSymbol} stock for $${saleData.price}, netting $${profit.toFixed()} per share or ${roi.toFixed()}%`;
 
     return (
-        <Wrapper>
+        <>
             {modal ? <Modal title={`${soldSymbol} Stock Sold!`} message={sellMessage} onConfirm={handleModal}></Modal> : null}
             <div style={investmentMainStyle}>
                 <div className={styles.investResults}>
@@ -185,7 +184,7 @@ const Investments = (props) => {
                     <Button type='submit' clicked={event => props.history.push('/')}>Return to chart</Button>
                 </div>
             </div>
-        </Wrapper>
+        </>
     )
 }
 

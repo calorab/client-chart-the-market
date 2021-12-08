@@ -4,7 +4,6 @@ import * as Yup from 'yup';
 import dataMapping from '../utility/dataMapping';
 import arrayMapping from '../utility/arrayMapping'
 import Button from '../UI/button'
-import Wrapper from '../utility/Wrapper/wrapper';
 import Modal from '../UI/modal';
 import ChartDisplay from './chartDisplay'
 
@@ -19,7 +18,6 @@ const ChartMain = (props) => {
     const [emaHigh, setEmaHigh] = useState(0);
     const [equityTable, setEquityTable] = useState([]);
     const [showChart, setShowChart] = useState(false);
-    const [showForm, setShowForm] = useState(true);
     const [modal, setModal] = useState(false);
     const [untouched, setUntouched] = useState(false);
     const [searchError, setSearchError] = useState(false);
@@ -66,7 +64,6 @@ const ChartMain = (props) => {
         } 
         const matches = arrayMapping(data.bestMatches)
         setCompanyResults(matches);
-        // setShowForm(false);
     }
  
     const priceHandler = async (event, listSymbol) => {
@@ -90,7 +87,7 @@ const ChartMain = (props) => {
             setUntouched(true);
             return;
         }
-// 
+ 
         let priceEndpoint = "https://pure-ridge-03326.herokuapp.com/chartdata?symbol=" + symbol + "&interval=" + interval
 
         let response = await fetch(priceEndpoint, {
@@ -116,7 +113,6 @@ const ChartMain = (props) => {
         setEmaHigh(EMAHigh);
         setEquityTable(dataTable);
         setShowChart(true);
-        // setShowForm(false);
         return;
     }
 
@@ -223,7 +219,7 @@ const ChartMain = (props) => {
     }
 
     return (
-        <Wrapper>
+        <>
             {modal ? <Modal title='Success!' message={`You bought ${ticker} stock for $${equityTable[equityTable.length-1]['price']}`} onConfirm={handleModal}></Modal> : null}
             <div id={styles.chartMain} >
                 <div className={styles.chartContent}>
@@ -254,7 +250,7 @@ const ChartMain = (props) => {
                     {sessionStorage.getItem('userId') ? <Button clicked={handleLogout} >Logout</Button> : <Button clicked={event => props.history.push('/auth')} >Sign in</Button>}
                 </div>  
             </div>
-        </Wrapper>
+        </>
     )
 }
 
