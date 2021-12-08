@@ -1,16 +1,17 @@
 import React, {useState} from 'react';
 import {Formik, Field, Form, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
-import AnyChart from 'anychart-react';
-import anychart from 'anychart';
+// import AnyChart from 'anychart-react';
+// import anychart from 'anychart';
 import dataMapping from '../utility/dataMapping';
 import arrayMapping from '../utility/arrayMapping'
 import Button from '../UI/button'
 import Wrapper from '../utility/Wrapper/wrapper';
 import Modal from '../UI/modal';
+import ChartDisplay from './chartDisplay'
 
 import styles from './chartMain.module.css';
-require('dotenv').config();
+require('dotenv').config(); // CALEB ???
 
 const ChartMain = (props) => {
 
@@ -216,53 +217,12 @@ const ChartMain = (props) => {
                 <Button type="submit" >Chart it!</Button>
             </Form>
         </Formik>;
-
-    // ----------  Anychart Table and Chart Config ----------
-    // create table
-    let dataTable = anychart.data.table('date');
-    // add data
-    dataTable.addData(equityTable);
-    // mapAs
-    let mapping = dataTable.mapAs({x: 'date', value: 'price'});
-    // create chart
-    let chart = anychart.stock();
-    // add series
-    let series = chart.plot(0).column(mapping);
-
-    // --- technical indicators ---
-    chart.plot(0).ema(mapping, emaLow, "line");
-    chart.plot(0).ema(mapping, emaHigh, "line");
-    chart.plot(1).macd(mapping); 
-    // ----- end technical indicators ---
-    series.name(`${ticker}`);
-    chart.container('chartContainer');
-
-    // --- Styling ---
-    chart.background().fill('rgb(128, 128, 128');
-    chart.background().cornerType('round')
-    chart.background().corners('10')
-    // chart.draw();
-
-        // {/* ChartWindow component needed for the graph? 
-        //     anyChart links for later:
-        //         https://github.com/AnyChart/AnyChart-React/ - React Plugin
-        //         https://api.anychart.com/anychart.charts.Stock#category-specific-settings - Stock funcs for AnyChart
-        //         https://www.alphavantage.co/documentation/ - AlphaVantage api Documentation
-
-        // */}
-        // 
-    // ---------- End Anychart Config ----------
     
     let chartDisplay;
     
     if (showChart) {
-        chartDisplay = <AnyChart
-            id={styles.chartContainer}
-            width={800}
-            height={600}
-            instance={chart}
-            title={`100-Day ${ticker} chart with EMA's of ${emaLow} & ${emaHigh}`}
-        />;
+        chartDisplay = <ChartDisplay dataTable={equityTable} emaLow={emaLow} emaHigh={emaHigh} ticker={ticker}/>
+       
     }
 
     return (
