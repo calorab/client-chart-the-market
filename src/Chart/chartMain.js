@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import {Formik, Field, Form, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
-// import AnyChart from 'anychart-react';
-// import anychart from 'anychart';
 import dataMapping from '../utility/dataMapping';
 import arrayMapping from '../utility/arrayMapping'
 import Button from '../UI/button'
@@ -34,7 +32,6 @@ const ChartMain = (props) => {
         setEmaHigh(0);
         setEquityTable([]);
         setShowChart(false);
-        setShowForm(true);
         setModal(false);
         setUntouched(false);
         setSearchError(false);
@@ -69,9 +66,9 @@ const ChartMain = (props) => {
         } 
         const matches = arrayMapping(data.bestMatches)
         setCompanyResults(matches);
-        setShowForm(false);
+        // setShowForm(false);
     }
-// 
+ 
     const priceHandler = async (event, listSymbol) => {
         event.preventDefault();
         setShowChart(false);
@@ -119,7 +116,7 @@ const ChartMain = (props) => {
         setEmaHigh(EMAHigh);
         setEquityTable(dataTable);
         setShowChart(true);
-        setShowForm(false);
+        // setShowForm(false);
         return;
     }
 
@@ -242,7 +239,7 @@ const ChartMain = (props) => {
                         {untouched ? <div className={styles.error}>Symbol Required</div>: null}
                         {chartError ? <div className={styles.error}>Symbol not found</div>: null}
                         
-                        {showForm  ? formCustom : null}
+                        {!showChart  ? formCustom : null}
                     </div>
                     <div className={styles.chartContainer}>
                         {chartDisplay}

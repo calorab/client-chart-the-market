@@ -47,7 +47,7 @@ const ChartDisplay = props => {
                 height={600}
                 instance={chart}
                 title={`100-Day ${props.ticker} chart with EMA's of ${props.emaLow} & ${props.emaHigh}`}
-            />;
+            />
         </div>
         
     )
