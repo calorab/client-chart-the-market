@@ -25,6 +25,9 @@ const Investments = (props) => {
     const [modal,setModal] = useState(false)
     const [toDateReturn,setToDateReturn] = useState(0);
     const [toDateProfit,setToDateProfit] = useState(0);
+    const [buyData,setBuyData] = useState({});
+    const [modalMessage, setModalMessage] = useState();
+    const [modalTitle, setModalTitle] = useState();
 
     useEffect(() => {
         if (!sessionStorage.getItem('userId') && props.history) {
@@ -48,8 +51,44 @@ const Investments = (props) => {
         setInvestmentsArray(data);
     }
 
+    const buyHandler = async () => {
+        let symbol = sessionStorage.getItem('symbol');
+        let lots =  100;
+        let date = sessionStorage.getItem('date');
+        let value = sessionStorage.getItem('value');
+        let user = sessionStorage.getItem('userId');
+        let investmentEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/add'
+
+        let response = await fetch(investmentEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                symbol: symbol,
+                lots: lots,
+                date: date,
+                value: value,
+                userId: user
+            })
+        }).catch(err => console.log(err))
+
+        const data = await response.json();
+
+        setBuyData({symbol, date, value});
+        sessionStorage.removeItem('symbol');
+        sessionStorage.removeItem('value');
+        sessionStorage.removeItem('date');
+
+        await getInvestmentsHandler();
+        setModalTitle("Success!")
+        setModalMessage(`You bought ${buyData.symbol} stock for $${buyData.value}`)
+        setModal(true);
+    }
+
     const sellHandler = async (id, purchasePrice, symbol,  event) => {
         event.preventDefault();
+        setBuyData({});
         const saleEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/sell';
         let response = await fetch(saleEndpoint, {
             method: 'DELETE',
@@ -98,6 +137,8 @@ const Investments = (props) => {
         setProfit(profit);
         setModal(true);
         setSaleData(lastClose);
+        setModalTitle(`${soldSymbol} Stock Sold!`);
+        setModalMessage(`You have sold ${soldSymbol} stock for $${saleData.price}, netting $${profit.toFixed()} per share or ${roi.toFixed()}%`);
     }
 
     const getSalesHandler = async () => {
@@ -135,6 +176,12 @@ const Investments = (props) => {
 
     const handleModal = () => {
         setModal(false);
+        setModalTitle();
+        setModalMessage();
+    }
+
+    if (sessionStorage.getItem('symbol')) {
+        buyHandler();
     }
 
     let myInvestmentsArray = [];
@@ -165,11 +212,9 @@ const Investments = (props) => {
         });
     }
 
-    const sellMessage = `You have sold ${soldSymbol} stock for $${saleData.price}, netting $${profit.toFixed()} per share or ${roi.toFixed()}%`;
-
     return (
         <>
-            {modal ? <Modal title={`${soldSymbol} Stock Sold!`} message={sellMessage} onConfirm={handleModal}></Modal> : null}
+            {modal ? <Modal title={modalTitle } message={modalMessage} onConfirm={handleModal}></Modal> : null}
             <div style={investmentMainStyle}>
                 <div className={styles.investResults}>
                     <div className={styles.title}>

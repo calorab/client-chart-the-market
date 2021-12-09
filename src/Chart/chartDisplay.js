@@ -4,7 +4,6 @@ import AnyChart from 'anychart-react';
 import anychart from 'anychart';
 
 const ChartDisplay = props => {
-// PROPS: dataTable,emaLow,emaHigh,ticker
 
     // create table
     let dataTable = anychart.data.table('date');
@@ -30,14 +29,14 @@ const ChartDisplay = props => {
     chart.background().cornerType('round')
     chart.background().corners('10')
     // chart.draw();
+    
+        /*  ChartWindow component needed for the graph? 
+            anyChart links for later:
+                https://github.com/AnyChart/AnyChart-React/ - React Plugin
+                https://api.anychart.com/anychart.charts.Stock#category-specific-settings - Stock funcs for AnyChart
+                https://www.alphavantage.co/documentation/ - AlphaVantage api Documentation
 
-        // {/* ChartWindow component needed for the graph? 
-        //     anyChart links for later:
-        //         https://github.com/AnyChart/AnyChart-React/ - React Plugin
-        //         https://api.anychart.com/anychart.charts.Stock#category-specific-settings - Stock funcs for AnyChart
-        //         https://www.alphavantage.co/documentation/ - AlphaVantage api Documentation
-
-        // */}
+        */
 
     return (
         <div className={styles.chartContainer}>

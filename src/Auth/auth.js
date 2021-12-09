@@ -7,8 +7,6 @@ require('dotenv').config(); // CALEB What are we doing with this???
 
 const Auth = props => {
 
-    
-
     useEffect(() => {
         // Check if already logged in
         if (sessionStorage.getItem('token') && sessionStorage.getItem('token') !== "undefined") {

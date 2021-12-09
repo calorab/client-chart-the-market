@@ -3,7 +3,7 @@ import {Formik, Field, Form, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import dataMapping from '../utility/dataMapping';
 import arrayMapping from '../utility/arrayMapping'
-import Button from '../UI/button'
+import Button from '../UI/button';
 import Modal from '../UI/modal';
 import ChartDisplay from './chartDisplay'
 
@@ -117,12 +117,20 @@ const ChartMain = (props) => {
     }
 
     const buyHandler = async () => {
+
         let symbol = ticker;
         let lots =  100;
         let date = equityTable[equityTable.length-1]['date'];
         let value = equityTable[equityTable.length-1]['price'];
         let user = sessionStorage.getItem('userId');
         let investmentEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/add'
+
+        if (!sessionStorage.getItem('userId') && props.history) {
+            sessionStorage.setItem('symbol', ticker);
+            sessionStorage.setItem('date', date);
+            sessionStorage.setItem('value', value);
+            props.history.push('/auth');
+        }
 
         let response = await fetch(investmentEndpoint, {
             method: 'POST',
