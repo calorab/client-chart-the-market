@@ -12,7 +12,7 @@ const Auth = props => {
         if (sessionStorage.getItem('token') && sessionStorage.getItem('token') !== "undefined") {
             props.history.push('/investments');
         } 
-    },[]) 
+    }) 
 
     
     const onAuthHandler = async (event) => {

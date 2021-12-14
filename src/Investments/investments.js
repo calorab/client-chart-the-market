@@ -18,14 +18,14 @@ const investmentMainStyle = {
 const Investments = (props) => {
 
     const [investmentsArray,setInvestmentsArray] = useState([]);
-    const [soldSymbol,setSoldSymbol] = useState('');
-    const [saleData,setSaleData] = useState({});
-    const [roi,setRoi] = useState(0);
-    const [profit,setProfit] = useState(0);
+    // const [soldSymbol,setSoldSymbol] = useState('');
+    // const [saleData,setSaleData] = useState({});
+    // const [roi,setRoi] = useState(0);
+    // const [profit,setProfit] = useState(0);
     const [modal,setModal] = useState(false)
     const [toDateReturn,setToDateReturn] = useState(0);
     const [toDateProfit,setToDateProfit] = useState(0);
-    const [buyData,setBuyData] = useState({});
+    // const [buyData,setBuyData] = useState({});
     const [modalMessage, setModalMessage] = useState();
     const [modalTitle, setModalTitle] = useState();
 
@@ -35,7 +35,7 @@ const Investments = (props) => {
         }
         getInvestmentsHandler();
         getSalesHandler();
-    },[saleData])
+    },[investmentsArray])
 
     const getInvestmentsHandler = async () => {
         const investmentEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments';
@@ -75,20 +75,18 @@ const Investments = (props) => {
 
         const data = await response.json();
 
-        setBuyData({symbol, date, value});
+        // setBuyData({symbol, date, value});
+        setModalTitle("Success!")
+        setModalMessage(`You bought ${symbol} stock for $${value}`)
+        setModal(true);
+
         sessionStorage.removeItem('symbol');
         sessionStorage.removeItem('value');
         sessionStorage.removeItem('date');
-
-        await getInvestmentsHandler();
-        setModalTitle("Success!")
-        setModalMessage(`You bought ${buyData.symbol} stock for $${buyData.value}`)
-        setModal(true);
     }
 
     const sellHandler = async (id, purchasePrice, symbol,  event) => {
         event.preventDefault();
-        setBuyData({});
         console.log('Sellhandler deets: ', id, purchasePrice, symbol)
         const saleEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/sell';
         let response = await fetch(saleEndpoint, {
@@ -138,10 +136,7 @@ const Investments = (props) => {
         
         let {roi, profit} = investmentMath(purchasePrice, lastClose['price'])
 
-        // setSoldSymbol(symbol);
-        // setRoi(roi);
-        // setProfit(profit);
-        setSaleData(lastClose);
+        // setSaleData(lastClose);
         setModalTitle(`${symbol} Stock Sold!`);
         setModalMessage(`You have sold ${symbol} stock for $${lastClose['price']}, netting $${profit.toFixed()} per share or ${roi.toFixed()}%`);
         setModal(true);

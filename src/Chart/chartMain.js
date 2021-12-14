@@ -130,6 +130,7 @@ const ChartMain = (props) => {
             sessionStorage.setItem('date', date);
             sessionStorage.setItem('value', value);
             props.history.push('/auth');
+            return;
         }
 
         let response = await fetch(investmentEndpoint, {
@@ -147,6 +148,7 @@ const ChartMain = (props) => {
         }).catch(err => console.log(err))
 
         const data = await response.json();
+        console.log("buyHandler data: ", data)
         setModal(true);
     }
 
