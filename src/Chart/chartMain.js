@@ -126,9 +126,6 @@ const ChartMain = (props) => {
         let investmentEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/add'
 
         if (!sessionStorage.getItem('userId') && props.history) {
-            sessionStorage.setItem('symbol', ticker);
-            sessionStorage.setItem('date', date);
-            sessionStorage.setItem('value', value);
             props.history.push('/auth');
             return;
         }

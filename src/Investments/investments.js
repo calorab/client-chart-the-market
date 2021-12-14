@@ -28,7 +28,7 @@ const Investments = (props) => {
     // const [buyData,setBuyData] = useState({});
     const [modalMessage, setModalMessage] = useState();
     const [modalTitle, setModalTitle] = useState();
-
+    
     useEffect(() => {
         if (!sessionStorage.getItem('userId') && props.history) {
             props.history.push('/auth');
@@ -49,40 +49,6 @@ const Investments = (props) => {
 
         const data = await response.json();
         setInvestmentsArray(data);
-    }
-
-    const buyHandler = async () => {
-        let symbol = sessionStorage.getItem('symbol');
-        let lots =  100;
-        let date = sessionStorage.getItem('date');
-        let value = sessionStorage.getItem('value');
-        let user = sessionStorage.getItem('userId');
-        let investmentEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/add'
-
-        let response = await fetch(investmentEndpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                symbol: symbol,
-                lots: lots,
-                date: date,
-                value: value,
-                userId: user
-            })
-        }).catch(err => console.log(err))
-
-        const data = await response.json();
-
-        // setBuyData({symbol, date, value});
-        setModalTitle("Success!")
-        setModalMessage(`You bought ${symbol} stock for $${value}`)
-        setModal(true);
-
-        sessionStorage.removeItem('symbol');
-        sessionStorage.removeItem('value');
-        sessionStorage.removeItem('date');
     }
 
     const sellHandler = async (id, purchasePrice, symbol,  event) => {
@@ -179,10 +145,6 @@ const Investments = (props) => {
         setModal(false);
         setModalTitle();
         setModalMessage();
-    }
-
-    if (sessionStorage.getItem('symbol')) {
-        buyHandler();
     }
 
     let myInvestmentsArray = [];
