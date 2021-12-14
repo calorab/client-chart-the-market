@@ -89,6 +89,7 @@ const Investments = (props) => {
     const sellHandler = async (id, purchasePrice, symbol,  event) => {
         event.preventDefault();
         setBuyData({});
+        console.log('Sellhandler deets: ', id, purchasePrice, symbol)
         const saleEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/sell';
         let response = await fetch(saleEndpoint, {
             method: 'DELETE',
@@ -99,6 +100,7 @@ const Investments = (props) => {
         }).catch(err => console.log(err))
 
         const data = await response.json();
+        console.log("theDATA:: ", data)
        
         const latestPriceEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/saleprice'
         let latestPrice = await fetch(latestPriceEndpoint, {
@@ -110,6 +112,7 @@ const Investments = (props) => {
         }).catch(err => console.log(err))
 
         let lastClose = await latestPrice.json();
+        console.log("LastClose: ", lastClose)
         // CALEB - handle 'non-errors' here!!!!!!!!!!!!
         
         const allSaleEndpoint = 'https://pure-ridge-03326.herokuapp.com/sale/'
@@ -130,15 +133,18 @@ const Investments = (props) => {
         }).catch(err => console.log(err))
 
         const result = await postSale.json();
+
+        console.log("The Result: ", result, symbol)
         
         let {roi, profit} = investmentMath(purchasePrice, lastClose['price'])
-        setSoldSymbol(symbol);
-        setRoi(roi);
-        setProfit(profit);
-        setModal(true);
+
+        // setSoldSymbol(symbol);
+        // setRoi(roi);
+        // setProfit(profit);
         setSaleData(lastClose);
-        setModalTitle(`${soldSymbol} Stock Sold!`);
-        setModalMessage(`You have sold ${soldSymbol} stock for $${saleData.price}, netting $${profit.toFixed()} per share or ${roi.toFixed()}%`);
+        setModalTitle(`${symbol} Stock Sold!`);
+        setModalMessage(`You have sold ${symbol} stock for $${lastClose['price']}, netting $${profit.toFixed()} per share or ${roi.toFixed()}%`);
+        setModal(true);
     }
 
     const getSalesHandler = async () => {

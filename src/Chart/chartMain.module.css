@@ -19,8 +19,8 @@
 }
 
 .chartContent {
-    background-color: rgb(128, 128, 128);
-    box-shadow: 0 2px 3px #ccc;
+    background-color: rgb(175, 178, 179);
+    box-shadow: 0 2px 3px rgb(31, 30, 30);
     border-radius: 10px;
 }
 
@@ -48,7 +48,7 @@
     flex-flow: column nowrap;
     align-items: center;
     justify-content: center;
-    background-color: rgb(128, 128, 128);
+    background-color: rgb(175, 178, 179);
     padding: 20px;
     box-shadow: 0 2px 5px rgb(0, 0, 0);
     border-radius: 10px;

@@ -8,7 +8,7 @@ const investmentCardStyle = {
     boxShadow: '0 2px 3px rgb(0, 0, 0)',
     borderRadius: '10px',
     padding: '10px',
-    backgroundColor: 'rgb(128, 128, 128)'
+    backgroundColor: 'rgb(175, 178, 179)'
 };
 
 const investmentCard = (props) => {
