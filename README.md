@@ -5,9 +5,9 @@ Chart the Market is an app designed for users who want to test out investing ide
 ## Screenshots
 Home Page | Home Page - Chart
 :-------------------------:|:-------------------------:
-![Home Page](https://github.com/calorab/client-chart-the-market/blob/f76bc37683a8172703bbb96df7f7561933a49f66/Assets/Screen%20Shot%202021-12-06%20at%205.04.15%20PM.png)  |![Home Page - Chart](https://github.com/calorab/client-chart-the-market/blob/f76bc37683a8172703bbb96df7f7561933a49f66/Assets/Screen%20Shot%202021-12-06%20at%205.04.41%20PM.png)
+![Home Page](https://github.com/calorab/client-chart-the-market/blob/dcd6ffa42c8a2161c4c622e8587ad00e6646f3db/Assets/Screen%20Shot%20-%20Main.png)  |![Home Page - Chart](https://github.com/calorab/client-chart-the-market/blob/dcd6ffa42c8a2161c4c622e8587ad00e6646f3db/Assets/Screen%20Shot%20-%20Chart.png)
 User Portfolio page| User Login page
-![User Portfolio](https://github.com/calorab/client-chart-the-market/blob/f76bc37683a8172703bbb96df7f7561933a49f66/Assets/Screen%20Shot%202021-12-06%20at%205.05.51%20PM.png) |![Login Page](https://github.com/calorab/client-chart-the-market/blob/f76bc37683a8172703bbb96df7f7561933a49f66/Assets/Screen%20Shot%202021-12-06%20at%205.05.16%20PM.png)
+![User Portfolio](https://github.com/calorab/client-chart-the-market/blob/dcd6ffa42c8a2161c4c622e8587ad00e6646f3db/Assets/Screen%20Shot%20-%20Portfolio.png) |![Login Page](https://github.com/calorab/client-chart-the-market/blob/dcd6ffa42c8a2161c4c622e8587ad00e6646f3db/Assets/Screen%20Shot%20-%20Login.png)
 
 
 ## User Cases
