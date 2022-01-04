@@ -1,6 +1,6 @@
 # Chart-the-Market
 "Chart-the-Market" | Personal Project
-Chart the Market is an app designed for users who want to test out investing ideas without risking real money. Search for stock symbols, get responsive charts for symbols of your choice, complete with moving averages, purchase stocks and track investment results.
+Chart the Market is an app designed for users who want to test out investing ideas without risking real money. Search for stock symbols, get responsive charts for symbols of your choice, complete with moving averages, and purchase stocks and track investment results.
 
 ## Screenshots
 Home Page | Home Page - Chart

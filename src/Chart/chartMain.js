@@ -5,7 +5,8 @@ import dataMapping from '../utility/dataMapping';
 import arrayMapping from '../utility/arrayMapping'
 import Button from '../UI/button';
 import Modal from '../UI/modal';
-import ChartDisplay from './chartDisplay'
+import ChartDisplay from './chartDisplay' 
+import Spinner from '../spinner/spinner'
 
 import styles from './chartMain.module.css';
 require('dotenv').config(); // CALEB ???
@@ -21,7 +22,8 @@ const ChartMain = (props) => {
     const [modal, setModal] = useState(false);
     const [untouched, setUntouched] = useState(false);
     const [searchError, setSearchError] = useState(false);
-    const [chartError, setChartError] = useState(false);  
+    const [chartError, setChartError] = useState(false);
+    const [spinner, setSpinner] = useState(false)  
 
      const clearSearchHandler = () => {
         setTicker("")
@@ -34,6 +36,7 @@ const ChartMain = (props) => {
         setUntouched(false);
         setSearchError(false);
         setChartError(false);
+        setSpinner(false);
     }
 
     const tickerSearchHandler = async event => {
@@ -71,6 +74,7 @@ const ChartMain = (props) => {
         setShowChart(false);
         setUntouched(false);
         setChartError(false);
+        setSpinner(true);
 
         let symbol = listSymbol;
         let EMAHigh = 20;
@@ -85,6 +89,7 @@ const ChartMain = (props) => {
         
         if (!symbol) {
             setUntouched(true);
+            setSpinner(false)
             return;
         }
  
@@ -99,8 +104,10 @@ const ChartMain = (props) => {
         let fullData = await response.json()
         if (fullData['Error Message']) {
             setChartError(true);
+            setSpinner(false);
             return;
         }
+        console.log(fullData)
         let priceData = fullData["Time Series (Daily)"];
         if (!fullData["Time Series (Daily)"]) {
             priceData = fullData['Weekly Adjusted Time Series']; 
@@ -113,6 +120,7 @@ const ChartMain = (props) => {
         setEmaHigh(EMAHigh);
         setEquityTable(dataTable);
         setShowChart(true);
+        setSpinner(false);
         return;
     }
 
@@ -245,7 +253,7 @@ const ChartMain = (props) => {
                         {!showChart  ? formCustom : null}
                     </div>
                     <div className={styles.chartContainer}>
-                        {chartDisplay}
+                        {spinner ? <Spinner /> : chartDisplay}
                     </div>
                 </div>
                 <div className={styles.chartNav}>

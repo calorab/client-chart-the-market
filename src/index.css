@@ -2,6 +2,7 @@ body {
   margin: 0;
   font-family: 'Noto Sans Mono', monospace;
   background-color: rgb(80, 83, 83);
+  margin-bottom: 50px;
   /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
