@@ -22,10 +22,9 @@ const ChartMain = (props) => {
     const [modal, setModal] = useState(false);
     const [untouched, setUntouched] = useState(false);
     const [searchError, setSearchError] = useState(false);
-    const [chartError, setChartError] = useState(false);
-    const [spinner, setSpinner] = useState(false)  
+    const [chartError, setChartError] = useState(false); 
 
-     const clearSearchHandler = () => {
+    const clearSearchHandler = () => {
         setTicker("")
         setCompanyResults([])
         setEmaLow(0);
@@ -36,7 +35,6 @@ const ChartMain = (props) => {
         setUntouched(false);
         setSearchError(false);
         setChartError(false);
-        setSpinner(false);
     }
 
     const tickerSearchHandler = async event => {
@@ -74,7 +72,6 @@ const ChartMain = (props) => {
         setShowChart(false);
         setUntouched(false);
         setChartError(false);
-        setSpinner(true);
 
         let symbol = listSymbol;
         let EMAHigh = 20;
@@ -89,7 +86,6 @@ const ChartMain = (props) => {
         
         if (!symbol) {
             setUntouched(true);
-            setSpinner(false)
             return;
         }
  
@@ -104,7 +100,6 @@ const ChartMain = (props) => {
         let fullData = await response.json()
         if (fullData['Error Message']) {
             setChartError(true);
-            setSpinner(false);
             return;
         }
         console.log(fullData)
@@ -120,7 +115,6 @@ const ChartMain = (props) => {
         setEmaHigh(EMAHigh);
         setEquityTable(dataTable);
         setShowChart(true);
-        setSpinner(false);
         return;
     }
 
@@ -253,7 +247,7 @@ const ChartMain = (props) => {
                         {!showChart  ? formCustom : null}
                     </div>
                     <div className={styles.chartContainer}>
-                        {spinner ? <Spinner /> : chartDisplay}
+                        {chartDisplay}
                     </div>
                 </div>
                 <div className={styles.chartNav}>
