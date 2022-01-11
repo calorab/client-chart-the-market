@@ -6,10 +6,8 @@ import arrayMapping from '../utility/arrayMapping'
 import Button from '../UI/button';
 import Modal from '../UI/modal';
 import ChartDisplay from './chartDisplay' 
-import Spinner from '../spinner/spinner'
 
 import styles from './chartMain.module.css';
-require('dotenv').config(); // CALEB ???
 
 const ChartMain = (props) => {
 
@@ -57,6 +55,7 @@ const ChartMain = (props) => {
             }
         }).catch(err => console.log(err))
 
+        console.log(response);
         const data = await response.json();
 
         if (data.bestMatches.length === 0) {

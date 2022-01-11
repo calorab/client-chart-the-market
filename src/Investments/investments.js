@@ -5,7 +5,6 @@ import Button from '../UI/button';
 import Modal from '../UI/modal';
 import TrackRecord from './trackRecord';
 import styles from './investments.module.css'
-require('dotenv').config(); // CALEB dig into this for endpoint simplicity
 
 const investmentMainStyle = {
     display: 'flex',

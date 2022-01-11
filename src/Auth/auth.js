@@ -3,7 +3,6 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import styles from './auth.module.css'
 import Button from '../UI/button'
-require('dotenv').config(); // CALEB What are we doing with this???
 
 const Auth = props => {
 
