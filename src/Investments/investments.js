@@ -88,9 +88,9 @@ const Investments = (props) => {
             body: JSON.stringify({
                 symbol: symbol,
                 lots: 100,
-                date: lastClose['date'],
+                date: lastClose['Global Quote']['07. latest trading day'],
                 buyPrice: purchasePrice,
-                sellPrice: lastClose['price'],
+                sellPrice: lastClose['Global Quote']['08. previous close'],
                 userId: sessionStorage.getItem('userId')
             })
         }).catch(err => console.log(err))
@@ -99,11 +99,11 @@ const Investments = (props) => {
 
         console.log("The Result: ", result, symbol)
         
-        let {roi, profit} = investmentMath(purchasePrice, lastClose['price'])
+        let {roi, profit} = investmentMath(purchasePrice, lastClose['Global Quote']['08. previous close'])
 
-        // setSaleData(lastClose);
+        
         setModalTitle(`${symbol} Stock Sold!`);
-        setModalMessage(`You have sold ${symbol} stock for $${lastClose['price']}, netting $${profit.toFixed()} per share or ${roi.toFixed()}%`);
+        setModalMessage(`You have sold ${symbol} stock for $${lastClose['Global Quote']['08. previous close']}, netting $${profit.toFixed()} per share or ${roi.toFixed()}%`);
         setModal(true);
     }
 
@@ -158,7 +158,7 @@ const Investments = (props) => {
 // CALEB - is this displaying correctly when no investments???
     let emptyPortfolio = 
     <div>
-        <h5>You have no Investments</h5>
+        <p>You have no Investments</p>
         <p>Return to the main page to buy stocks and see them here!</p>
     </div>;
     let myInvestmentResults = [];
@@ -182,7 +182,7 @@ const Investments = (props) => {
                     <div className={styles.title}>
                         <h5>Your Portfolio</h5> 
                     </div>
-                    {myInvestmentResults}
+                    {investmentsArray.length === 0 ? <p>You have no Investments</p> : myInvestmentResults}
                 </div>
                 <div className={styles.line}></div>
                 <div className={styles.investNav}>  
