@@ -18,15 +18,14 @@ const trackRecord = props => {
             <h3>Track Record</h3>
             <p>To-date return (%): {props.percent.toFixed(2)}%</p>
             <p>To-Date profit ($): ${props.dollars.toFixed(2)}</p>
-            <div id='portfolioChart'>
                 <AnyChart 
-                    id={styles.portfolioChart}
+                    id="portfolioChart"
                     width={400}
                     height={300}
-                    instance={chart}
+                    type="line"
                     title={'Performance to Date'} 
+                    instance={chart}
                 />
-            </div>
         </>
     )
 };

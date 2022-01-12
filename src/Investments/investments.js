@@ -168,7 +168,7 @@ const Investments = (props) => {
             </InvestmentCard>
         });
     }
-
+// CALEB - problem below!!!
     let portfolioReturns = []
     let realizedProfit = 0;
     portfolioReturns = portfolioData.forEach(element => {
