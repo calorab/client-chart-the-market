@@ -171,10 +171,11 @@ const Investments = (props) => {
 // CALEB - problem below!!!
     let portfolioReturns = []
     let realizedProfit = 0;
-    portfolioReturns = portfolioData.forEach(element => {
-        let profit = element['sellPrice'] - element['buyPrice']
-        let currVal = realizedProfit += profit
-        portfolioReturns.push([element.date, currVal])
+    portfolioReturns = portfolioData.map(element => {
+        return <div>
+            <p>`${element.equity} sold at ${element.sellPrice} on ${element.date} Fuck you!`</p>
+        </div>
+        
     })
 
     return (
@@ -192,7 +193,7 @@ const Investments = (props) => {
                     <TrackRecord dataTable={portfolioReturns} percent={toDateReturn} dollars={toDateProfit}/>
                     <Button clicked={handleLogout}>Logout</Button>
                     <Button type='submit' clicked={event => props.history.push('/')}>Return to chart</Button>
-                    
+                    {portfolioReturns}
                 </div>
             </div>
         </>

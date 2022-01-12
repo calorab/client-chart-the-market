@@ -6,8 +6,7 @@ import styles from './trackRecord.module.css'
 const trackRecord = props => { 
 
     // create chart
-    let chart = anychart.line();
-    let series = chart.line(props.dataTable);
+    let chart = anychart.line([1,2,3,4,5,6]);
     chart.container('portfolioChart');
     chart.draw()
 /* 
@@ -18,14 +17,13 @@ const trackRecord = props => {
             <h3>Track Record</h3>
             <p>To-date return (%): {props.percent.toFixed(2)}%</p>
             <p>To-Date profit ($): ${props.dollars.toFixed(2)}</p>
-                <AnyChart 
-                    id="portfolioChart"
-                    width={400}
-                    height={300}
-                    type="line"
-                    title={'Performance to Date'} 
-                    instance={chart}
-                />
+            <AnyChart  
+                instance={chart} 
+                id="portfolioChart"
+                width={400}
+                height={300}
+                title={'Performance to Date'}
+            />
         </>
     )
 };
