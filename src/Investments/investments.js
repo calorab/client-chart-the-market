@@ -18,7 +18,7 @@ const Investments = (props) => {
 
     const [investmentsArray,setInvestmentsArray] = useState([]);
     const [portfolioData,setPortfolioData] = useState([]);
-    // const [saleData,setSaleData] = useState({});
+    const [returnsChartData,setReturnsChartData] = useState([]);
     // const [roi,setRoi] = useState(0);
     // const [profit,setProfit] = useState(0);
     const [modal,setModal] = useState(false)
@@ -119,14 +119,16 @@ const Investments = (props) => {
         }).catch(err => console.log('The salesHandler error: ', err))
 
         const data = await response.json();
-        setPortfolioData(data)
-        statsHandler(data);
+        setPortfolioData(data.saleData)
+        setReturnsChartData(data.chartReturns)
+        statsHandler(data.saleData);
     }
 
     const statsHandler = (arr) => {
         let dollar = 0;
         let percentage = 0;
         // CALEB - check math on adding percentages - is this the right output??
+        // console.log("ARR: ",arr)
         for (let i=0; i<arr.length; i++) {
             let {roi, profit} = investmentMath(arr[i]['buyPrice'], arr[i]['sellPrice']);
             dollar += profit;
@@ -170,13 +172,14 @@ const Investments = (props) => {
     }
 // CALEB - problem below!!!
     let portfolioReturns = []
-    let realizedProfit = 0;
+    
     portfolioReturns = portfolioData.map(element => {
-        return <div>
-            <p>`${element.equity} sold at ${element.sellPrice} on ${element.date} Fuck you!`</p>
+        return <div key={element._id}>
+            <p>${element.equity} sold at ${element.sellPrice} on ${element.date}</p>
         </div>
         
     })
+    
 
     return (
         <>
@@ -190,7 +193,7 @@ const Investments = (props) => {
                 </div>
                 <div className={styles.line}></div>
                 <div className={styles.investNav}>  
-                    <TrackRecord dataTable={portfolioReturns} percent={toDateReturn} dollars={toDateProfit}/>
+                    <TrackRecord dataTable={returnsChartData} percent={toDateReturn} dollars={toDateProfit}/>
                     <Button clicked={handleLogout}>Logout</Button>
                     <Button type='submit' clicked={event => props.history.push('/')}>Return to chart</Button>
                     {portfolioReturns}

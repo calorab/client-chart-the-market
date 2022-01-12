@@ -6,7 +6,7 @@ import styles from './trackRecord.module.css'
 const trackRecord = props => { 
 
     // create chart
-    let chart = anychart.line([1,2,3,4,5,6]);
+    let chart = anychart.line(props.dataTable);
     chart.container('portfolioChart');
     chart.draw()
 /* 
