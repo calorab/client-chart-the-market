@@ -17,7 +17,7 @@ const investmentMainStyle = {
 const Investments = (props) => {
 
     const [investmentsArray,setInvestmentsArray] = useState([]);
-    // const [soldSymbol,setSoldSymbol] = useState('');
+    const [portfolioData,setPortfolioData] = useState([]);
     // const [saleData,setSaleData] = useState({});
     // const [roi,setRoi] = useState(0);
     // const [profit,setProfit] = useState(0);
@@ -119,7 +119,7 @@ const Investments = (props) => {
         }).catch(err => console.log('The salesHandler error: ', err))
 
         const data = await response.json();
-
+        setPortfolioData(data)
         statsHandler(data);
     }
 
@@ -155,12 +155,7 @@ const Investments = (props) => {
             purchasePrice: element.buyPrice,
         })
     }
-// CALEB - is this displaying correctly when no investments???
-    let emptyPortfolio = 
-    <div>
-        <p>You have no Investments</p>
-        <p>Return to the main page to buy stocks and see them here!</p>
-    </div>;
+
     let myInvestmentResults = [];
     if (myInvestmentsArray) {
         myInvestmentResults = myInvestmentsArray.map(element => {
@@ -174,6 +169,14 @@ const Investments = (props) => {
         });
     }
 
+    let portfolioReturns = []
+    let realizedProfit = 0;
+    portfolioReturns = portfolioData.forEach(element => {
+        let profit = element['sellPrice'] - element['buyPrice']
+        let currVal = realizedProfit += profit
+        portfolioReturns.push([element.date, currVal])
+    })
+
     return (
         <>
             {modal ? <Modal title={modalTitle } message={modalMessage} onConfirm={handleModal}></Modal> : null}
@@ -186,9 +189,10 @@ const Investments = (props) => {
                 </div>
                 <div className={styles.line}></div>
                 <div className={styles.investNav}>  
-                    <TrackRecord percent={toDateReturn} dollars={toDateProfit}/>
+                    <TrackRecord dataTable={portfolioReturns} percent={toDateReturn} dollars={toDateProfit}/>
                     <Button clicked={handleLogout}>Logout</Button>
                     <Button type='submit' clicked={event => props.history.push('/')}>Return to chart</Button>
+                    
                 </div>
             </div>
         </>
