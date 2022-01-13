@@ -19,14 +19,12 @@ const Investments = (props) => {
     const [investmentsArray,setInvestmentsArray] = useState([]);
     const [portfolioData,setPortfolioData] = useState([]);
     const [returnsChartData,setReturnsChartData] = useState([]);
-    // const [roi,setRoi] = useState(0);
-    // const [profit,setProfit] = useState(0);
     const [modal,setModal] = useState(false)
     const [toDateReturn,setToDateReturn] = useState(0);
     const [toDateProfit,setToDateProfit] = useState(0);
-    // const [buyData,setBuyData] = useState({});
     const [modalMessage, setModalMessage] = useState();
     const [modalTitle, setModalTitle] = useState();
+    const [investmentQuotes, setInvestmentQuotes] = useState([])
     
     useEffect(() => {
         if (!sessionStorage.getItem('userId') && props.history) {
@@ -47,12 +45,27 @@ const Investments = (props) => {
         }).catch(err => console.log(err))
 
         const data = await response.json();
+        console.log("Here's the data: ", data)
         setInvestmentsArray(data);
     }
 
-    const sellHandler = async (id, purchasePrice, symbol,  event) => {
+    const quoteHandler = async symbol => {
+        const latestPriceEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/saleprice'
+        let latestPrice = await fetch(latestPriceEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({symbol: symbol})
+        }).catch(err => console.log(err))
+
+        let lastClose = await latestPrice.json();
+        // CALEB - handle 'non-errors' here!!!!!!!!!!!!
+        return lastClose;
+    }
+// CALEB - Did you test sellHandler 1/13??
+    const sellHandler = async (id, purchasePrice, symbol, event) => {
         event.preventDefault();
-        console.log('Sellhandler deets: ', id, purchasePrice, symbol)
         const saleEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/sell';
         let response = await fetch(saleEndpoint, {
             method: 'DELETE',
@@ -64,19 +77,9 @@ const Investments = (props) => {
 
         const data = await response.json();
         console.log("theDATA:: ", data)
-       
-        const latestPriceEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/saleprice'
-        let latestPrice = await fetch(latestPriceEndpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({symbol: symbol})
-        }).catch(err => console.log(err))
 
-        let lastClose = await latestPrice.json();
-        console.log("LastClose: ", lastClose)
-        // CALEB - handle 'non-errors' here!!!!!!!!!!!!
+        let lastClose = quoteHandler(symbol)
+        console.log(lastClose)
         
         const allSaleEndpoint = 'https://pure-ridge-03326.herokuapp.com/sale/'
 
@@ -127,8 +130,7 @@ const Investments = (props) => {
     const statsHandler = (arr) => {
         let dollar = 0;
         let percentage = 0;
-        // CALEB - check math on adding percentages - is this the right output??
-        // console.log("ARR: ",arr)
+        
         for (let i=0; i<arr.length; i++) {
             let {roi, profit} = investmentMath(arr[i]['buyPrice'], arr[i]['sellPrice']);
             dollar += profit;
@@ -159,18 +161,20 @@ const Investments = (props) => {
     }
 
     let myInvestmentResults = [];
-    if (myInvestmentsArray) {
-        myInvestmentResults = myInvestmentsArray.map(element => {
-            return <InvestmentCard 
-                key={element.id}
-                purchaseDate={element.purchaseDate}
-                purchasePrice={element.purchasePrice}
-                clicked={event => sellHandler(element.id, element.purchasePrice, element.symbol, event)}> 
-                {element.symbol}
-            </InvestmentCard>
-        });
-    }
-// CALEB - problem below!!!
+   
+
+   if (myInvestmentsArray) {
+    myInvestmentResults =  myInvestmentsArray.map(element => {
+        return <InvestmentCard 
+            key={element.id}
+            purchaseDate={element.purchaseDate}
+            purchasePrice={element.purchasePrice}
+            clicked={event => sellHandler(element.id, element.purchasePrice, element.symbol, event)}> 
+            {element.symbol}
+        </InvestmentCard>
+    });
+}
+
     let portfolioReturns = []
     
     portfolioReturns = portfolioData.map(element => {
