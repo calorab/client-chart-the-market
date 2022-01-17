@@ -55,7 +55,7 @@ const ChartMain = (props) => {
             }
         }).catch(err => console.log(err))
 
-        console.log(response);
+        
         const data = await response.json();
 
         if (data.bestMatches.length === 0) {
@@ -101,7 +101,7 @@ const ChartMain = (props) => {
             setChartError(true);
             return;
         }
-        console.log(fullData)
+        
         let priceData = fullData["Time Series (Daily)"];
         if (!fullData["Time Series (Daily)"]) {
             priceData = fullData['Weekly Adjusted Time Series']; 
@@ -146,7 +146,6 @@ const ChartMain = (props) => {
         }).catch(err => console.log(err))
 
         const data = await response.json();
-        console.log("buyHandler data: ", data)
         setModal(true);
     }
 

@@ -32,9 +32,8 @@ const Investments = (props) => {
         }
         getInvestmentsHandler();
         getSalesHandler();
-        // CALEB - create a handler for getting quotes using async await and try catch stement (guess)
-
-    },[investmentsArray])
+       
+    },[])
 
     const getInvestmentsHandler = async () => { 
         const investmentEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments';
@@ -47,7 +46,18 @@ const Investments = (props) => {
         }).catch(err => console.log(err))
 
         const data = await response.json();
+        console.log('datadata: ')
         setInvestmentsArray(data);
+        if (data.length > 0) {
+            let quoteArray = []
+            for (const investment of data) {
+                let quote = await quoteHandler(investment.equity)
+                quoteArray.push(quote)
+            }
+            console.log('quote array: ', quoteArray)
+            setInvestmentQuotes(quoteArray)
+        }
+        
     }
 
     const quoteHandler = async symbol => {
@@ -61,10 +71,10 @@ const Investments = (props) => {
         }).catch(err => console.log(err))
 
         let lastClose = await latestPrice.json()
-        console.log("last close ", lastClose)
-        // CALEB - handle 'non-errors' here!!!!!!!!!!!!
+        // CALEB - handle 'Note' errors here!!! (Note is the top key)
+        return lastClose
     }
-// CALEB - Did you test sellHandler 1/13??
+// CALEB test below!
     const sellHandler = async (id, purchasePrice, symbol, event) => {
         event.preventDefault();
         const saleEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/sell';
@@ -166,7 +176,12 @@ const Investments = (props) => {
             symbol: element.equity,
             purchaseDate: element.date,
             purchasePrice: element.buyPrice,
+            sellPrice: 0
         })
+    }
+
+    for (let i=0; i<investmentQuotes.length; i++) {
+        myInvestmentsArray[i]['sellPrice'] = investmentQuotes[i]['Global Quote']['08. previous close']
     }
 
     let myInvestmentResults = [];
@@ -178,6 +193,7 @@ const Investments = (props) => {
             key={element.id}
             purchaseDate={element.purchaseDate}
             purchasePrice={element.purchasePrice}
+            currentPrice={element.sellPrice}
             clicked={event => sellHandler(element.id, element.purchasePrice, element.symbol, event)}> 
             {element.symbol}
         </InvestmentCard>
