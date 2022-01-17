@@ -32,9 +32,11 @@ const Investments = (props) => {
         }
         getInvestmentsHandler();
         getSalesHandler();
+        // CALEB - create a handler for getting quotes using async await and try catch stement (guess)
+
     },[investmentsArray])
 
-    const getInvestmentsHandler = async () => {
+    const getInvestmentsHandler = async () => { 
         const investmentEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments';
         let response = await fetch(investmentEndpoint, {
             method: 'POST',
@@ -45,7 +47,6 @@ const Investments = (props) => {
         }).catch(err => console.log(err))
 
         const data = await response.json();
-        console.log("Here's the data: ", data)
         setInvestmentsArray(data);
     }
 
@@ -59,9 +60,9 @@ const Investments = (props) => {
             body: JSON.stringify({symbol: symbol})
         }).catch(err => console.log(err))
 
-        let lastClose = await latestPrice.json();
+        let lastClose = await latestPrice.json()
+        console.log("last close ", lastClose)
         // CALEB - handle 'non-errors' here!!!!!!!!!!!!
-        return lastClose;
     }
 // CALEB - Did you test sellHandler 1/13??
     const sellHandler = async (id, purchasePrice, symbol, event) => {
@@ -78,8 +79,16 @@ const Investments = (props) => {
         const data = await response.json();
         console.log("theDATA:: ", data)
 
-        let lastClose = quoteHandler(symbol)
-        console.log(lastClose)
+        const latestPriceEndpoint = 'https://pure-ridge-03326.herokuapp.com/myinvestments/saleprice'
+        let latestPrice = await fetch(latestPriceEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({symbol: symbol})
+        }).catch(err => console.log(err))
+
+        let lastClose = await latestPrice.json();
         
         const allSaleEndpoint = 'https://pure-ridge-03326.herokuapp.com/sale/'
 
