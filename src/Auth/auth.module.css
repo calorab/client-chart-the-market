@@ -43,7 +43,7 @@ input {
     /* display: block; */
     width: 100%;
 }
-
+ 
 .lineAuth {
     border-right: 3px solid #76048d;
     height: 350px;
@@ -56,6 +56,3 @@ h3 {
     margin-top: 5px;
 }
 
-p {
-    margin-top: 30px;
-}

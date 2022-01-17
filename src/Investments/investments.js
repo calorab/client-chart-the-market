@@ -200,14 +200,14 @@ const Investments = (props) => {
     });
 }
 
-    let portfolioReturns = []
+    // let portfolioReturns = []
     
-    portfolioReturns = portfolioData.map(element => {
-        return <div key={element._id}>
-            <p>${element.equity} sold at ${element.sellPrice} on ${element.date}</p>
-        </div>
+    // portfolioReturns = portfolioData.map(element => {
+    //     return <div key={element._id}>
+    //         <p>${element.equity} sold at ${element.sellPrice} on ${element.date}</p>
+    //     </div>
         
-    })
+    // })
     
 
     return (
@@ -225,7 +225,7 @@ const Investments = (props) => {
                     <TrackRecord dataTable={returnsChartData} percent={toDateReturn} dollars={toDateProfit}/>
                     <Button clicked={handleLogout}>Logout</Button>
                     <Button type='submit' clicked={event => props.history.push('/')}>Return to chart</Button>
-                    {portfolioReturns}
+                    {/* {portfolioReturns} */}
                 </div>
             </div>
         </>

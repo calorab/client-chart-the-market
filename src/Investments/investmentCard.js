@@ -17,7 +17,7 @@ const investmentCard = (props) => {
             <h3 className={styles.cardSymbol}>{props.children}</h3>
             <h5>Purchased on: {props.purchaseDate}</h5>
             <h5>Purchased at: ${props.purchasePrice}</h5>
-            <h5>Current price ($): ${props.currentPrice}</h5>
+            <h5>Latest Close: ${props.currentPrice}</h5>
             <Button type='submit' clicked={props.clicked}>Sell</Button>
         </div>
     ) 
