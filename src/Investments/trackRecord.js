@@ -9,6 +9,10 @@ const trackRecord = props => {
     let chart = anychart.line(props.dataTable);
     chart.container('portfolioChart');
     chart.draw()
+    // --- Styling ---
+    chart.background().fill('rgb(128, 128, 128');
+    chart.background().cornerType('round')
+    chart.background().corners('10')
 /* 
 
 */
